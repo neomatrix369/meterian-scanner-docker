@@ -2,6 +2,8 @@
 
 Scan for vulnerabilities in your project using the Meterian Scanner Docker container 
 
+The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under under [meterianbot](https://hub.docker.com/u/meterianbot), and is called [meterianbot/meterian-scanner-docker](https://hub.docker.com/r/meterianbot/meterian-scanner-docker).
+
 ## How to use the docker container
 
 - Use an environment variable by the name METERIAN_API_TOKEN containing the secret Meterian token:
@@ -16,12 +18,130 @@ Scan for vulnerabilities in your project using the Meterian Scanner Docker conta
            --volume ${PWD}/:/workspace/                     \
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
-           meterian-bot/meterian-scanner-docker:v0.1
+           meterianbot/meterian-scanner-docker:v0.1
 ```
 
-### Output of successful execution
+or 
 
+you can re-use the [runInDockerContainer.sh](./runInDockerContainer.sh) bash-script to scan your projects.
 
+Note: it is important that the container is made to point to a valid and best not to stick to the semantics of the examples shown in this document in order to be able to run the scanner successfully on a project.
+
+### An example of an output after running the docker container on a project
+
+#### Successful execution
+
+```
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ METERIAN_API_TOKEN environment variable has been set
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~ Running the Meterian Scanner client ~~~~~~
+
+Meterian Client v1.2.3.1, build 89b921b-202
+All rights reserved
+- running locally:   yes
+- interactive mode:  on
+- minimum security:  90
+- minimum stability: 80
+- working on folder: /workspace
+- autofix mode:      off
+
+Checking folder...
+Folder /workspace contains a viable project!
+
+Authorizing the client...
+Client successfully authorized
+
+Loading build status...
+No build running found!
+
+Requesting build...
+Build allowed
+
+Project information:
+- url:    git@bitbucket.org:meterian-bot/ClientOfMutabilityDetector.git
+- branch: master
+- commit: 48cb9609df50bcb34aafc081ee990f445dd62d44
+
+JAVA scan - running maven locally...
+- maven: loading dependency tree...
+- maven: dependencies generated...
+Execution successful!
+
+Uploading dependencies information - 14 found...
+Done!
+
+Starting build...
+Current build status: in preparation
+Current build status: process advices at 2019-07-12T19:26:00.518
+Current build status: process advices at 2019-07-12T19:26:03.527
+
+Final results:
+- security: 100 (minimum: 90)
+- stability:  99  (minimum: 80)
+- licensing:  97  (minimum: 95)
+
+Full report available at:
+https://www.meterian.com/projects.html?pid=43e37555-9b8b-4295-abb1-0aa8cc34412f&branch=master&mode=eli
+
+Build successful!
+```
+
+#### Failed execution
+
+```
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ METERIAN_API_TOKEN environment variable has been set
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~ Running the Meterian Scanner client ~~~~~~
+
+Meterian Client v1.2.3.1, build 89b921b-202
+All rights reserved
+- running locally:   yes
+- interactive mode:  on
+- minimum security:  90
+- minimum stability: 80
+- working on folder: /workspace
+- autofix mode:      off
+
+Checking folder...
+Folder /workspace contains a viable project!
+
+Authorizing the client...
+Client successfully authorized
+
+Loading build status...
+No build running found!
+
+Requesting build...
+Build allowed
+
+Project information:
+- url:    git@github.com:neomatrix369/meterian-scanner-docker.git
+- branch: master
+- commit: 321fda607bc5c21833cf34e63b7b96188931ae79
+
+Starting build...
+Current build status: in preparation
+Current build status: process advices at 2019-07-12T19:19:57.856
+
+Final results:
+- security: N/A (minimum: 90)
+- stability:  N/A (minimum: 80)
+
+Full report available at:
+https://www.meterian.com/projects.html?pid=5cd56b03-5aec-40d7-b51a-80d0ad3f1fcb&branch=master&mode=eli
+
+Build unsuccessful!
+Failed checks: [security, stability]
+```
+
+Returns a `-1` exit code if the scan has failed for whatever reason otherwise you get an exit code of `0`. 
+
+You can check with `echo $?` immediately after it finished execution.
 
 ## Additional option(s) to run the docker container
 
@@ -31,7 +151,7 @@ Scan for vulnerabilities in your project using the Meterian Scanner Docker conta
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
            --env METERIAN_CLI_ARGS="[Meterain CLI Options]" \ 
-           meterian-bot/meterian-scanner-docker:v0.1
+           meterianbot/meterian-scanner-docker:v0.1
 ```
 
 `[Meterain CLI Options]` - you can find out more about additional options via the [Meterian PDF manual](https://www.meterian.com/documents/meterian-cli-manual.pdf) or by [downloading the client](https://www.meterian.com/downloads/meterian-cli.jar) and running `java -jar meterian-cli.jar --help`.
