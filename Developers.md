@@ -2,11 +2,14 @@
 
 This read me file is meant for the benefit of the developers who will be maintaiing this project at Meterian.
 
-## Scripts provided
+## Scripts and configurations provided
 
 Below are list of scripts provided to create and upload the docker image to the Docker registory:
 
 ```
+.circleci
+   config.yml
+
 build/
    Dockerfile
    entrypoint.sh
@@ -15,25 +18,29 @@ build/
    push-docker-image-to-hub.sh
 
    removeUnusedContainersAndImages.sh
+
 runInDockerContainer.sh
+version.txt
 ```
 
 ## Initial setup (one-off)
 
-Ensure a test Meterian API token has been created and stored in the environment variable called `METERIAN_API_TOKEN`. 
-
-Also to be able to upload the build docker image to Docker Hub, `DOCKER_USER_NAME` and `DOCKER_PASSWORD` must be setup as well with the valid data for the Docker Hub user `meterianbot`.
+Ensure to be able to upload the build docker image to Docker Hub, `DOCKER_USER_NAME` and `DOCKER_PASSWORD` must be setup as well with the valid data for the Docker Hub user `meterianbot`.
 
 This applies to the following environments:
 
-- local machine
+- local environment
 - CircleCI or any other CI/CD environment
+
+Refer to the [push-docker-image-to-hub.sh](./build/push-docker-image-to-hub.sh) script to see further details.
 
 ## Workflow
 
-Basically we take an existing Java + Maven based container and package the Meterian Client Jar into it and make it possible for the end-user to point the container to a project in a workspace and run the scanner on the project.
+We take an existing Java + Maven based image and package the Meterian Client Jar into it. The built image when run can be pointed to a project in a workspace, in order to run the scanner on it.
 
 In order, to keep the Docker image up-to-date we need to ensure that with every change to the docker scripts (in this repo/project) and the Meterian Client, we are updating the docker image on Docker Hub.
+
+Manual and automatic mechanisms have been provided for this purpose.
 
 ## Building the docker image
 
@@ -49,6 +56,8 @@ Thereafter please run the below commands to update the image in the Docker regis
 The `Dockerfile` and `entrypoint` are the two files used to create the image.
 
 ## Pushing the docker image to Docker Hub
+
+### Manually
 
 Once the setup is in place, as mentioned in the *Initial setup (one-off)* section. Run the below command to push the image to Docker Hub:
 
@@ -80,9 +89,17 @@ f32868cde90b: Mounted from library/maven
 v0.1: digest: sha256:cf067b9283cac7ca5c6a2b8fb9b9f30880804d7638a3c792559ea89a90712fd0 size: 3047
 ```
 
+### Automatically (via CircleCI)
+
+CircleCI has been configure to push the most recent updated version of the docker image containing the latest version of the Meterian Scanner client jar with it, to Docker Hub for each commit and also as a nightly build.
+
+Please check [./circleci/config.yml](./circleci/config.yml) and [push-docker-image-to-hub.sh](./build/push-docker-image-to-hub.sh) script to see further details.
+
 ## Running the docker container
 
-Also `runInDockerContainer.sh` to run the image after it has been build  The end-users can use this as a template to run the container on their end. Although other examples are provided in the [README.md](README.md).
+Also `runInDockerContainer.sh` to run the image after it has been build  The end-users can use this as a template to run the container on their projects of choice. 
+
+Although other examples are provided in the [README.md](README.md).
 
 ## Housekeeping
 

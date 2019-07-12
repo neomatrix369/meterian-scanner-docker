@@ -1,18 +1,14 @@
 # Meterian Scanner Docker Container
 
-Scan for vulnerabilities in your project using the Meterian Scanner Docker container 
+Scan for vulnerabilities in your project using the Meterian Scanner Docker container.
+
+You can do this without having to install any dependencies needed for the Meterian Scanner client to run, and the scan happens in an isolated environment i.e. inside the Docker container.
 
 The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under under [meterianbot](https://hub.docker.com/u/meterianbot), and is called [meterianbot/meterian-scanner-docker](https://hub.docker.com/r/meterianbot/meterian-scanner-docker).
 
 ## How to use the docker container
 
-- Use an environment variable by the name METERIAN_API_TOKEN containing the secret Meterian token:
-    - Create an account or log into your account on http://meterian.com
-    - Create an new secret API token from the dashboard
-    - Create an environment variable by the name METERIAN_API_TOKEN containing this token
-    - This is a one off setup for a given environment
-- Place yourself into a project that you wish to scan
-- Use the below command to execute the container:
+- It is as simple as running the below command:
 ```bash
     docker run -it                                          \
            --volume ${PWD}/:/workspace/                     \
@@ -20,12 +16,15 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
            meterianbot/meterian-scanner-docker:v0.1
 ```
+- Set-up an environment variable by the name METERIAN_API_TOKEN containing the secret Meterian API token:
+    - Create an account or log into your account on http://meterian.com
+    - Create an new secret API token from the dashboard
+    - Create an environment variable by the name METERIAN_API_TOKEN containing this token
+    - This is a one off setup
+- Place yourself into the folder of the project that you wish to scan
+- Run the above docker command
 
-or 
-
-you can re-use the [runInDockerContainer.sh](./runInDockerContainer.sh) bash-script to scan your projects.
-
-Note: it is important that the container is made to point to a valid and best not to stick to the semantics of the examples shown in this document in order to be able to run the scanner successfully on a project.
+Note: it is important that the container is made to point to a valid project and best to stick to the semantics of the examples shown in this document in order to be able to run the scanner successfully on a project.
 
 ### An example of an output after running the docker container on a project
 
@@ -143,7 +142,7 @@ Returns a `-1` exit code if the scan has failed for whatever reason otherwise yo
 
 You can check with `echo $?` immediately after it finished execution.
 
-## Additional option(s) to run the docker container
+## Additional option(s) to use with the Docker container
 
 ```bash
     docker run -it                                          \

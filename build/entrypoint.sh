@@ -19,4 +19,6 @@ fi
 echo ""
 echo "~~~~~~ Running the Meterian Scanner client ~~~~~~"
 METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-"$*"}
+echo "METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS}"
+echo ""
 java -jar ${HOME}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}
