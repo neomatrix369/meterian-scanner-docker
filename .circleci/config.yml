@@ -1,13 +1,33 @@
+version: 2
 jobs:
   build:
      machine:
        image: ubuntu-1604:201903-01
-
      steps:
        - checkout
        - run:
-           name: "Build and push Meterian Scanner Docker image to Docker Hub"
+           name: "Build the Meterian Scanner Docker image"
            command: |
               cd build
               ./buildDockerImage.sh
+       - run:
+           name: "Push Meterian Scanner Docker image to Docker Hub"
+           command: |
+              cd build
               ./push-docker-image-to-hub.sh
+
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - build
+  scheduled-workflow:                                                                                                                                                          
+    triggers:                                                                                                                                                             
+      - schedule:                                                                                                                                                         
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
