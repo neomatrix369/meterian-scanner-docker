@@ -7,11 +7,20 @@ set -o pipefail
 VERSION="v$(cat version.txt)"
 DOCKER_FULL_IMAGE_NAME="meterian-bot/meterian-scanner-docker:${VERSION}"
 
-WORK_DIR=/home/
+METERIAN_CLI_ARGS="${METERIAN_CLI_ARGS:-}"
+
+if [[ ${DEBUG:-} = "true" ]]; then
+	CUSTOM_ENTRYPOINT="--entrypoint /bin/bash"
+fi
+
+WORKSPACE=/workspace
+
+set -x
 docker run -it                                             \
-           --workdir ${WORK_DIR}                           \
-           --volume $(pwd)/:${WORK_DIR}                    \
+           --volume $(pwd)/:${WORKSPACE}                   \
+           --workdir ${WORKSPACE}                          \
            --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN}  \
-           --env METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-}  \
-           ${DOCKER_FULL_IMAGE_NAME}                       \
-           /bin/bash
+           --env METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS}    \
+           ${CUSTOM_ENTRYPOINT}                            \
+           ${DOCKER_FULL_IMAGE_NAME}
+set +x

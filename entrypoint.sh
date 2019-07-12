@@ -12,8 +12,6 @@ if [[ -z "${METERIAN_API_TOKEN:-}" ]]; then
 	exit -1
 fi
 
-WORK_DIR=/home/
-
 echo "~~~~~~ Running the Meterian Scanner client"
 METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-"$*"}
-java -jar ${WORK_DIR}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}
+java -jar ${HOME}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}

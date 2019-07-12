@@ -1,12 +1,19 @@
 FROM maven:latest
 
-WORKDIR /home/
+RUN useradd -ms /bin/bash meterian
+USER meterian
+
+WORKDIR /home/meterian
+
+ENV HOME=/home/meterian
 
 RUN echo "~~~~~~ Downloading the latest version of the Meterian Scanner client" && \
-    mkdir -p ${WORK_DIR}/.meterian/ && \
-    curl -o ${WORK_DIR}/.meterian/meterian-cli.jar -O -J -L \
+    mkdir -p ${HOME}/.meterian/ && \
+    curl -o ${HOME}/.meterian/meterian-cli.jar -O -J -L \
          https://www.meterian.com/latest-client-canary
+
+ENV PATH=${HOME}:${PATH}
 
 COPY entrypoint.sh entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
