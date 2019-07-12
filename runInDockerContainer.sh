@@ -12,6 +12,6 @@ docker run -it                                             \
            --workdir ${WORK_DIR}                           \
            --volume $(pwd)/:${WORK_DIR}                    \
            --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN}  \
-           --env METERIAN_ARGS=${METERIAN_ARGS:-}          \
+           --env METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-}  \
            ${DOCKER_FULL_IMAGE_NAME}                       \
            /bin/bash

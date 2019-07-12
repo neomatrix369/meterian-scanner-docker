@@ -1,7 +1,0 @@
-LICENSE.md
-README.md
-*.sh
-!entrypoint.sh
-version.txt
-.meterian
-artifacts/

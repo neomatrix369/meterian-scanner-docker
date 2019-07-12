@@ -2,10 +2,10 @@ FROM maven:latest
 
 WORKDIR /home/
 
-COPY .  /home/
-
-ARG METERIAN_API_TOKEN
-ENV METERIAN_API_TOKEN=${METERIAN_API_TOKEN}
+RUN echo "~~~~~~ Downloading the latest version of the Meterian Scanner client" && \
+    mkdir -p ${WORK_DIR}/.meterian/ && \
+    curl -o ${WORK_DIR}/.meterian/meterian-cli.jar -O -J -L \
+         https://www.meterian.com/latest-client-canary
 
 COPY entrypoint.sh entrypoint.sh
 
