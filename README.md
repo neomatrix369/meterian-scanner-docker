@@ -1,10 +1,12 @@
-# Meterian Scanner Docker Container
+# Meterian Scanner Docker container
+
+[![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner Docker](https://img.shields.io/docker/pulls/meterianbot/meterian-scanner-docker.svg)](https://hub.docker.com/r/meterianbot/meterian-scanner-docker)
 
 Scan for vulnerabilities in your project using the Meterian Scanner Docker container.
 
 You can do this without having to install any dependencies needed for the Meterian Scanner client to run, and the scan happens in an isolated environment i.e. inside the Docker container.
 
-The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under under [meterianbot](https://hub.docker.com/u/meterianbot), and is called [meterianbot/meterian-scanner-docker](https://hub.docker.com/r/meterianbot/meterian-scanner-docker).
+The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under the Docker user id [meterianbot](https://hub.docker.com/u/meterianbot), and is called [meterianbot/meterian-scanner-docker](https://hub.docker.com/r/meterianbot/meterian-scanner-docker).
 
 ## How to use the docker container
 

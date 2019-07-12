@@ -1,5 +1,7 @@
 # Developers
 
+[![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner](https://img.shields.io/docker/pulls/meterianbot/meterian-scanner-docker.svg)](https://hub.docker.com/r/meterianbot/meterian-scanner-docker)
+
 This read me file is meant for the benefit of the developers who will be maintaiing this project at Meterian.
 
 ## Scripts and configurations provided
