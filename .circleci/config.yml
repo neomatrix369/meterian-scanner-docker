@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/meterian-scanner-docker
+
+  docker:
+     - circleci/openjdk:8-jdk-browsers
+
+  steps:
+
+     - checkout
+
+     - command |
+          cd build
+          ./buildDockerImage.sh
+          ./push-docker-image-to-hub.sh

@@ -28,5 +28,5 @@ else
 fi
 
 docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME}
-docker login --username=${DOCKER_USER_NAME}
+docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
 docker push ${DOCKER_FULL_IMAGE_NAME}
