@@ -1,16 +1,13 @@
-version: 2
 jobs:
   build:
-    working_directory: ~/meterian-scanner-docker
+     machine:
+       image: ubuntu-1604:201903-01
 
-  docker:
-     - circleci/openjdk:8-jdk-browsers
-
-  steps:
-
-     - checkout
-
-     - command |
-          cd build
-          ./buildDockerImage.sh
-          ./push-docker-image-to-hub.sh
+     steps:
+       - checkout
+       - run:
+           name: "Build and push Meterian Scanner Docker image to Docker Hub"
+           command: |
+              cd build
+              ./buildDockerImage.sh
+              ./push-docker-image-to-hub.sh
