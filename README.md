@@ -26,9 +26,40 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
 - Place yourself into the folder of the project that you wish to scan
 - Run the above docker command
 
-Note: it is important that the container is made to point to a valid project and best to stick to the semantics of the examples shown in this document in order to be able to run the scanner successfully on a project.
+#### Point to project at another location (using an environment variable)
 
-### An example of an output after running the docker container on a project
+#### Absolute path (example 1)
+
+Say you want to scan a project located somewhere on your disk or network, and you know the path to that project, then do the below:
+
+```bash
+    WORKSPACE=/path/to/another/valid/project/                 \
+        docker run -it                                        \
+             --volume ${WORKSPACE}/:/workspace/               \
+             --workdir /workspace/                            \
+             --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
+             meterianbot/meterian-scanner-docker:v0.1
+```
+
+#### Absolute path (example 2)
+
+Say you want to scan a project in some deep-level folder structure, and you know the name of the project (by it's folder name) then do the below: 
+
+```bash
+    cd to/some/folder/with/projects
+    
+    WORKSPACE=${PWD}/project/                                 \
+        docker run -it                                        \
+             --volume ${WORKSPACE}/:/workspace/               \
+             --workdir /workspace/                            \
+             --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
+             meterianbot/meterian-scanner-docker:v0.1
+```
+
+Note: it is important that the container is made to point to a valid project and best to stick to the semantics of the examples shown in this document in order to be able to run the scanner successfully on a project.
+Also please use _absolute path_ when pointing to other project workspaces for the above command to work.
+
+### Examples of an output after running the docker container on a project
 
 #### Successful execution
 
