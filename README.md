@@ -13,7 +13,7 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
 - It is as simple as running the below command:
 ```bash
     docker run -it                                          \
-           --volume ${PWD}/:/workspace/                     \
+           --volume ${PWD}/:/workspace/:ro                  \
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
            meterianbot/meterian-scanner-docker:v0.1
@@ -35,7 +35,7 @@ Say you want to scan a project located somewhere on your disk or network, and yo
 ```bash
     WORKSPACE=/path/to/another/valid/project/              && \
         docker run -it                                        \
-             --volume ${WORKSPACE}/:/workspace/               \
+             --volume ${WORKSPACE}/:/workspace/:ro            \
              --workdir /workspace/                            \
              --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
              meterianbot/meterian-scanner-docker:v0.1
@@ -50,7 +50,7 @@ Say you want to scan a project in some deep-level folder structure, and you know
     
     WORKSPACE=${PWD}/project/                              && \
         docker run -it                                        \
-             --volume ${WORKSPACE}/:/workspace/               \
+             --volume ${WORKSPACE}/:/workspace/:ro            \
              --workdir /workspace/                            \
              --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
              meterianbot/meterian-scanner-docker:v0.1
@@ -179,7 +179,7 @@ You can check with `echo $?` immediately after it finished execution.
 
 ```bash
     docker run -it                                          \
-           --volume ${PWD}/:/workspace/                     \
+           --volume ${PWD}/:/workspace/:ro                  \
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
            --env METERIAN_CLI_ARGS="[Meterain CLI Options]" \ 

@@ -16,7 +16,7 @@ fi
 WORKSPACE=/workspace
 
 docker run -it                                             \
-           --volume $(pwd)/:${WORKSPACE}                   \
+           --volume $(pwd)/:${WORKSPACE}:ro                \
            --workdir ${WORKSPACE}                          \
            --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN}  \
            --env METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS}    \
