@@ -12,7 +12,7 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
 
 - It is as simple as running the below command:
 ```bash
-    docker run -it                                          \
+    docker run -it --rm                                     \
            --volume ${PWD}/:/workspace/:ro                  \
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
@@ -34,7 +34,7 @@ Say you want to scan a project located somewhere on your disk or network, and yo
 
 ```bash
     WORKSPACE=/path/to/another/valid/project/              && \
-        docker run -it                                        \
+        docker run -it --rm                                   \
              --volume ${WORKSPACE}/:/workspace/:ro            \
              --workdir /workspace/                            \
              --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
@@ -49,7 +49,7 @@ Say you want to scan a project in some deep-level folder structure, and you know
     cd to/some/folder/with/projects
     
     WORKSPACE=${PWD}/project/                              && \
-        docker run -it                                        \
+        docker run -it --rm                                   \
              --volume ${WORKSPACE}/:/workspace/:ro            \
              --workdir /workspace/                            \
              --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
@@ -178,7 +178,7 @@ You can check with `echo $?` immediately after it finished execution.
 ## Additional option(s) to use with the Docker container
 
 ```bash
-    docker run -it                                          \
+    docker run -it --rm                                     \
            --volume ${PWD}/:/workspace/:ro                  \
            --workdir /workspace/                            \
            --env METERIAN_API_TOKEN="${METERIAN_API_TOKEN}" \
