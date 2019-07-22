@@ -1,4 +1,4 @@
-FROM maven:latest
+FROM maven:3.6.1-jdk-13
 
 RUN useradd -ms /bin/bash meterian
 USER meterian
