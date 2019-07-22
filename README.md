@@ -33,7 +33,7 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
 Say you want to scan a project located somewhere on your disk or network, and you know the path to that project, then do the below:
 
 ```bash
-    WORKSPACE=/path/to/another/valid/project/                 \
+    WORKSPACE=/path/to/another/valid/project/              && \
         docker run -it                                        \
              --volume ${WORKSPACE}/:/workspace/               \
              --workdir /workspace/                            \
@@ -48,7 +48,7 @@ Say you want to scan a project in some deep-level folder structure, and you know
 ```bash
     cd to/some/folder/with/projects
     
-    WORKSPACE=${PWD}/project/                                 \
+    WORKSPACE=${PWD}/project/                              && \
         docker run -it                                        \
              --volume ${WORKSPACE}/:/workspace/               \
              --workdir /workspace/                            \
