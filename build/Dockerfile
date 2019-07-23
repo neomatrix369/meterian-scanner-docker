@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk
 
+### These components are vulnerable as per the scanner, also they are not used for the purpose of this image, hence being removed
 RUN apt-get remove -qy mercurial python2.7 wget
 
 ### Install Maven
