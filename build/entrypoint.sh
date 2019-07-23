@@ -18,8 +18,8 @@ fi
 
 echo ""
 echo "~~~~~~ Downloading the latest version of the Meterian Scanner client"
-mkdir -p ${HOME}/.meterian/
-curl -o ${HOME}/.meterian/meterian-cli.jar -O -J -L \
+mkdir -p ${METERIAN_HOME}/.meterian/
+curl -o ${METERIAN_HOME}/.meterian/meterian-cli.jar -O -J -L \
          https://www.meterian.com/latest-client-canary
 
 echo ""
@@ -28,4 +28,4 @@ METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-"$*"}
 echo "METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS}"
 
 echo ""
-java -jar ${HOME}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}
+java -jar ${METERIAN_HOME}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}
