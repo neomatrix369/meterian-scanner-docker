@@ -1,7 +1,25 @@
 FROM openjdk:8-jdk
 
-### These components are vulnerable as per the scanner, also they are not used for the purpose of this image, hence being removed
-RUN apt-get remove -qy mercurial python2.7 wget
+### Gebnral setup
+RUN echo $(cat /etc/issue)
+RUN apt-get update
+RUN apt-get -y install apt-transport-https apt-utils
+
+### Dotnet - Register Microsoft key and feed
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
+ && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
+ && wget -q https://packages.microsoft.com/config/debian/9/prod.list \
+ && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
+ && chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg \
+ && chown root:root /etc/apt/sources.list.d/microsoft-prod.list
+
+### Dotnet - Install the .NET Core SDK
+RUN apt-get update \
+ && apt-get -y install dotnet-sdk-3.1
+
+RUN wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
+RUN dpkg -i /tmp/packages-microsoft-prod.deb
+RUN rm /tmp/packages-microsoft-prod.deb
 
 ### Install Maven
 ARG MAVEN_VERSION=3.6.3
@@ -22,6 +40,9 @@ ENV MAVEN_CONFIG "${METERIAN_HOME}/.m2"
 ENV PATH=${MAVEN_HOME}/bin:${PATH}
 
 RUN mvn -version
+
+### These components are vulnerable as per the scanner, also they are not used for the purpose of this image, hence being removed
+RUN apt-get remove -qy mercurial python2.7 wget
 
 ## Meterian setup
 RUN groupadd -r meterian \
