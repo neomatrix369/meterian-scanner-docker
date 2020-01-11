@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 DOCKER_USER_NAME="meterianbot"
-VERSION="v$(cat ../version.txt)"
+VERSION="$(cat ../version.txt)"
 DOCKER_FULL_IMAGE_NAME="meterianbot/meterian-scanner-docker:${VERSION}"
 
 findImage() {
@@ -20,7 +20,7 @@ if [[ -z "${IMAGE_FOUND}" ]]; then
     if [[ -z "${IMAGE_FOUND}" ]]; then
     	echo "Docker image '${IMAGE_NAME}' not found in the local repository"
     	exit 1
-    else 
+    else
     	echo "Docker image '${IMAGE_NAME}' found in the local repository"
     fi
 else

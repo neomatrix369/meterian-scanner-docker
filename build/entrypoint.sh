@@ -4,28 +4,20 @@ set -e
 set -u
 set -o pipefail
 
-if [[ -z "${METERIAN_API_TOKEN:-}" ]]; then
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	echo " METERIAN_API_TOKEN environment variable must be defined with a valid token respectively from your account on http://meterian.io "
-	echo " Aborting container execution..."
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	exit -1
-else 
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	echo " METERIAN_API_TOKEN environment variable has been set "
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-fi
+# debugging users
+# echo "Host uid: ${HOST_UID}"
+# echo "Host gid: ${HOST_GID}"
 
-echo ""
-echo "~~~~~~ Downloading the latest version of the Meterian Scanner client"
-mkdir -p ${METERIAN_HOME}/.meterian/
-curl -o ${METERIAN_HOME}/.meterian/meterian-cli.jar -O -J -L \
-         https://www.meterian.com/latest-client-canary
+# create the user
+groupadd -g ${HOST_GID} meterian
+useradd -g meterian -u ${HOST_UID} meterian -d /home/meterian
+# grep meterian /etc/passwd
 
-echo ""
-echo "~~~~~~ Running the Meterian Scanner client ~~~~~~"
-METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS:-"$*"}
-echo "METERIAN_CLI_ARGS=${METERIAN_CLI_ARGS}"
+# prepare the script file
+mv /root/meterian.sh /tmp/meterian.sh
+mv /root/version.txt /tmp/version.txt
+chmod +x /tmp/meterian.sh
 
-echo ""
-java -jar ${METERIAN_HOME}/.meterian/meterian-cli.jar ${METERIAN_CLI_ARGS}
+# launch meterian client with the newly created user
+export XPATH=$PATH
+su meterian -c -m /tmp/meterian.sh $* 2>/dev/null
