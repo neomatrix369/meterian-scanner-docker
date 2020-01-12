@@ -10,7 +10,7 @@ WORKDIR=$(pwd)
 if [[ "$*" =~ "--unbound" ]];
 then
     docker run -it --rm \
-              --volume ${WORKDIR}:/workspace:ro \
+              --volume ${WORKDIR}:/workspace \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*
 
@@ -19,7 +19,7 @@ then
 
 else
 
-    # get current uid 
+    # get current uid
     HOST_UID=`id -u`
 
     # maven specific mappings
@@ -33,7 +33,7 @@ else
     # executing docker now
     docker run -it --rm \
               --workdir ${WORKDIR} \
-              --volume ${WORKDIR}:${WORKDIR}:ro \
+              --volume ${WORKDIR}:${WORKDIR} \
               --volume ${MAVEN_LOCAL_DIR}:${MAVEN_DOCKER_DIR} \
               --mount type=bind,source=${DOTNET_LOCAL_DIR},target=${DOTNET_DOCKER_DIR} \
               --env HOST_UID=${HOST_UID} \
