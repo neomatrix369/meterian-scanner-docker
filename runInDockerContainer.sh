@@ -7,7 +7,7 @@ set -o pipefail
 SCRIPT_CURRENT_DIR="$(dirname $0)"
 
 VERSION="$(cat ${SCRIPT_CURRENT_DIR}/version.txt)"
-DOCKER_FULL_IMAGE_NAME="meterianbot/meterian-scanner-docker:${VERSION}"
+DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 
 METERIAN_CLI_ARGS="${METERIAN_CLI_ARGS:-}"
 

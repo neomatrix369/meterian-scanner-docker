@@ -4,9 +4,8 @@ set -e
 set -u
 set -o pipefail
 
-DOCKER_USER_NAME="meterianbot"
 VERSION="$(cat ../version.txt)"
-DOCKER_FULL_IMAGE_NAME="meterianbot/meterian-scanner-docker:${VERSION}"
+DOCKER_FULL_IMAGE_NAME="meterian/cli    :${VERSION}"
 
 findImage() {
 	IMAGE_NAME=$1
@@ -30,3 +29,4 @@ fi
 docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME}
 docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
 docker push ${DOCKER_FULL_IMAGE_NAME}
+docker logout

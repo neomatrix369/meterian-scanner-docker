@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 VERSION="$(cat ../version.txt)"
-DOCKER_FULL_IMAGE_NAME="meterianbot/meterian-scanner-docker:${VERSION}"
+DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 BUILD=${CIRCLE_BUILD_NUM:-000}
 VERSION_WITH_BUILD=${VERSION}.${BUILD}
 

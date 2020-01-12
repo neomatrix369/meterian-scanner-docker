@@ -1,6 +1,6 @@
 # Developers
 
-[![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner](https://img.shields.io/docker/pulls/meterianbot/meterian-scanner-docker.svg)](https://hub.docker.com/r/meterianbot/meterian-scanner-docker)
+[![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner](https://img.shields.io/docker/pulls/meterian/cli.svg)](https://hub.docker.com/r/meterian/cli)
 
 This read me file is meant for the benefit of the developers who will be maintaiing this project at Meterian.
 
@@ -27,7 +27,7 @@ version.txt
 
 ## Initial setup (one-off)
 
-Ensure to be able to upload the build docker image to Docker Hub, `DOCKER_USER_NAME` and `DOCKER_PASSWORD` must be setup as well with the valid data for the Docker Hub user `meterianbot`.
+Ensure to be able to upload the build docker image to Docker Hub, `DOCKER_USER_NAME` and `DOCKER_PASSWORD` must be setup as well with the valid data for the Docker Hub user `meterian`.
 
 This applies to the following environments:
 
@@ -46,7 +46,7 @@ Manual and automatic mechanisms have been provided for this purpose.
 
 ## Building the docker image
 
-In addition the ```version.txt``` is used by most of the above scripts to refer to a fixed version of the docker image and should be changed when moving to the next version of the container. 
+In addition the ```version.txt``` is used by most of the above scripts to refer to a fixed version of the docker image and should be changed when moving to the next version of the container.
 
 Thereafter please run the below commands to update the image in the Docker registory:
 
@@ -68,13 +68,13 @@ Once the setup is in place, as mentioned in the *Initial setup (one-off)* sectio
    ./push-docker-image-to-hub.sh
 ```
 
-You will be promoted the password for the `meterianbot` user. Something like the below should appear when completed successfully:
+Make sure the variables `DOCKER_USER_NAME` and `DOCKER_PASSWORD` are set.
 
 ```
-Docker image 'meterianbot/meterian-scanner-docker:v0.1' found in the local repository
+Docker image 'meterian/cli:0.2' found in the local repository
 Password:
 Login Succeeded
-The push refers to repository [docker.io/meterianbot/meterian-scanner-docker]
+The push refers to repository [docker.io/meterian/cli]
 beaa43e48d5b: Pushed
 e1ba90e3e741: Pushed
 33c194936dca: Pushed
@@ -93,13 +93,15 @@ v0.1: digest: sha256:cf067b9283cac7ca5c6a2b8fb9b9f30880804d7638a3c792559ea89a907
 
 ### Automatically (via CircleCI)
 
-CircleCI has been configure to push the most recent updated version of the docker image containing the latest version of the Meterian Scanner client jar with it, to Docker Hub for each commit and also as a nightly build.
+CircleCI has been configure to push the most recent stable version of the docker image containing the latest version of the Meterian Scanner client jar with it, to Docker Hub for each commit and also as a nightly build.
 
 Please check [./circleci/config.yml](./circleci/config.yml) and [push-docker-image-to-hub.sh](./build/push-docker-image-to-hub.sh) script to see further details.
 
 ## Running the docker container
 
-Also `runInDockerContainer.sh` to run the image after it has been build  The end-users can use this as a template to run the container on their projects of choice. 
+Also `runInDockerContainer.sh` to run the image after it has been build  The end-users can use this as a template to run the container on their projects of choice.
+
+TBC
 
 Although other examples are provided in the [README.md](README.md).
 
