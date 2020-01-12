@@ -6,6 +6,7 @@ set -o pipefail
 
 VERSION="$(cat ../version.txt)"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
+DOCKER_FULL_IMAGE_NAME_LATEST="meterian/cli:latest"
 
 findImage() {
 	IMAGE_NAME=$1
@@ -27,6 +28,7 @@ else
 fi
 
 docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME}
+docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME_LATEST}
 docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
 docker push ${DOCKER_FULL_IMAGE_NAME}
 docker logout
