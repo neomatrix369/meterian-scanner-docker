@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 VERSION="$(cat ../version.txt)"
-DOCKER_FULL_IMAGE_NAME="meterian/cli    :${VERSION}"
+DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 
 findImage() {
 	IMAGE_NAME=$1
