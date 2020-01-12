@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# dump docker packaged version unless '--version' requested
+if [ "${METERIAN_CLI_ARGS}" != "--version" ]; then
+    cat /tmp/version.txt
+fi
+
 # recovering official path (thanks su for your weirdness)
 export PATH=${XPATH}
 
@@ -16,8 +21,13 @@ fi
 METERIAN_JAR=/tmp/meterian-cli.jar
 curl -s -o ${METERIAN_JAR} -z ${METERIAN_JAR} "https://www.meterian.com/downloads/meterian-cli.jar"  >/dev/null
 
-# launching the client
-java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
+# launching the client - note the different lauch if version requested to preserve the "--version" base functionality
+if [ "${METERIAN_CLI_ARGS}" == "--version" ]; then
+    java -Duser.home=/tmp  -jar ${METERIAN_JAR} --version
+    cat /tmp/version.txt
+else
+    java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
+fi
 
-# dump version of dockerized tooling
-cat /tmp/version.txt
+# please do not add any command here as we need to preserve the exit status
+# of the meterian client

@@ -21,3 +21,6 @@ chmod +x /tmp/meterian.sh
 # launch meterian client with the newly created user
 export XPATH=$PATH
 su meterian -c -m /tmp/meterian.sh $* 2>/dev/null
+
+# please do not add any command here as we need to preserve the exit status
+# of the meterian client
