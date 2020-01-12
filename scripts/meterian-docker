@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+VERSION="0.2"
+DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
+WORKDIR=$(pwd)
+
+if [[ "$*" =~ "--unbound" ]];
+then
+    docker run -it --rm \
+              --volume ${WORKDIR}:/workspace:ro \
+              --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
+              ${DOCKER_FULL_IMAGE_NAME} $*
+
+    # please do not add any command after "docker run" as we need to preserve
+    # the exit status of the meterian client
+
+else
+
+    # get current uid 
+    HOST_UID=`id -u`
+
+    # maven specific mappings
+    MAVEN_LOCAL_DIR=~/.m2
+    MAVEN_DOCKER_DIR=/home/meterian/.m2
+
+    # dotnet specific mappings
+    DOTNET_LOCAL_DIR=~/.dotnet
+    DOTNET_DOCKER_DIR=/home/meterian/.dotnet
+
+    # executing docker now
+    docker run -it --rm \
+              --workdir ${WORKDIR} \
+              --volume ${WORKDIR}:${WORKDIR}:ro \
+              --volume ${MAVEN_LOCAL_DIR}:${MAVEN_DOCKER_DIR} \
+              --mount type=bind,source=${DOTNET_LOCAL_DIR},target=${DOTNET_DOCKER_DIR} \
+              --env HOST_UID=${HOST_UID} \
+              --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
+              ${DOCKER_FULL_IMAGE_NAME} $*
+
+    # please do not add any command after "docker run" as we need to preserve
+    # the exit status of the meterian client
+fi
+
+# please do not add any command after "docker run" as we need to preserve
+# the exit status of the meterian client

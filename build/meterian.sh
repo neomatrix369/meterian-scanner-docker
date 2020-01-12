@@ -22,6 +22,7 @@ METERIAN_JAR=/tmp/meterian-cli.jar
 curl -s -o ${METERIAN_JAR} -z ${METERIAN_JAR} "https://www.meterian.com/downloads/meterian-cli.jar"  >/dev/null
 
 # launching the client - note the different lauch if version requested to preserve the "--version" base functionality
+cd /workspace
 java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
 
 if [[ ${METERIAN_CLI_ARGS} == *"--version"* ]];then
