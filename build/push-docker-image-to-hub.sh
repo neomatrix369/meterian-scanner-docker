@@ -31,4 +31,5 @@ docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME}
 docker tag ${IMAGE_FOUND} ${DOCKER_FULL_IMAGE_NAME_LATEST}
 docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
 docker push ${DOCKER_FULL_IMAGE_NAME}
+docker push ${DOCKER_FULL_IMAGE_NAME_LATEST}
 docker logout
