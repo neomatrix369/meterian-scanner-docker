@@ -31,8 +31,8 @@ else
     DOTNET_DOCKER_DIR=/home/meterian/.dotnet
 
     # php specific mappings
-    PHP_LOCAL_DIR=~/.cache
-    PHP_DOCKER_DIR=/home/meterian/.cache
+    CACHES_LOCAL_DIR=~/.cache
+    CACHES_DOCKER_DIR=/home/meterian/.cache
 
     # executing docker now
     docker run -it --rm \
@@ -40,7 +40,7 @@ else
               --volume ${WORKDIR}:${WORKDIR} \
               --volume ${MAVEN_LOCAL_DIR}:${MAVEN_DOCKER_DIR} \
               --mount type=bind,source=${DOTNET_LOCAL_DIR},target=${DOTNET_DOCKER_DIR} \
-              --mount type=bind,source=${PHP_LOCAL_DIR},target=${PHP_DOCKER_DIR} \
+              --mount type=bind,source=${CACHES_LOCAL_DIR},target=${CACHES_DOCKER_DIR} \
               --env HOST_UID=${HOST_UID} \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*
