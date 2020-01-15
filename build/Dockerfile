@@ -49,6 +49,17 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
   && composer --version
 
 
+## Ruby install
+RUN apt-get install -qy gnupg build-essential \
+  && gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
+  && curl -sSL https://get.rvm.io | bash -s stable \
+  && source /etc/profile.d/rvm.sh \
+  && rvm install ruby-2.7.0 \
+  && ruby -v \
+  && gem install bundler \
+  && bundle -v
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 

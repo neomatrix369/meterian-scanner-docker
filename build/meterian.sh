@@ -8,6 +8,11 @@ fi
 # recovering official path (thanks su for your weirdness)
 export PATH=${XPATH}
 
+# adding rvm to PATH
+# writing the output to a tmp file to suppress useless output
+source /etc/profile.d/rvm.sh > /tmp/rvm_script_output
+rm /tmp/rvm_script_output
+
 # check we have the token
 if [[ -z "${METERIAN_API_TOKEN:-}" ]]; then
 	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"

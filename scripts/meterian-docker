@@ -33,6 +33,10 @@ else
     # php specific mappings
     CACHES_LOCAL_DIR=~/.cache
     CACHES_DOCKER_DIR=/home/meterian/.cache
+    
+    # ruby specific mappings
+    RUBY_LOCAL_DIR=$(gem environment gemdir)/cache
+    RUBY_DOCKER_DIR=/usr/local/rvm/gems/ruby-2.7.0/cache
 
     # executing docker now
     docker run -it --rm \
@@ -41,6 +45,7 @@ else
               --volume ${MAVEN_LOCAL_DIR}:${MAVEN_DOCKER_DIR} \
               --mount type=bind,source=${DOTNET_LOCAL_DIR},target=${DOTNET_DOCKER_DIR} \
               --mount type=bind,source=${CACHES_LOCAL_DIR},target=${CACHES_DOCKER_DIR} \
+              --mount type=bind,source=${RUBY_LOCAL_DIR},target=${RUBY_DOCKER_DIR} \
               --env HOST_UID=${HOST_UID} \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*
