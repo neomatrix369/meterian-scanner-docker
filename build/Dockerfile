@@ -34,8 +34,19 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 
-### Removing vulnerable components, also they are not used for the purpose of this image
-RUN apt-get remove -qy mercurial python2.7 wget
+## PHP install
+RUN apt install -qy apt-transport-https lsb-release ca-certificates \
+  && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+  && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
+  && apt update \
+  && apt -qy install php7.2 \
+  && php -v \
+  && apt update \
+  && apt -qy install php7.2-mbstring \
+  && curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php \
+  && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+  && rm /tmp/composer-setup.php \
+  && composer --version
 
 
 ### Setup initial meterian client (it will be updated if required)
@@ -52,3 +63,8 @@ RUN  echo "© 2017-2020 Meterian Ltd - dockerized version ${VERSION}" > /root/ve
 WORKDIR /root
 COPY ./*.sh ./
 ENTRYPOINT ["/root/entrypoint.sh"]
+
+
+### Removing vulnerable components, also they are not used for the purpose of this image
+RUN apt-get remove -qy mercurial python2.7 wget
+
