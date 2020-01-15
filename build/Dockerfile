@@ -60,6 +60,13 @@ RUN apt-get install -qy gnupg build-essential \
   && bundle -v
 
 
+### Node install
+RUN apt-get install -qy software-properties-common \
+  && curl -sL https://deb.nodesource.com/setup_13.x | bash -\
+  && apt-get install -qy nodejs \
+  && node -v
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
