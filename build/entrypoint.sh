@@ -8,10 +8,17 @@ mv /root/meterian.sh /tmp/meterian.sh
 mv /root/version.txt /tmp/version.txt
 export METERIAN_CLI_ARGS=$*
 
+# create initialisation script (gradle)
+echo "export PATH=${PATH}" >> /tmp/init.sh
+
+# - add gradle specific configurations
+echo "export GRADLE_HOME=/opt/gradle/gradle-6.1" >> /tmp/init.sh
+echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/init.sh
+echo "export GRADLE_USER_HOME=/\${$HOME}/.gradle" >> /tmp/init.sh
+
 # run the script binding the user if required
 if [ "${HOST_UID}" == "" ];
 then
-    export XPATH=$PATH
     /tmp/meterian.sh
 
     # please do not add any command here as we need to preserve the exit status
@@ -21,7 +28,6 @@ else
     useradd -u ${HOST_UID} meterian -d /home/meterian
 
     # launch meterian client with the newly created user
-    export XPATH=$PATH
     su meterian -c -m /tmp/meterian.sh  2>/dev/null
 
     # please do not add any command here as we need to preserve the exit status
