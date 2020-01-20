@@ -31,7 +31,7 @@ else
     DOTNET_DOCKER_DIR=/home/meterian/.dotnet
 
     # php specific mappings
-    CACHES_LOCAL_DIR=~/.cache
+    CACHES_LOCAL_DIR=~/.cache   
     CACHES_DOCKER_DIR=/home/meterian/.cache
     
     # ruby specific mappings
@@ -46,6 +46,10 @@ else
     LOCALPRG_LOCAL_DIR=~/.local
     LOCALPRG_DOCKER_DIR=/home/meterian/.local
 
+    # gradle specific mappings
+    GRADLE_LOCAL_DIR=~/.gradle
+    GRADLE_DOCKER_DIR=/home/meterian/.gradle
+    
     # executing docker now
     docker run -it --rm \
               --workdir ${WORKDIR} \
@@ -56,6 +60,7 @@ else
               --mount type=bind,source=${RUBY_LOCAL_DIR},target=${RUBY_DOCKER_DIR} \
               --mount type=bind,source=${NODE_LOCAL_DIR},target=${NODE_DOCKER_DIR} \
               --mount type=bind,source=${LOCALPRG_LOCAL_DIR},target=${LOCALPRG_DOCKER_DIR} \
+              --mount type=bind,source=${GRADLE_LOCAL_DIR},target=${GRADLE_DOCKER_DIR} \
               --env HOST_UID=${HOST_UID} \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*

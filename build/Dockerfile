@@ -76,6 +76,16 @@ RUN apt-get install -qy software-properties-common \
   && node -v
 
 
+## Gradle install
+RUN wget -q https://services.gradle.org/distributions/gradle-6.1-bin.zip -P /tmp \
+  && unzip -d /opt/gradle /tmp/gradle-*.zip \
+  && echo "export GRADLE_HOME=/opt/gradle/gradle-6.1" >> /tmp/gradle.sh \
+  && echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/gradle.sh \
+  && source /tmp/gradle.sh \
+  && gradle -v \
+  && rm /tmp/gradle* 
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
