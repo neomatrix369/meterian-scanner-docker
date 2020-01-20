@@ -61,6 +61,13 @@ RUN apt-get install -qy gnupg build-essential \
   && gem install bundler \
   && bundle -v
 
+  
+## Python install
+RUN apt-get install -qy python-pip \
+  && pip -V \
+  && pip install pipenv \
+  && pipenv --version
+
 
 ### Node install
 RUN apt-get install -qy software-properties-common \
