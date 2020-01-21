@@ -14,7 +14,7 @@ echo "export PATH=${PATH}" >> /tmp/init.sh
 # - add gradle specific configurations
 echo "export GRADLE_HOME=/opt/gradle/gradle-6.1" >> /tmp/init.sh
 echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/init.sh
-echo "export GRADLE_USER_HOME=/\${$HOME}/.gradle" >> /tmp/init.sh
+echo "export GRADLE_USER_HOME=~/.gradle" >> /tmp/init.sh
 
 # run the script binding the user if required
 if [ "${HOST_UID}" == "" ];
