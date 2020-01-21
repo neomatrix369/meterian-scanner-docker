@@ -36,7 +36,7 @@ else
     
     # ruby specific mappings
     RUBY_LOCAL_DIR=$(gem environment gemdir)/cache
-    RUBY_DOCKER_DIR=/usr/local/rvm/gems/ruby-2.7.0/cache
+    RUBY_DOCKER_DIR=/var/lib/gems/2.3.0/cache
     
     # node specific mappings
     NODE_LOCAL_DIR=$(npm root -g)
