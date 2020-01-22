@@ -80,6 +80,15 @@ RUN wget -q https://services.gradle.org/distributions/gradle-6.1-bin.zip -P /tmp
   && rm /tmp/gradle* 
 
 
+## Scala install
+RUN apt-get install -qy scala \
+  && scala -version \
+  && echo "deb https://dl.bintray.com/sbt/debian /" >> /etc/apt/sources.list.d/sbt.list \
+  && curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add \
+  && apt-get update \
+  && apt-get install -qy sbt
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 

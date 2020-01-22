@@ -49,6 +49,12 @@ else
     # gradle specific mappings
     GRADLE_LOCAL_DIR=~/.gradle
     GRADLE_DOCKER_DIR=/home/meterian/.gradle
+
+    # sbt specific mappings
+    SBT_GLOBAL_SETTINGS_LOCAL_DIR=~/.sbt
+    SBT_GLOBAL_SETTINGS_DOCKER_DIR=/home/meterian/.sbt
+    SBT_LOCAL_DIR=~/.ivy2
+    SBT_DOCKER_DIR=/home/meterian/.ivy2
     
     # executing docker now
     docker run -it --rm \
@@ -61,6 +67,8 @@ else
               --mount type=bind,source=${NODE_LOCAL_DIR},target=${NODE_DOCKER_DIR} \
               --mount type=bind,source=${LOCALPRG_LOCAL_DIR},target=${LOCALPRG_DOCKER_DIR} \
               --mount type=bind,source=${GRADLE_LOCAL_DIR},target=${GRADLE_DOCKER_DIR} \
+              --mount type=bind,source=${SBT_GLOBAL_SETTINGS_LOCAL_DIR},target=${SBT_GLOBAL_SETTINGS_DOCKER_DIR} \
+              --mount type=bind,source=${SBT_LOCAL_DIR},target=${SBT_DOCKER_DIR} \
               --env HOST_UID=${HOST_UID} \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*
