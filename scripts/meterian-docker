@@ -21,60 +21,46 @@ else
 
     # get current uid
     HOST_UID=`id -u`
+    HOST_GID=`id -g`
 
+    CONTAINER_HOME_DIR=/home/meterian
+    docker_run_command="docker run -it --rm --volume $WORKDIR:/workspace "
+
+    declare -A VOLUME_BINDS
+    VOLUME_BINDS=(
+        ["$HOME/.cache"]=$CONTAINER_HOME_DIR/.cache
+        ["$HOME/.local"]=$CONTAINER_HOME_DIR/.local
     # maven specific mappings
-    MAVEN_LOCAL_DIR=~/.m2
-    MAVEN_DOCKER_DIR=/home/meterian/.m2
-
-    # dotnet specific mappings
-    DOTNET_LOCAL_DIR=~/.dotnet
-    DOTNET_DOCKER_DIR=/home/meterian/.dotnet
-
-    # php specific mappings
-    CACHES_LOCAL_DIR=~/.cache   
-    CACHES_DOCKER_DIR=/home/meterian/.cache
-    
-    # ruby specific mappings
-    RUBY_LOCAL_DIR=$(gem environment gemdir)/cache
-    RUBY_DOCKER_DIR=/var/lib/gems/2.3.0/cache
-    
-    # node specific mappings
-    NODE_LOCAL_DIR=$(npm root -g)
-    NODE_DOCKER_DIR=/usr/lib/node_modules
-    
-    # python specific mappings
-    LOCALPRG_LOCAL_DIR=~/.local
-    LOCALPRG_DOCKER_DIR=/home/meterian/.local
-
+        ["$HOME/.m2"]=$CONTAINER_HOME_DIR/.m2
+    # dotnet specific mappings                            
+        ["$HOME/.dotnet"]=$CONTAINER_HOME_DIR/.dotnet
+        ["$HOME/.nuget"]=$CONTAINER_HOME_DIR/.nuget
+        # ruby specific mappings
+        [$(gem environment gemdir)/cache]=/var/lib/gems/2.3.0/cache
+        # node specific mappings
+        [$(npm root -g)]=/usr/lib/node_modules
     # gradle specific mappings
-    GRADLE_LOCAL_DIR=~/.gradle
-    GRADLE_DOCKER_DIR=/home/meterian/.gradle
-
+        ["$HOME/.gradle"]=$CONTAINER_HOME_DIR/.gradle
     # sbt specific mappings
-    SBT_GLOBAL_SETTINGS_LOCAL_DIR=~/.sbt
-    SBT_GLOBAL_SETTINGS_DOCKER_DIR=/home/meterian/.sbt
-    SBT_LOCAL_DIR=~/.ivy2
-    SBT_DOCKER_DIR=/home/meterian/.ivy2
-    
-    # executing docker now
-    docker run -it --rm \
-              --workdir ${WORKDIR} \
-              --volume ${WORKDIR}:${WORKDIR} \
-              --volume ${MAVEN_LOCAL_DIR}:${MAVEN_DOCKER_DIR} \
-              --mount type=bind,source=${DOTNET_LOCAL_DIR},target=${DOTNET_DOCKER_DIR} \
-              --mount type=bind,source=${CACHES_LOCAL_DIR},target=${CACHES_DOCKER_DIR} \
-              --mount type=bind,source=${RUBY_LOCAL_DIR},target=${RUBY_DOCKER_DIR} \
-              --mount type=bind,source=${NODE_LOCAL_DIR},target=${NODE_DOCKER_DIR} \
-              --mount type=bind,source=${LOCALPRG_LOCAL_DIR},target=${LOCALPRG_DOCKER_DIR} \
-              --mount type=bind,source=${GRADLE_LOCAL_DIR},target=${GRADLE_DOCKER_DIR} \
-              --mount type=bind,source=${SBT_GLOBAL_SETTINGS_LOCAL_DIR},target=${SBT_GLOBAL_SETTINGS_DOCKER_DIR} \
-              --mount type=bind,source=${SBT_LOCAL_DIR},target=${SBT_DOCKER_DIR} \
-              --env HOST_UID=${HOST_UID} \
-              --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
-              ${DOCKER_FULL_IMAGE_NAME} $*
+        ["$HOME/.sbt"]=$CONTAINER_HOME_DIR/.sbt
+        ["$HOME/.ivy2"]=$CONTAINER_HOME_DIR/.ivy2
+    )
+
+    for local_addr in "${!VOLUME_BINDS[@]}"; do 
+        if [ -d $local_addr ];
+        then
+            docker_addr=${VOLUME_BINDS[$local_addr]}
+            docker_run_command="$docker_run_command --mount type=bind,source=$local_addr,target=$docker_addr"
+        fi
+    done
+
+    docker_run_command="$docker_run_command --env HOST_UID=$HOST_UID --env HOST_GID=$HOST_GID"
+    docker_run_command="$docker_run_command --env METERIAN_API_TOKEN=$METERIAN_API_TOKEN $DOCKER_FULL_IMAGE_NAME \$*"
+    eval $docker_run_command
 
     # please do not add any command after "docker run" as we need to preserve
     # the exit status of the meterian client
+
 fi
 
 # please do not add any command after "docker run" as we need to preserve
