@@ -24,7 +24,6 @@ else
     HOST_GID=`id -g`
 
     CONTAINER_HOME_DIR=/home/meterian
-    docker_run_command="docker run -it --rm --volume $WORKDIR:/workspace "
 
     declare -A VOLUME_BINDS
     VOLUME_BINDS=(
@@ -46,17 +45,18 @@ else
         ["$HOME/.ivy2"]=$CONTAINER_HOME_DIR/.ivy2
     )
 
+    docker_run_data=""
     for local_addr in "${!VOLUME_BINDS[@]}"; do 
         if [ -d $local_addr ];
         then
             docker_addr=${VOLUME_BINDS[$local_addr]}
-            docker_run_command="$docker_run_command --mount type=bind,source=$local_addr,target=$docker_addr"
+            docker_run_data+="--mount type=bind,source=${local_addr@Q},target=${docker_addr@Q} "
         fi
     done
 
-    docker_run_command="$docker_run_command --env HOST_UID=$HOST_UID --env HOST_GID=$HOST_GID"
-    docker_run_command="$docker_run_command --env METERIAN_API_TOKEN=$METERIAN_API_TOKEN $DOCKER_FULL_IMAGE_NAME \$*"
-    eval $docker_run_command
+    docker_run_data+="--env HOST_UID=${HOST_UID@Q} --env HOST_GID=${HOST_GID@Q} "
+    docker_run_data+="--env METERIAN_API_TOKEN=${METERIAN_API_TOKEN@Q} ${DOCKER_FULL_IMAGE_NAME@Q} \$*"
+    eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
 
     # please do not add any command after "docker run" as we need to preserve
     # the exit status of the meterian client
