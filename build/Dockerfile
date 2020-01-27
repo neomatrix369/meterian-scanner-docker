@@ -3,6 +3,10 @@ FROM openjdk:8-jdk
 ### Variables
 ARG DOTNET_VERSION=3.1
 ARG MAVEN_VERSION=3.6.3
+ARG PHP_VERSION=7.2
+ARG RUBY_VERSION=2.3
+ARG NODE_VERSION=13.x
+ARG GRADLE_VERSION=6.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -39,10 +43,10 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
   && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
   && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
   && apt update \
-  && apt -qy install php7.2 \
+  && apt -qy install php${PHP_VERSION} \
   && php -v \
   && apt update \
-  && apt -qy install php7.2-mbstring \
+  && apt -qy install php${PHP_VERSION}-mbstring \
   && curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php \
   && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && rm /tmp/composer-setup.php \
@@ -50,7 +54,7 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
 
 
 ## Ruby install
-RUN apt-get install -qy ruby2.3 \
+RUN apt-get install -qy ruby${RUBY_VERSION} \
   && ruby -v \
   && gem install bundler \
   && bundle -v
@@ -65,15 +69,15 @@ RUN apt-get install -qy python-pip \
 
 ### Node install
 RUN apt-get install -qy software-properties-common \
-  && curl -sL https://deb.nodesource.com/setup_13.x | bash -\
+  && curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -\
   && apt-get install -qy nodejs \
   && node -v
 
 
 ## Gradle install
-RUN wget -q https://services.gradle.org/distributions/gradle-6.1-bin.zip -P /tmp \
+RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp \
   && unzip -d /opt/gradle /tmp/gradle-*.zip \
-  && echo "export GRADLE_HOME=/opt/gradle/gradle-6.1" >> /tmp/gradle.sh \
+  && echo "export GRADLE_HOME=/opt/gradle/gradle-\${GRADLE_VERSION}" >> /tmp/gradle.sh \
   && echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/gradle.sh \
   && source /tmp/gradle.sh \
   && gradle -v \

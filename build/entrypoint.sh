@@ -25,7 +25,17 @@ then
     # of the meterian client
 else
     # create the user
-    useradd -u ${HOST_UID} meterian -d /home/meterian
+    groupadd -g ${HOST_GID} meterian
+    useradd -g meterian -u ${HOST_UID} meterian -d /home/meterian
+
+    # creating home dir if it doesn't exist
+    if [ ! -d "/home/meterian" ];
+    then
+        mkdir /home/meterian
+    fi
+
+    #changing home dir group and ownership
+    chown -R meterian:meterian /home/meterian
 
     # launch meterian client with the newly created user
     su meterian -c -m /tmp/meterian.sh  2>/dev/null

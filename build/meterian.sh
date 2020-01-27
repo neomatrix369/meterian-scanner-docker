@@ -26,9 +26,14 @@ curl -s -o ${METERIAN_JAR} -z ${METERIAN_JAR} "https://www.meterian.com/download
 cd /workspace
 java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
 
+# storing exit code
+exit_code=$?
+
 if [[ ${METERIAN_CLI_ARGS} == *"--version"* ]];then
     cat /tmp/version.txt        # 0 exit code but it's okay
 fi
+
+exit "$exit_code"
 
 # please do not add any command here as we need to preserve the exit status
 # of the meterian client
