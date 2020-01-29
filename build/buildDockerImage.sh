@@ -3,13 +3,13 @@
 set -e
 set -o pipefail
 
-isValidVersion() {
-    version=$1 && shift
-    versions=($@)
+isValidVariant() {
+    variant=$1 && shift
+    variants=($@)
 
     result=1
-    for ver in ${versions[@]}; do
-        if [[ "${version}" = "${ver}" ]];
+    for var in ${variants[@]}; do
+        if [[ "${variant}" = "${var}" ]];
         then
             result=0
             break
@@ -19,58 +19,70 @@ isValidVersion() {
     echo ${result}
 }
 
-buildImage() {
-    VERSION=$1
+buildVariantImage() {
+    VARIANT=$1
+    VERSION="$(cat variants/${VARIANT}/version.txt)"
+    DOCKER_IMAGE_NAME="meterian/cli"
+    DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}-${VARIANT}"
+    BUILD=${CIRCLE_BUILD_NUM:-000}
+    VERSION_WITH_BUILD=${VERSION}-${VARIANT}.${BUILD}
+
+    echo "~~~~~~ Building the docker container for the Meterian Scanner client"
+    docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
+                 -f variants/${VARIANT}/Dockerfile .
+}
+
+buildFullImage() {
+    VERSION="$(cat ../version.txt)"
     DOCKER_IMAGE_NAME="meterian/cli"
     DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}"
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
 
     echo "~~~~~~ Building the docker container for the Meterian Scanner client"
-    if [[ "${VERSION}" = "full" ]];
-    then
-        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest --build-arg VERSION=${VERSION_WITH_BUILD} -f versions/full/Dockerfile .
-    else
-        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VERSION} --build-arg VERSION=${VERSION_WITH_BUILD} -f versions/${VERSION}/Dockerfile .
-    fi
+    docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest --build-arg VERSION=${VERSION_WITH_BUILD} .
 }
 
-getVersions() {
+getVariants() {
     IFS=$'\r\n'
-    file=versions/versions.txt
+    echo "$(ls variants)" > variants/variants.txt
+    file=variants/variants.txt
 
-    versions=()
-    while read -r version
+    variants=()
+    while read -r variant
     do
-        versions=("${versions[@]}" "$version")
+        variants=("${variants[@]}" "$variant")
     done < "$file"
 
-    echo "${versions[@]}"
+    rm "${file}"
+    echo "${variants[@]}"
 }
 
-VERSIONS=$(getVersions)
-# # test checking VERSIONS 
-#echo "${VERSIONS[@]}"
+VARIANTS=$(getVariants)
+# # test checking VARIANTS 
+#echo "${VARIANTS[@]}"
 
 if [[ "$#" -eq 0 ]];
 then
-    echo Error: no version provided
-    exit 1
+    buildFullImage
+    exit
 fi
 
 if [[ "$*" =~ "--build-all" ]];
 then
-    echo Building all versions...
-    for version in ${VERSIONS[@]}; do
-        buildImage "${version}"
+    echo Building all...
+
+    buildFullImage
+    for variant in ${VARIANTS[@]}; do
+        buildVariantImage "${variant}"
     done
 else
-    echo "Specific version found (${1})"
-    if [[ "$(isValidVersion ${1} ${VERSIONS[@]})" -eq 0 ]];
+    echo "Specific variant build requested: ${1}"
+    if [[ "$(isValidVariant ${1} ${VARIANTS[@]})" -eq 0 ]];
     then
-        echo "${1@Q} is a supported version"
-        buildImage "${1}"
+        echo "${1@Q} is a supported variant"
+        buildVariantImage "${1}"
     else
-        echo "${1@Q} is not a supported version"
+        echo "${1@Q} is not a supported variant"
     fi
 fi

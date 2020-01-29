@@ -24,14 +24,15 @@ if [[ "$#" -ne 0 ]];
 then
     docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
 
-    for version in ${@}; do
+    for variant in ${@}; do
 
-        docker_full_image_name="meterian/cli:${version}"
-        if [[ "${version}" = "full" ]];
+        if [[ "${variant}" = "full" ]];
         then
+            docker_full_image_name="meterian/cli:$(cat ../version.txt)"
             docker_full_image_name_latest="meterian/cli:latest"
         else
-            docker_full_image_name_latest="meterian/cli:latest-${version}"
+            docker_full_image_name="meterian/cli:$(cat variants/${variant}/version.txt)-${variant}"
+            docker_full_image_name_latest="meterian/cli:latest-${variant}"
         fi
 
         image_found="$(findImage ${docker_full_image_name})"
@@ -47,5 +48,5 @@ then
 
     docker logout
 else 
-    echo No versions to build were provided
+    echo No variants to build were provided
 fi

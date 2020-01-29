@@ -2,7 +2,6 @@ FROM openjdk:8-jdk
 
 ### Variables
 ARG PHP_VERSION=7.2
-ARG NODE_VERSION=13.x
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -25,13 +24,6 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
   && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && rm /tmp/composer-setup.php \
   && composer --version
-
-
-### Node install
-RUN apt-get install -qy software-properties-common \
-  && curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -\
-  && apt-get install -qy nodejs \
-  && node -v
 
 
 ### Setup initial meterian client (it will be updated if required)

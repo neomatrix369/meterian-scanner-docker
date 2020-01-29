@@ -14,7 +14,7 @@ jobs:
            name: "Push Meterian Scanner Docker image to Docker Hub"
            command: |
               cd build
-              ./push-docker-image-to-hub.sh full java web dotnet ruby python
+              ./push-docker-image-to-hub.sh full java node php dotnet ruby python
 
 
 

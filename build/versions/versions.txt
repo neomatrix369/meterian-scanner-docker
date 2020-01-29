@@ -1,7 +1,0 @@
-full
-java
-web
-dotnet
-ruby
-python
-
