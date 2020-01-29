@@ -3,8 +3,6 @@
 set -e
 set -o pipefail
 
-## TODO --build-all
-
 isValidVersion() {
     version=$1 && shift
     versions=($@)
