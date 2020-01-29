@@ -6,7 +6,12 @@ set -o pipefail
 
 VERSION="$(cat ../version.txt)"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
-DOCKER_FULL_IMAGE_NAME_LATEST="meterian/cli:latest"
+if [[ "${VERSION}" = "full" ]];
+then
+    DOCKER_FULL_IMAGE_NAME_LATEST="meterian/cli:latest"
+else
+    DOCKER_FULL_IMAGE_NAME_LATEST="meterian/cli:latest-${VERSION}"
+fi
 
 findImage() {
 	IMAGE_NAME=$1

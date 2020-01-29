@@ -33,7 +33,7 @@ buildImage() {
     then
         docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest --build-arg VERSION=${VERSION_WITH_BUILD} -f versions/full/Dockerfile .
     else
-        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-java --build-arg VERSION=${VERSION_WITH_BUILD} -f versions/${VERSION}/Dockerfile .
+        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VERSION} --build-arg VERSION=${VERSION_WITH_BUILD} -f versions/${VERSION}/Dockerfile .
     fi
 }
 
@@ -57,12 +57,15 @@ VERSIONS=$(getVersions)
 if [[ "$#" -eq 0 ]];
 then
     echo Error: no version provided
+    exit 1
 fi
 
 if [[ "$*" =~ "--build-all" ]];
 then
     echo Building all versions...
-    #TODO
+    for version in ${VERSIONS[@]}; do
+        buildImage "${version}"
+    done
 else
     echo "Specific version found (${1})"
     if [[ "$(isValidVersion ${1} ${VERSIONS[@]})" -eq 0 ]];
