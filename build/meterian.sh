@@ -18,8 +18,10 @@ if [[ -z "${METERIAN_API_TOKEN:-}" ]]; then
 	exit -1
 fi
 
+# meterian jar location
+METERIAN_JAR=/tmp/meterian-cli.jar
+
 # update the client if necessary
-# METERIAN_JAR=/tmp/meterian-cli.jar
 # curl -s -o ${METERIAN_JAR} -z ${METERIAN_JAR} "https://www.meterian.com/downloads/meterian-cli.jar"  >/dev/null
 
 # launching the client - note the different lauch if version requested to preserve the "--version" base functionality
