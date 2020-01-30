@@ -6,7 +6,7 @@ set -o pipefail
 # Set this constant with the tag name corresponding to the image version you wish to use for the scan
 # (for a list of tags visit: https://hub.docker.com/r/meterian/cli/tags)
 VERSION="latest"
-DOCKER_FULL_IMAGE_NAME="meterian/cli-canary:${VERSION}"
+DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=$(pwd)
 
 if [[ "$*" =~ "--unbound" ]];

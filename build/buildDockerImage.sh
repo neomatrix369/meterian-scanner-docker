@@ -3,6 +3,8 @@
 set -e
 set -o pipefail
 
+METERIAN_REPO_NAME=$(cat ../docker_repository.txt)
+
 isValidVariant() {
     variant=$1 && shift
     variants=($@)
@@ -22,7 +24,7 @@ isValidVariant() {
 buildVariantImage() {
     VARIANT=$1
     VERSION="$(cat variants/${VARIANT}/version.txt)"
-    DOCKER_IMAGE_NAME="meterian/cli-canary"
+    DOCKER_IMAGE_NAME="${METERIAN_REPO_NAME}"
     DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}-${VARIANT}"
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}-${VARIANT}.${BUILD}
@@ -34,7 +36,7 @@ buildVariantImage() {
 
 buildFullImage() {
     VERSION="$(cat ../version.txt)"
-    DOCKER_IMAGE_NAME="meterian/cli-canary"
+    DOCKER_IMAGE_NAME="${METERIAN_REPO_NAME}"
     DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}"
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
@@ -80,9 +82,9 @@ else
     echo "Specific variant build requested: ${1}"
     if [[ "$(isValidVariant ${1} ${VARIANTS[@]})" -eq 0 ]];
     then
-        echo "${1@Q} is a supported variant"
+        echo "'${1}' is a supported variant"
         buildVariantImage "${1}"
     else
-        echo "${1@Q} is not a supported variant"
+        echo "'${1}' is not a supported variant"
     fi
 fi

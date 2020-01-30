@@ -4,6 +4,8 @@ set -e
 set -u
 set -o pipefail
 
+METERIAN_REPO_NAME=$(cat ../docker_repository.txt)
+
 pushDockerImage() {
     image_id="${1}"
     docker_full_image_name="${2}"
@@ -24,7 +26,7 @@ isImageVersionOnDockerHub() {
     version=$1
     
     res=1
-    if [[ $(curl -o /dev/null -s -w "%{http_code}\n" "https://hub.docker.com/v2/repositories/meterian/cli-canary/tags/${version}") -eq 200 ]];
+    if [[ $(curl -o /dev/null -s -w "%{http_code}\n" "https://hub.docker.com/v2/repositories/${METERIAN_REPO_NAME}/tags/${version}") -eq 200 ]];
     then
         res=0
     fi
@@ -41,12 +43,12 @@ then
         if [[ "${variant}" = "full" ]];
         then
             image_tag="$(cat ../version.txt)"
-            docker_full_image_name="meterian/cli-canary:${image_tag}"
-            docker_full_image_name_latest="meterian/cli-canary:latest"
+            docker_full_image_name="${METERIAN_REPO_NAME}:${image_tag}"
+            docker_full_image_name_latest="${METERIAN_REPO_NAME}:latest"
         else
             image_tag="$(cat variants/${variant}/version.txt)-${variant}"
-            docker_full_image_name="meterian/cli-canary:${image_tag}"
-            docker_full_image_name_latest="meterian/cli-canary:latest-${variant}"
+            docker_full_image_name="${METERIAN_REPO_NAME}:${image_tag}"
+            docker_full_image_name_latest="${METERIAN_REPO_NAME}:latest-${variant}"
         fi
 
         image_found="$(findImage ${docker_full_image_name})"
