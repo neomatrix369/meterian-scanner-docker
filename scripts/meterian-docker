@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-VERSION="0.2"
+VERSION="1.0.0"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=$(pwd)
 
@@ -50,12 +50,12 @@ else
         if [ -d $local_addr ];
         then
             docker_addr=${VOLUME_BINDS[$local_addr]}
-            docker_run_data+="--mount type=bind,source=${local_addr@Q},target=${docker_addr@Q} "
+            docker_run_data+="--mount type=bind,source='${local_addr}',target='${docker_addr}' "
         fi
     done
 
-    docker_run_data+="--env HOST_UID=${HOST_UID@Q} --env HOST_GID=${HOST_GID@Q} "
-    docker_run_data+="--env METERIAN_API_TOKEN=${METERIAN_API_TOKEN@Q} ${DOCKER_FULL_IMAGE_NAME@Q} \$*"
+    docker_run_data+="--env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
+    docker_run_data+="--env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
     eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
 
     # please do not add any command after "docker run" as we need to preserve
