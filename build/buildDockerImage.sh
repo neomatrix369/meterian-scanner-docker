@@ -22,7 +22,7 @@ isValidVariant() {
 buildVariantImage() {
     VARIANT=$1
     VERSION="$(cat variants/${VARIANT}/version.txt)"
-    DOCKER_IMAGE_NAME="meterian/cli"
+    DOCKER_IMAGE_NAME="meterian/cli-canary"
     DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}-${VARIANT}"
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}-${VARIANT}.${BUILD}
@@ -34,7 +34,7 @@ buildVariantImage() {
 
 buildFullImage() {
     VERSION="$(cat ../version.txt)"
-    DOCKER_IMAGE_NAME="meterian/cli"
+    DOCKER_IMAGE_NAME="meterian/cli-canary"
     DOCKER_FULL_IMAGE_NAME="${DOCKER_IMAGE_NAME}:${VERSION}"
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}.${BUILD}

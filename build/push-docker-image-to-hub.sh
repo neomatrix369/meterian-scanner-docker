@@ -28,11 +28,11 @@ then
 
         if [[ "${variant}" = "full" ]];
         then
-            docker_full_image_name="meterian/cli:$(cat ../version.txt)"
-            docker_full_image_name_latest="meterian/cli:latest"
+            docker_full_image_name="meterian/cli-canary:$(cat ../version.txt)"
+            docker_full_image_name_latest="meterian/cli-canary:latest"
         else
-            docker_full_image_name="meterian/cli:$(cat variants/${variant}/version.txt)-${variant}"
-            docker_full_image_name_latest="meterian/cli:latest-${variant}"
+            docker_full_image_name="meterian/cli-canary:$(cat variants/${variant}/version.txt)-${variant}"
+            docker_full_image_name_latest="meterian/cli-canary:latest-${variant}"
         fi
 
         image_found="$(findImage ${docker_full_image_name})"
