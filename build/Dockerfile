@@ -94,7 +94,7 @@ RUN apt-get install -qy scala \
 
 
 ### Setup initial meterian client (it will be updated if required)
-RUN curl -o /tmp/meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
+RUN curl -o /meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
 
 ### Setup dockerize version stamp

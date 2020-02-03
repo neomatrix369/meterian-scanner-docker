@@ -25,7 +25,19 @@ fi
 METERIAN_JAR=/tmp/meterian-cli.jar
 
 # update the client if necessary
-# curl -s -o ${METERIAN_JAR} -z ${METERIAN_JAR} "https://www.meterian.com/downloads/meterian-cli.jar"  >/dev/null
+if [[ ! -f ${METERIAN_JAR} ]];
+then
+	mv /meterian-cli.jar /tmp/
+fi
+
+LOCAL_CLIENT_LAST_MODIFIED_DATE=$(date -d "$(ls --full-time ${METERIAN_JAR} | cut -d" " -f6-8)" +%F)
+REMOTE_CLIENT_LAST_MODIFIED_DATE=$(date -d "$(curl -s -L -I "https://www.meterian.com/downloads/meterian-cli.jar" \
+   								   | grep Last-Modified: | cut -d" " -f2-)" +%F)
+if [[ "${REMOTE_CLIENT_LAST_MODIFIED_DATE}" > "${LOCAL_CLIENT_LAST_MODIFIED_DATE}" ]];
+then
+	echo Updating the client...
+	curl -s -o ${METERIAN_JAR} "https://www.meterian.com/downloads/meterian-cli.jar"  >/dev/null
+fi
 
 # launching the client - note the different launch if version requested to preserve the "--version" base functionality
 cd /workspace
