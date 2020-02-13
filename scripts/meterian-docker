@@ -56,6 +56,9 @@ else
         fi
     done
 
+    # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated the least often 
+    docker_run_data+="--mount type=bind,source=/tmp,target=/tmp "
+
     docker_run_data+="--env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
     docker_run_data+="--env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
     eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
