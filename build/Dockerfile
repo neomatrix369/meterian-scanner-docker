@@ -12,7 +12,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 
 ### General setup
-RUN  apt-get update \
+RUN echo 'deb http://ftp.debian.org/debian stable main contrib non-free' >> /etc/apt/sources.list \
+  && apt update \
+  && apt-get update \
   && apt-get -y install apt-transport-https apt-utils
 
 
@@ -54,8 +56,7 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
 
 
 ## Ruby install
-RUN apt-get update \
-  && apt-get install -qy ruby${RUBY_VERSION} \
+RUN apt-get install -qy ruby${RUBY_VERSION} \
   && ruby -v \
   && gem install bundler \
   && bundle -v
