@@ -54,7 +54,9 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
 
 
 ## Ruby install
-RUN apt-get install -qy ruby${RUBY_VERSION} \
+RUN apt-add-repository ppa:brightbox/ruby-ng \
+  && apt-get update \
+  && apt-get install -qy ruby${RUBY_VERSION} \
   && ruby -v \
   && gem install bundler \
   && bundle -v
