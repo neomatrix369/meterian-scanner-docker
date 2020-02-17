@@ -15,8 +15,10 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 	fi
 }
 
+INDEPENDENT_METERIAN_CLI_OPTIONS="(--version|--help)"
+
 # dump docker packaged version unless '--version' requested
-if [[ ${METERIAN_CLI_ARGS} != *"--version"* ]]; then
+if [[ ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]]; then
     cat /tmp/version.txt
 	exitWithErrorMessageWhenApiTokenIsUnset
 fi
@@ -41,7 +43,7 @@ fi
 
 # launching the client - note the different launch if version requested to preserve the "--version" base functionality
 cd /workspace
-if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} == *"--version"* ]];
+if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];
 then
 	java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
 fi
@@ -49,7 +51,7 @@ fi
 client_exit_code=$?
 
 # dump docker packaged version, and eventually related error messages, right after the client version
-if [[ ${METERIAN_CLI_ARGS} == *"--version"* ]];then
+if [[ ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];then
     cat /tmp/version.txt        # 0 exit code but it's okay
 
 	exitWithErrorMessageWhenApiTokenIsUnset
