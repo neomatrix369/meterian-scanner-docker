@@ -27,31 +27,31 @@ else
 
     CONTAINER_HOME_DIR=/home/meterian
 
-    declare -A VOLUME_BINDS
     VOLUME_BINDS=(
-        ["$HOME/.cache"]=$CONTAINER_HOME_DIR/.cache
-        ["$HOME/.local"]=$CONTAINER_HOME_DIR/.local
+        '$HOME/.cache::$CONTAINER_HOME_DIR/.cache'
+        '$HOME/.local::$CONTAINER_HOME_DIR/.local'
     # maven specific mappings
-        ["$HOME/.m2"]=$CONTAINER_HOME_DIR/.m2
+        '$HOME/.m2::$CONTAINER_HOME_DIR/.m2'
     # dotnet specific mappings                            
-        ["$HOME/.dotnet"]=$CONTAINER_HOME_DIR/.dotnet
-        ["$HOME/.nuget"]=$CONTAINER_HOME_DIR/.nuget
+        '$HOME/.dotnet::$CONTAINER_HOME_DIR/.dotnet'
+        '$HOME/.nuget::$CONTAINER_HOME_DIR/.nuget'
     # ruby specific mappings
-        [$(gem environment gemdir)/cache]=/var/lib/gems/2.5.0/cache
+        '$(gem environment gemdir)/cache::/var/lib/gems/2.5.0/cache'
     # node specific mappings
-        [$(npm root -g)]=/usr/lib/node_modules
+        '$(npm root -g)::/usr/lib/node_modules'
     # gradle specific mappings
-        ["$HOME/.gradle"]=$CONTAINER_HOME_DIR/.gradle
+        '$HOME/.gradle::$CONTAINER_HOME_DIR/.gradle'
     # sbt specific mappings
-        ["$HOME/.sbt"]=$CONTAINER_HOME_DIR/.sbt
-        ["$HOME/.ivy2"]=$CONTAINER_HOME_DIR/.ivy2
+        '$HOME/.sbt::$CONTAINER_HOME_DIR/.sbt'
+        '$HOME/.ivy2::$CONTAINER_HOME_DIR/.ivy2'
     )
 
     docker_run_data=""
-    for local_addr in "${!VOLUME_BINDS[@]}"; do 
+    for index in "${!VOLUME_BINDS[@]}"; do 
+        local_addr="${index%%::*}"
         if [ -d $local_addr ];
         then
-            docker_addr=${VOLUME_BINDS[$local_addr]}
+            docker_addr="${index##*::}"
             docker_run_data+="--mount type=bind,source='${local_addr}',target='${docker_addr}' "
         fi
     done
