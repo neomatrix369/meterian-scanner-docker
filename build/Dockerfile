@@ -55,8 +55,9 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
   && composer --version
 
 
-## Ruby install
-RUN apt-get install -qy ruby${RUBY_VERSION} \
+## Ruby install -- check that the client works; check that bundler is installed too; verify that cache folders are the same
+RUN apt-get update \
+  && apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
   && bundle -v
