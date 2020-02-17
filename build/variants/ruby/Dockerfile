@@ -1,8 +1,5 @@
 FROM openjdk:8-jdk
 
-### Variables
-ARG RUBY_VERSION=2.3
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 
@@ -12,7 +9,7 @@ RUN  apt-get update \
 
 
 ## Ruby install
-RUN apt-get install -qy ruby${RUBY_VERSION} \
+RUN apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
   && bundle -v

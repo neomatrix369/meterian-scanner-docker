@@ -37,7 +37,7 @@ else
         ["$HOME/.dotnet"]=$CONTAINER_HOME_DIR/.dotnet
         ["$HOME/.nuget"]=$CONTAINER_HOME_DIR/.nuget
     # ruby specific mappings
-        [$(gem environment gemdir)/cache]=/var/lib/gems/2.3.0/cache
+        [$(gem environment gemdir)/cache]=/var/lib/gems/2.5.0/cache
     # node specific mappings
         [$(npm root -g)]=/usr/lib/node_modules
     # gradle specific mappings

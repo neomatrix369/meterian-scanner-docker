@@ -4,7 +4,6 @@ FROM openjdk:8-jdk
 ARG DOTNET_VERSION=3.1
 ARG MAVEN_VERSION=3.6.3
 ARG PHP_VERSION=7.2
-ARG RUBY_VERSION=2.3
 ARG NODE_VERSION=13.x
 ARG GRADLE_VERSION=6.1
 
@@ -54,7 +53,8 @@ RUN apt install -qy apt-transport-https lsb-release ca-certificates \
 
 
 ## Ruby install
-RUN apt-get install -qy ruby${RUBY_VERSION} \
+RUN apt-get update \ 
+  && apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
   && bundle -v
