@@ -156,7 +156,7 @@ Failed checks: [security, licensing]
 The exit code for the above executions are respectively `0` and `5`. These can be verified by dumping the exit code in your terminal right after the execution (`echo $?`), and they reflect the correct Meterian Client exit codes documented in the [PDF manual](https://www.meterian.com/documents/meterian-cli-manual.pdf):
 
 > #### Controlling the exit code
-> Specific arguments are at your disposal to control the exit code of the client based on the score, --min-security and  --min-stability (plus --min-licensing if the feature is enabled on your account). These are the minimal scores: if not met, the build will have a positive exit code , which will be reported as a failure to the shell and will, most probably, stop your pipeline to progress. In case of error the code will be calculated using a bitmask over the exit code: +1 for a failon the security score, +2 for a fail on the stability score, +4 for a fail on the licensing score.
+> Specific arguments are at your disposal to control the exit code of the client based on the score, --min-security and  --min-stability (plus --min-licensing if the feature is enabled on your account). These are the minimal scores: if not met, the build will have a positive exit code , which will be reported as a failure to the shell and will, most probably, stop your pipeline to progress. In case of error the code will be calculated using a bitmask over the exit code: +1 for a fail on the security score, +2 for a fail on the stability score, +4 for a fail on the licensing score.
 > The default values for these scores are 90 for security and 80 for stability
 
 
