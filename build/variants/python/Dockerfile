@@ -32,5 +32,5 @@ ENTRYPOINT ["/root/entrypoint.sh"]
 
 
 ### Removing vulnerable components, also they are not used for the purpose of this image
-RUN apt-get remove -qy mercurial python2.7 wget
+RUN apt-get remove -qy mercurial wget
 
