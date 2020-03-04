@@ -25,8 +25,8 @@ then
     # of the meterian client
 else
     # create the user
-    groupadd -g ${HOST_GID} meterian
-    useradd -g meterian -u ${HOST_UID} meterian -d /home/meterian
+    groupadd -g ${HOST_GID} -o meterian
+    useradd -g meterian -ou ${HOST_UID} meterian -d /home/meterian
 
     # creating home dir if it doesn't exist
     if [ ! -d "/home/meterian" ];
