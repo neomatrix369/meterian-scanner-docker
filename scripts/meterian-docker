@@ -28,39 +28,49 @@ else
     CONTAINER_HOME_DIR=/home/meterian
 
     VOLUME_BINDS=(
-        '$HOME/.cache::$CONTAINER_HOME_DIR/.cache'
-        '$HOME/.local::$CONTAINER_HOME_DIR/.local'
+        "$HOME/.cache::$CONTAINER_HOME_DIR/.cache"
+        "$HOME/.local::$CONTAINER_HOME_DIR/.local"
     # maven specific mappings
-        '$HOME/.m2::$CONTAINER_HOME_DIR/.m2'
+        "$HOME/.m2::$CONTAINER_HOME_DIR/.m2"
     # dotnet specific mappings                            
-        '$HOME/.dotnet::$CONTAINER_HOME_DIR/.dotnet'
-        '$HOME/.nuget::$CONTAINER_HOME_DIR/.nuget'
-    # ruby specific mappings
-        '$(gem environment gemdir)/cache::/var/lib/gems/2.5.0/cache'
-    # node specific mappings
-        '$(npm root -g)::/usr/lib/node_modules'
+        "$HOME/.dotnet::$CONTAINER_HOME_DIR/.dotnet"
+        "$HOME/.nuget::$CONTAINER_HOME_DIR/.nuget"
     # gradle specific mappings
-        '$HOME/.gradle::$CONTAINER_HOME_DIR/.gradle'
+        "$HOME/.gradle::$CONTAINER_HOME_DIR/.gradle"
     # sbt specific mappings
-        '$HOME/.sbt::$CONTAINER_HOME_DIR/.sbt'
-        '$HOME/.ivy2::$CONTAINER_HOME_DIR/.ivy2'
+        "$HOME/.sbt::$CONTAINER_HOME_DIR/.sbt"
+        "$HOME/.ivy2::$CONTAINER_HOME_DIR/.ivy2"
     )
 
+    set +e
+    cache_dir=$(gem environment gemdir 2>/dev/null)
+    if [ $? -eq 0 ];
+    then
+        VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/var/lib/gems/2.5.0/cache" )
+    fi
+
+    cache_dir=$(npm root -g 2>/dev/null)
+    if [ $? -eq 0 ];
+    then
+        VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/usr/lib/node_modules" )
+    fi
+    set -e
+
     docker_run_data=""
-    for index in "${!VOLUME_BINDS[@]}"; do 
+    for index in "${VOLUME_BINDS[@]}"; do 
         local_addr="${index%%::*}"
         if [ -d $local_addr ];
         then
             docker_addr="${index##*::}"
-            docker_run_data+="--mount type=bind,source='${local_addr}',target='${docker_addr}' "
+            docker_run_data="${docker_run_data} --mount type=bind,source='${local_addr}',target='${docker_addr}' "
         fi
     done
 
     # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated the least often 
-    docker_run_data+="--mount type=bind,source=/tmp,target=/tmp "
+    docker_run_data="${docker_run_data} --mount type=bind,source=/tmp,target=/tmp "
 
-    docker_run_data+="--env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
-    docker_run_data+="--env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
+    docker_run_data="${docker_run_data} --env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
+    docker_run_data="${docker_run_data} --env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
     eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
 
     # please do not add any command after "docker run" as we need to preserve
