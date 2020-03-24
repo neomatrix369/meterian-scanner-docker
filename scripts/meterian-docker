@@ -11,7 +11,7 @@ WORKDIR=$(pwd)
 
 if [[ "$*" =~ "--unbound" ]];
 then
-    docker run -it --rm \
+    docker run --rm \
               --volume ${WORKDIR}:/workspace \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               ${DOCKER_FULL_IMAGE_NAME} $*
@@ -71,7 +71,7 @@ else
 
     docker_run_data="${docker_run_data} --env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
     docker_run_data="${docker_run_data} --env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
-    eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
+    eval "docker run --rm --volume $WORKDIR:/workspace $docker_run_data"
 
     # please do not add any command after "docker run" as we need to preserve
     # the exit status of the meterian client
