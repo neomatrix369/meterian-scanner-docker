@@ -45,7 +45,7 @@ fi
 cd /workspace
 if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];
 then
-	java -Duser.home=/tmp  -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
+	java -Duser.home=/tmp ${CLIENT_VM_PARAMS} -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
 fi
 # storing exit code
 client_exit_code=$?
