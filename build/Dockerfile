@@ -6,6 +6,7 @@ ARG MAVEN_VERSION=3.6.3
 ARG PHP_VERSION=7.2
 ARG NODE_VERSION=13.x
 ARG GRADLE_VERSION=6.1
+ARG GO_VERSION=1.14.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -91,6 +92,17 @@ RUN apt-get install -qy scala \
   && curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add \
   && apt-get update \
   && apt-get install -qy sbt
+
+
+## Go install
+RUN apt-get update && apt-get -y upgrade \
+  && wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
+  && tar -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
+  && echo "export GOROOT=/usr/local/go" >> /tmp/go${GO_VERSION}.sh \
+  && echo "export PATH=\${GOROOT}/bin:\${PATH}" >> /tmp/go${GO_VERSION}.sh \
+  && source /tmp/go${GO_VERSION}.sh \
+  && go version \
+  && rm -f /tmp/go${GO_VERSION}*
 
 
 ### Setup initial meterian client (it will be updated if required)
