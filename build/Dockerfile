@@ -105,6 +105,15 @@ RUN apt-get update && apt-get -y upgrade \
   && rm -f /tmp/go${GO_VERSION}*
 
 
+## Swift install
+RUN apt-get install -qy ruby ruby-dev build-essential\
+  && ruby -v \
+  && gem install cocoapods \
+  && gem which cocoapods | grep -oh cocoapods-[0-9\.]* \
+  && apt-get remove -qy build-essential \
+  && apt -qy autoremove
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
