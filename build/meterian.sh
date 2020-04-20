@@ -7,10 +7,15 @@ source /tmp/init.sh
 exitWithErrorMessageWhenApiTokenIsUnset() {
 	if [[ -z "${METERIAN_API_TOKEN:-}" ]] 
 	then
-		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-		echo " METERIAN_API_TOKEN environment variable must be defined with a valid API token "
-		echo " Please create a token from your account at https://meterian.com/account/       "
-		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-"
+		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
+		echo
+		echo " Please create a token from your account at https://meterian.com/account/#tokens "
+		echo " and populate the variable with the value of the token "
+		echo
+		echo " For example: "
+		echo " export METERIAN_API_TOKEN=12345678-90ab-cdef-1234-567890abcdef "
+		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-"
 		exit -1
 	fi
 }
