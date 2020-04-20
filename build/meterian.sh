@@ -7,10 +7,15 @@ source /tmp/init.sh
 exitWithErrorMessageWhenApiTokenIsUnset() {
 	if [[ -z "${METERIAN_API_TOKEN:-}" ]] 
 	then
-		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-		echo " METERIAN_API_TOKEN environment variable must be defined with a valid API token "
-		echo " Please create a token from your account at https://meterian.com/account/       "
-		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-"
+		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
+		echo
+		echo " Please create a token from your account at https://meterian.com/account/#tokens "
+		echo " and populate the variable with the value of the token "
+		echo
+		echo " For example: "
+		echo " export METERIAN_API_TOKEN=12345678-90ab-cdef-1234-567890abcdef "
+		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-"
 		exit -1
 	fi
 }
@@ -45,7 +50,7 @@ fi
 cd /workspace
 if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];
 then
-	java -Duser.home=/tmp ${CLIENT_VM_PARAMS} -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS}
+	java -Duser.home=/tmp ${CLIENT_VM_PARAMS} -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS} --interactive=false
 fi
 # storing exit code
 client_exit_code=$?
