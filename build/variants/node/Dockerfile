@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk
 
 ### Variables
-ARG NODE_VERSION=13.x
+ARG NODE_VERSION=12.x
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
