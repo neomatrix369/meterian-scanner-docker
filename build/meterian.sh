@@ -20,11 +20,23 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 	fi
 }
 
+getLastModifiedDateForFile() {
+	MAYBE_FILE=$1
+
+	WHEN=`date -r $MAYBE_FILE +"%Y-%m-%d" 2>/dev/null`
+	if [[ $? > 0 ]]; then 
+		WHEN='1999-01-01'
+	fi
+
+	# returning the value of $WHEN ( common way of returning data from functions in bash )
+	echo $WHEN
+}
+
 updateClient() {
 	METERIAN_JAR_PATH=$1
 	CLIENT_TARGET_URL=$2
 
-	LOCAL_CLIENT_LAST_MODIFIED_DATE=$(date -d "$(ls --full-time ${METERIAN_JAR_PATH} | cut -d" " -f6-8)" +%F)
+	LOCAL_CLIENT_LAST_MODIFIED_DATE=$(getLastModifiedDateForFile $METERIAN_JAR_PATH)
 	REMOTE_CLIENT_LAST_MODIFIED_DATE=$(date -d "$(curl -s -L -I "${CLIENT_TARGET_URL}" \
 									| grep Last-Modified: | cut -d" " -f2-)" +%F)
 	if [[ "${REMOTE_CLIENT_LAST_MODIFIED_DATE}" > "${LOCAL_CLIENT_LAST_MODIFIED_DATE}" ]];
@@ -49,15 +61,8 @@ METERIAN_JAR=/tmp/meterian-cli.jar
 if [[ -n ${CLIENT_CANARY_FLAG}  ]];
 then
 	METERIAN_JAR=/tmp/meterian-cli-canary.jar
-	# download cli-canary if it does not exist 
-	if [[ ! -f ${METERIAN_JAR} ]];
-	then
-		echo Downloading client canary...	
-		curl -s -o ${METERIAN_JAR} "https://www.meterian.io/downloads/meterian-cli-canary.jar"  >/dev/null
-	else
-		# update cli-canary if necessary
-		updateClient "${METERIAN_JAR}" "https://www.meterian.io/downloads/meterian-cli-canary.jar"
-	fi
+	# update cli-canary if necessary
+	updateClient "${METERIAN_JAR}" "https://www.meterian.io/downloads/meterian-cli-canary.jar"
 	
 else
 	# update the client if necessary
