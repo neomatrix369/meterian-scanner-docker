@@ -5,7 +5,7 @@
 source /tmp/init.sh
 
 exitWithErrorMessageWhenApiTokenIsUnset() {
-	if [[ -z "${METERIAN_API_TOKEN:-}" ]] 
+	if [[ -z "${METERIAN_API_TOKEN:-}" && ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]] 
 	then
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
