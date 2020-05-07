@@ -49,8 +49,8 @@ updateClient() {
 INDEPENDENT_METERIAN_CLI_OPTIONS="(--version|--help|--detect)"
 
 # dump docker packaged version unless '--version' requested
-if [[ ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]]; then
-    cat /tmp/version.txt
+if [[ ! ${METERIAN_CLI_ARGS} =~ "--version" ]]; then
+	cat /tmp/version.txt
 	exitWithErrorMessageWhenApiTokenIsUnset
 fi
 
@@ -83,11 +83,9 @@ fi
 # storing exit code
 client_exit_code=$?
 
-# dump docker packaged version, and eventually related error messages, right after the client version
-if [[ ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];then
+# dump docker packaged version, right after the client version if the --version option was specified
+if [[ ${METERIAN_CLI_ARGS} =~ "--version" ]];then
     cat /tmp/version.txt        # 0 exit code but it's okay
-
-	exitWithErrorMessageWhenApiTokenIsUnset
 fi
 
 exit "$client_exit_code"
