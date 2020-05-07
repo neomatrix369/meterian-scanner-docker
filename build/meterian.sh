@@ -46,7 +46,7 @@ updateClient() {
 	fi
 }
 
-INDEPENDENT_METERIAN_CLI_OPTIONS="(--version|--help)"
+INDEPENDENT_METERIAN_CLI_OPTIONS="(--version|--help|--detect)"
 
 # dump docker packaged version unless '--version' requested
 if [[ ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]]; then
