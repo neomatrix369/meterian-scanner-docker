@@ -65,7 +65,8 @@ RUN apt-get update \
 RUN apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
-  && pipenv --version
+  && pipenv --version \
+  && apt install python-backports.functools-lru-cache
 
 
 ### Node install
