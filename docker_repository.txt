@@ -1,1 +1,1 @@
-meterian/cli
+meterian/cli-canary

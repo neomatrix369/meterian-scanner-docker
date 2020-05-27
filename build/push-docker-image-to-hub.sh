@@ -4,7 +4,13 @@ set -e
 set -u
 set -o pipefail
 
-METERIAN_REPO_NAME=$(cat ../docker_repository.txt)
+if [[ -z "${CIRCLE_CI_BRANCH}" ]]; then
+    METERIAN_REPO_NAME=$(cat ../docker_repository.txt)
+elif [[ "${CIRCLE_CI_BRANCH}" == "master" ]]; then
+    METERIAN_REPO_NAME="meterian/cli"
+else
+    METERIAN_REPO_NAME="meterian/cli-canary"
+fi
 
 pushDockerImage() {
     image_id="${1}"
