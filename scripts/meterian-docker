@@ -13,6 +13,8 @@ WORKDIR=$(pwd)
 if [[ "$*" =~ "--canary" ]];
 then
     CLIENT_CANARY_FLAG=on
+    DOCKER_FULL_IMAGE_NAME="meterian/cli-canary:${VERSION}"
+    echo "Using canary version of Docker and Meterian clients"
 fi
 
 if [[ "$*" =~ "--unbound" ]];
@@ -40,7 +42,7 @@ else
         "$HOME/.local::$CONTAINER_HOME_DIR/.local"
     # maven specific mappings
         "$HOME/.m2::$CONTAINER_HOME_DIR/.m2"
-    # dotnet specific mappings                            
+    # dotnet specific mappings
         "$HOME/.dotnet::$CONTAINER_HOME_DIR/.dotnet"
         "$HOME/.nuget::$CONTAINER_HOME_DIR/.nuget"
     # gradle specific mappings
@@ -65,7 +67,7 @@ else
     set -e
 
     docker_run_data=""
-    for index in "${VOLUME_BINDS[@]}"; do 
+    for index in "${VOLUME_BINDS[@]}"; do
         local_addr="${index%%::*}"
         if [ -d $local_addr ];
         then
@@ -74,7 +76,7 @@ else
         fi
     done
 
-    # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated the least often 
+    # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated the least often
     docker_run_data="${docker_run_data} --mount type=bind,source=/tmp,target=/tmp "
 
     docker_run_data="${docker_run_data} --env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
