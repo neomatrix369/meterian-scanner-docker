@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk
+FROM openjdk:8-jdk-buster
 
 ### Variables
 ARG DOTNET_VERSION=3.1
@@ -66,7 +66,8 @@ RUN apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
   && pipenv --version \
-  && apt install python-backports.functools-lru-cache
+  && apt install -qy python-backports.functools-lru-cache \
+  && apt install -qy python3-distutils
 
 
 ### Node install
