@@ -5,7 +5,7 @@ set -o pipefail
 
 # Set this constant with the tag name corresponding to the image version you wish to use for the scan
 # (for a list of tags visit: https://hub.docker.com/r/meterian/cli/tags)
-VERSION="latest"
+VERSION="latest${TMP_VER:-}"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=$(pwd)
 
