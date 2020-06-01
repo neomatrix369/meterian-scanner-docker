@@ -12,7 +12,8 @@ RUN  apt-get update \
 RUN apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
-  && bundle -v
+  && bundle -v \
+  && gem install bundler -v "~>1.0"
 
 
 ### Setup initial meterian client (it will be updated if required)

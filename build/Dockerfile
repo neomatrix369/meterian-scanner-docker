@@ -58,7 +58,8 @@ RUN apt-get update \
   && apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
-  && bundle -v
+  && bundle -v \
+  && gem install bundler -v "~>1.0"
 
   
 ## Python install
