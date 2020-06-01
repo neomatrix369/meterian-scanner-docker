@@ -5,7 +5,7 @@ set -o pipefail
 
 # Set this constant with the tag name corresponding to the image version you wish to use for the scan
 # (for a list of tags visit: https://hub.docker.com/r/meterian/cli/tags)
-VERSION="latest${TMP_VER:-}"
+VERSION="latest"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=$(pwd)
 
@@ -53,11 +53,11 @@ else
     )
 
     set +e
-    # cache_dir=$(gem environment gemdir 2>/dev/null)
-    # if [ $? -eq 0 ];
-    # then
-    #     VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/var/lib/gems/2.5.0/cache" )
-    # fi
+    cache_dir=$(gem environment gemdir 2>/dev/null)
+    if [ $? -eq 0 ];
+    then
+        VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/var/lib/gems/2.5.0/cache" )
+    fi
 
     cache_dir=$(npm root -g 2>/dev/null)
     if [ $? -eq 0 ];

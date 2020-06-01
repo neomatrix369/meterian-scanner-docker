@@ -20,9 +20,11 @@ echo "export GRADLE_USER_HOME=~/.gradle" >> /tmp/init.sh
 echo "export GOROOT=/usr/local/go" >> /tmp/init.sh
 echo "export PATH=\${GOROOT}/bin:\${PATH}" >> /tmp/init.sh
 
-# retrieve host uid and host gid from /workspace 
-workspace_uid=$(stat -c '%u' /workspace)
-workspace_gid=$(stat -c '%g' /workspace)
+# retrieve host uid and host gid from /workspace
+if [[ -d "/workspace"  ]]; then
+    workspace_uid=$(stat -c '%u' /workspace)
+    workspace_gid=$(stat -c '%g' /workspace)
+fi
 
 # prepare command options with the host uid and gid when present or prepare them with retrieved ones
 WITH_HUID=""
@@ -31,7 +33,7 @@ if [ -n "${HOST_UID}" && -n "${HOST_GID}" ];
 then
     WITH_HGID="-g ${HOST_GID} -o"
     WITH_HUID="-ou ${HOST_UID}"
-else
+elif [[ -n "${workspace_gid:-}" ]]; then
     WITH_HGID="-g ${workspace_gid} -o"
     WITH_HUID="-ou ${workspace_uid}"
 fi
