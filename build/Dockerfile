@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk
+FROM openjdk:8-jdk-buster
 
 ### Variables
 ARG DOTNET_VERSION=3.1
@@ -58,14 +58,17 @@ RUN apt-get update \
   && apt-get install -qy ruby \
   && ruby -v \
   && gem install bundler \
-  && bundle -v
+  && bundle -v \
+  && gem install bundler -v "~>1.0"
 
   
 ## Python install
 RUN apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
-  && pipenv --version
+  && pipenv --version \
+  && apt install -qy python-backports.functools-lru-cache \
+  && apt install -qy python3-distutils
 
 
 ### Node install

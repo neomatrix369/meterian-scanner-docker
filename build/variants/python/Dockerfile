@@ -12,7 +12,8 @@ RUN  apt-get update \
 RUN apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
-  && pipenv --version
+  && pipenv --version \
+  && apt install -qy python-backports.functools-lru-cache
 
 
 ### Setup initial meterian client (it will be updated if required)
