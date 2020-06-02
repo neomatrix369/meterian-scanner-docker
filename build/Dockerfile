@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-buster
+FROM openjdk:11.0.10-jdk-buster
 
 ### Variables
 ARG DOTNET_VERSION=3.1
