@@ -29,7 +29,7 @@ fi
 # prepare command options with the host uid and gid when present or prepare them with retrieved ones
 WITH_HUID=""
 WITH_HGID=""
-if [ -n "${HOST_UID}" && -n "${HOST_GID}" ];
+if [[ -n "${HOST_UID}" && -n "${HOST_GID}" ]];
 then
     WITH_HGID="-g ${HOST_GID} -o"
     WITH_HUID="-ou ${HOST_UID}"
@@ -43,7 +43,7 @@ groupadd ${WITH_HGID} meterian
 useradd -g meterian ${WITH_HUID} meterian -d /home/meterian
 
 # creating home dir if it doesn't exist
-if [ ! -d "/home/meterian" ];
+if [[ ! -d "/home/meterian" ]];
 then
     mkdir /home/meterian
 fi
