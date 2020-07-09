@@ -98,12 +98,10 @@ RUN apt-get install -qy scala \
 
 
 ## Go install
+ENV PATH /usr/local/go/bin:$PATH
 RUN apt-get update && apt-get -y upgrade \
   && wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
   && tar -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
-  && echo "export GOROOT=/usr/local/go" >> /tmp/go${GO_VERSION}.sh \
-  && echo "export PATH=\${GOROOT}/bin:\${PATH}" >> /tmp/go${GO_VERSION}.sh \
-  && source /tmp/go${GO_VERSION}.sh \
   && go version \
   && rm -f /tmp/go${GO_VERSION}*
 

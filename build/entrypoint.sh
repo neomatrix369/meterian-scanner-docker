@@ -18,9 +18,8 @@ echo "export GRADLE_USER_HOME=~/.gradle" >> /tmp/init.sh
 echo "" >> /tmp/init.sh
 
 # - add go specific configurations
-echo "export GOROOT=/usr/local/go" >> /tmp/init.sh
-echo "export PATH=\${GOROOT}/bin:\${PATH}" >> /tmp/init.sh
-echo "" >> /tmp/init.sh
+# echo "export GOROOT=/usr/local/go" >> /tmp/init.sh
+# echo "export PATH=\${GOROOT}/bin:\${PATH}" >> /tmp/init.sh
 
 # retrieve host uid and host gid from /workspace
 if [[ -d "/workspace"  ]]; then
