@@ -79,12 +79,11 @@ RUN apt-get install -qy software-properties-common \
 
 
 ## Gradle install
+ENV GRADLE_USER_HOME ~/.gradle
+ENV GRADLE_HOME /opt/gradle/gradle-${GRADLE_VERSION}
+ENV PATH $GRADLE_HOME/bin:$PATH
 RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp \
   && unzip -d /opt/gradle /tmp/gradle-*.zip \
-  && echo -ne "\n\nexport GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VERSION}\n" | tee --append /tmp/gradle.sh /etc/bash.bashrc \
-  && echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" | tee --append /tmp/gradle.sh /etc/bash.bashrc \
-  && echo "export GRADLE_USER_HOME=~/.gradle" >> /etc/bash.bashrc \
-  && source /tmp/gradle.sh \
   && gradle -v \
   && rm /tmp/gradle* 
 
@@ -99,11 +98,10 @@ RUN apt-get install -qy scala \
 
 
 ## Go install
+ENV GOROOT /usr/local/go
+ENV PATH $GOROOT/bin:$PATH
 RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
   && tar -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
-  && echo -ne "\n\nexport GOROOT=/usr/local/go\n" | tee --append /tmp/go${GO_VERSION}.sh /etc/bash.bashrc \
-  && echo "export PATH=\${GOROOT}/bin:\${PATH}" | tee --append /tmp/go${GO_VERSION}.sh /etc/bash.bashrc \
-  && source /tmp/go${GO_VERSION}.sh \
   && go version \
   && rm -f /tmp/go${GO_VERSION}*
 

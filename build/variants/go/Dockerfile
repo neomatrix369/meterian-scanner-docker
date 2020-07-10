@@ -12,11 +12,10 @@ RUN  apt-get update \
 
 
 ## Go install
+ENV GOROOT /usr/local/go
+ENV PATH $GOROOT/bin:$PATH
 RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
   && tar -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
-  && echo -ne "\n\nexport GOROOT=/usr/local/go\n" | tee --append /tmp/go${GO_VERSION}.sh /etc/bash.bashrc \
-  && echo "export PATH=\${GOROOT}/bin:\${PATH}" | tee --append /tmp/go${GO_VERSION}.sh /etc/bash.bashrc \
-  && source /tmp/go${GO_VERSION}.sh \
   && go version \
   && rm -f /tmp/go${GO_VERSION}*
 
