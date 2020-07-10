@@ -88,7 +88,7 @@ if [[ ${METERIAN_CLI_ARGS} =~ "--version" ]];then
     cat /tmp/version.txt        # 0 exit code but it's okay
 fi
 
-#exit "$client_exit_code"
+exit "$client_exit_code"
 
 # please do not add any command here as we need to preserve the exit status
 # of the meterian client
