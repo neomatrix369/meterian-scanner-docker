@@ -79,11 +79,11 @@ RUN apt-get install -qy software-properties-common \
 
 
 ## Gradle install
+ENV GRADLE_USER_HOME ~/.gradle
+ENV GRADLE_HOME /opt/gradle/gradle-${GRADLE_VERSION}
+ENV PATH $GRADLE_HOME/bin:$PATH
 RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp \
   && unzip -d /opt/gradle /tmp/gradle-*.zip \
-  && echo "export GRADLE_HOME=/opt/gradle/gradle-\${GRADLE_VERSION}" >> /tmp/gradle.sh \
-  && echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/gradle.sh \
-  && source /tmp/gradle.sh \
   && gradle -v \
   && rm /tmp/gradle* 
 
@@ -98,9 +98,9 @@ RUN apt-get install -qy scala \
 
 
 ## Go install
-ENV PATH /usr/local/go/bin:$PATH
-RUN apt-get update && apt-get -y upgrade \
-  && wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
+ENV GOROOT /usr/local/go
+ENV PATH $GOROOT/bin:$PATH
+RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp \
   && tar -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
   && go version \
   && rm -f /tmp/go${GO_VERSION}*

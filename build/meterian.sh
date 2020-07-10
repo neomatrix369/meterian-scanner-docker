@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# executing general initialisation script
-#cat /tmp/init.sh
-source /tmp/init.sh
-
 exitWithErrorMessageWhenApiTokenIsUnset() {
 	if [[ -z "${METERIAN_API_TOKEN:-}" && ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]] 
 	then

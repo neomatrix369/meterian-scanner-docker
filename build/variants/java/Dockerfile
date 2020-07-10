@@ -21,11 +21,11 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 
 
 ## Gradle install
+ENV GRADLE_USER_HOME ~/.gradle
+ENV GRADLE_HOME /opt/gradle/gradle-${GRADLE_VERSION}
+ENV PATH $GRADLE_HOME/bin:$PATH
 RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp \
   && unzip -d /opt/gradle /tmp/gradle-*.zip \
-  && echo "export GRADLE_HOME=/opt/gradle/gradle-\${GRADLE_VERSION}" >> /tmp/gradle.sh \
-  && echo "export PATH=\${GRADLE_HOME}/bin:\${PATH}" >> /tmp/gradle.sh \
-  && source /tmp/gradle.sh \
   && gradle -v \
   && rm /tmp/gradle* 
 
