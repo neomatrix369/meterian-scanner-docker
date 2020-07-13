@@ -123,7 +123,7 @@ RUN curl -o /meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meteri
 ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
-RUN echo "Meterian dockerized client v${VERSION}" >> /root/version.txt
+RUN echo "© 2017-2020 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 
 ### Final entrypoint setup
