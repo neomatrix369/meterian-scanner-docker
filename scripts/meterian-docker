@@ -25,7 +25,7 @@ then
               --env CLIENT_VM_PARAMS=${CLIENT_VM_PARAMS} \
               --env CLIENT_CANARY_FLAG=${CLIENT_CANARY_FLAG} \
               --env GOPRIVATE=${GOPRIVATE} \
-              --volume "${HOME}/.netrc":"/home/meterian/.netrc"
+              --volume "${HOME}/.netrc":"/home/meterian/.netrc" \
               ${DOCKER_FULL_IMAGE_NAME} $*
 
     # please do not add any command after "docker run" as we need to preserve
