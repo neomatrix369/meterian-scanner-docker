@@ -4,8 +4,8 @@ set -e
 set -o pipefail
 
 # prepare the script file
-mv /root/meterian.sh /tmp/meterian.sh
-mv /root/version.txt /tmp/version.txt
+cp /root/meterian.sh /tmp/meterian.sh
+cp /root/version.txt /tmp/version.txt
 export METERIAN_CLI_ARGS=$*
 
 # retrieve host uid and host gid from /workspace
