@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CLIENT_ENV=${CLIENT_ENV:-"www"}
+
 exitWithErrorMessageWhenApiTokenIsUnset() {
 	if [[ -z "${METERIAN_API_TOKEN:-}" && ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]] 
 	then
@@ -50,23 +52,18 @@ if [[ ! ${METERIAN_CLI_ARGS} =~ "--version" ]]; then
 fi
 
 # meterian jar location
-METERIAN_JAR=/tmp/meterian-cli.jar
+METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
 
 # download canary client if flag is set
 if [[ -n ${CLIENT_CANARY_FLAG}  ]];
 then
 	METERIAN_JAR=/tmp/meterian-cli-canary.jar
 	# update cli-canary if necessary
-	updateClient "${METERIAN_JAR}" "https://www.meterian.io/downloads/meterian-cli-canary.jar"
+	updateClient "${METERIAN_JAR}" "https://${CLIENT_ENV}.meterian.io/downloads/meterian-cli-canary.jar"
 	
 else
 	# update the client if necessary
-	if [[ ! -f ${METERIAN_JAR} ]];
-	then
-		mv /meterian-cli.jar /tmp/
-	fi
-
-	updateClient "${METERIAN_JAR}" "https://www.meterian.com/downloads/meterian-cli.jar"
+	updateClient "${METERIAN_JAR}" "https://${CLIENT_ENV}.meterian.com/downloads/meterian-cli.jar"
 fi
 
 # launching the client - note the different launch if version requested to preserve the "--version" base functionality

@@ -116,7 +116,7 @@ RUN apt-get install -qy ruby ruby-dev build-essential\
 
 
 ### Setup initial meterian client (it will be updated if required)
-RUN curl -o /meterian-cli.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
+RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
 
 ### Setup dockerize version stamp
