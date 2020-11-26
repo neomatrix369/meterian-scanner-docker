@@ -19,7 +19,7 @@ fi
 
 if [[ "$*" =~ "--unbound" ]];
 then
-    docker run --rm \
+    docker run -it --rm \
               --volume ${WORKDIR}:/workspace \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
               --env CLIENT_VM_PARAMS=${CLIENT_VM_PARAMS} \
@@ -87,7 +87,7 @@ else
     docker_run_data="${docker_run_data} --env GOPRIVATE='${GOPRIVATE}' "
     docker_run_data="${docker_run_data} --env CLIENT_ENV='${CLIENT_ENV}' "
     docker_run_data="${docker_run_data} --env METERIAN_API_TOKEN='${METERIAN_API_TOKEN}' --env CLIENT_VM_PARAMS='${CLIENT_VM_PARAMS}' --env CLIENT_CANARY_FLAG='${CLIENT_CANARY_FLAG}' '${DOCKER_FULL_IMAGE_NAME}' \$*"
-    eval "docker run --rm --volume $WORKDIR:/workspace $docker_run_data"
+    eval "docker run -it --rm --volume $WORKDIR:/workspace $docker_run_data"
 
     # please do not add any command after "docker run" as we need to preserve
     # the exit status of the meterian client
