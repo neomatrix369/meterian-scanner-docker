@@ -3,7 +3,7 @@
 CLIENT_ENV=${CLIENT_ENV:-"www"}
 
 exitWithErrorMessageWhenApiTokenIsUnset() {
-	if [[ -z "${METERIAN_API_TOKEN:-}" && ! ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]] 
+	if [[ -z "${METERIAN_API_TOKEN:-}" && ! ${METERIAN_CLI_ARGS} =~ $INDEPENDENT_METERIAN_CLI_OPTIONS ]];
 	then
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
@@ -43,10 +43,11 @@ updateClient() {
 	fi
 }
 
-INDEPENDENT_METERIAN_CLI_OPTIONS="(--version|--help|--detect)"
+INDEPENDENT_METERIAN_CLI_OPTIONS='(--version|--help|--detect)'
+VERSION_FLAG_REGEXP='--version'
 
 # dump docker packaged version unless '--version' requested
-if [[ ! ${METERIAN_CLI_ARGS} =~ "--version" ]]; then
+if [[ ! ${METERIAN_CLI_ARGS} =~ $VERSION_FLAG_REGEXP ]]; then
 	cat /tmp/version.txt
 	exitWithErrorMessageWhenApiTokenIsUnset
 fi
@@ -67,8 +68,8 @@ else
 fi
 
 # launching the client - note the different launch if version requested to preserve the "--version" base functionality
-cd /workspace
-if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ ${INDEPENDENT_METERIAN_CLI_OPTIONS} ]];
+cd /workspace || true
+if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ $INDEPENDENT_METERIAN_CLI_OPTIONS ]];
 then
 	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS} --interactive=false
 fi
@@ -76,7 +77,7 @@ fi
 client_exit_code=$?
 
 # dump docker packaged version, right after the client version if the --version option was specified
-if [[ ${METERIAN_CLI_ARGS} =~ "--version" ]];then
+if [[ ${METERIAN_CLI_ARGS} =~ $VERSION_FLAG_REGEXP ]];then
     cat /tmp/version.txt        # 0 exit code but it's okay
 fi
 
