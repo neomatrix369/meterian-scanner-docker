@@ -36,6 +36,9 @@ then
     mkdir /home/meterian
 fi
 
+# granting permissions to manipulate client jar 
+chmod 777 /tmp/meterian-cli-www.jar 2>/dev/null || true 
+
 #changing home dir group and ownership
 chown meterian:meterian /home/meterian
 
