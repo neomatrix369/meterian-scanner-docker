@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk
+FROM openjdk:11.0.10-jdk-buster
 
 ### Variables
 ARG PHP_VERSION=7.2
