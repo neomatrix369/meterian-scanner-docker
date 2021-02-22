@@ -17,7 +17,8 @@ RUN apt-get install -qy python-pip \
   && apt install -qy python3-distutils \
   && apt install -qy python3-pip \
   && pip3 install jupyter \
-  && pip3 install pipreqs
+  && pip3 install pipreqs \
+  && pip3 install pipenv
 
 
 ### Setup initial meterian client (it will be updated if required)
