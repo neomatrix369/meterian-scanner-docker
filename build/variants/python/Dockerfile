@@ -13,7 +13,11 @@ RUN apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
   && pipenv --version \
-  && apt install -qy python-backports.functools-lru-cache
+  && apt install -qy python-backports.functools-lru-cache \
+  && apt install -qy python3-distutils \
+  && apt install -qy python3-pip \
+  && pip3 install jupyter \
+  && pip3 install pipreqs
 
 
 ### Setup initial meterian client (it will be updated if required)
