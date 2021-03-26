@@ -68,7 +68,11 @@ RUN apt-get install -qy python-pip \
   && pip install pipenv \
   && pipenv --version \
   && apt install -qy python-backports.functools-lru-cache \
-  && apt install -qy python3-distutils
+  && apt install -qy python3-distutils \
+  && apt install -qy python3-pip \
+  && pip3 install jupyter \
+  && pip3 install pipreqs \
+  && pip3 install pipenv
 
 
 ### Node install
