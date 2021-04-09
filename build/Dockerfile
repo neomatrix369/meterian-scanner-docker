@@ -119,6 +119,10 @@ RUN apt-get install -qy ruby ruby-dev build-essential\
   && apt -qy autoremove
 
 
+### Rust install
+RUN curl https://sh.rustup.rs -sSf | env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo sh -s -- --default-toolchain stable --profile default --no-modify-path -y
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
