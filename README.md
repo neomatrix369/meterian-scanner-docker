@@ -41,7 +41,7 @@ If you don't want to run docker explicitly you can use the convenience script [`
 ```bash
     meterian-docker
 ```
-Alternatively you could set the environment variable `METERIAN_WORKDIR` to specify the project folder patch externally
+Alternatively you could set the environment variable `METERIAN_WORKDIR` to specify the project folder path externally
 ```bash
     export METERIAN_WORKDIR=/project-folder
     meterian-docker
