@@ -36,6 +36,17 @@ The Meterian Scanner docker container is available on [Docker Hub](http://hub.do
            meterian/cli:latest  
 ```
 
+#### Use the convenience script 
+If you don't want to run docker explicitly you can use the convenience script [`meterian-docker`](scripts/meterian-docker) to execute a project scan with the docker container. From within the project folder do as it follows
+```bash
+    meterian-docker
+```
+Alternatively you could set the environment variable `METERIAN_WORKDIR` to specify the project folder patch externally
+```bash
+    export METERIAN_WORKDIR=/project-folder
+    meterian-docker
+```
+
 ### Examples of an output after running the docker container on a project
 
 #### Successful execution:
@@ -164,4 +175,4 @@ The exit code for the above executions are respectively `0` and `5`. These can b
 
 The dockerized client accepts all the `[Meterain CLI Options]`.
 
-You can find out more about these options via the [Meterian PDF manual](https://www.meterian.com/documents/meterian-cli-manual.pdf) or by [downloading the client](https://www.meterian.com/downloads/meterian-cli.jar) and running `java -jar meterian-cli.jar --help`.
+You can find out more about these options in the [Meterian Documentation](https://docs.meterian.io/) or by [downloading the client](https://www.meterian.com/downloads/meterian-cli.jar) and running `java -jar meterian-cli.jar --help`.
