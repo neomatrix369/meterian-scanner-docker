@@ -8,6 +8,7 @@ set -o pipefail
 VERSION="latest"
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=${METERIAN_WORKDIR:-$(pwd)}
+echo "Current work directory: ${WORKDIR}"
 
 # in this occasion utilise the client canary for the scan
 if [[ "$*" =~ "--canary" ]];
