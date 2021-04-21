@@ -12,6 +12,7 @@ echo "Current work directory: ${WORKDIR}"
 echo "Contents of ${WORKDIR}"
 ls ${WORKDIR}
 
+
 # in this occasion utilise the client canary for the scan
 if [[ "$*" =~ "--canary" ]];
 then
@@ -22,6 +23,8 @@ fi
 
 if [[ "$*" =~ "--unbound" ]];
 then
+    echo "Running in unbound mode"
+
     docker run --rm \
               --volume ${WORKDIR}:/workspace \
               --env METERIAN_API_TOKEN=${METERIAN_API_TOKEN} \
@@ -36,6 +39,7 @@ then
     # the exit status of the meterian client
 
 else
+    echo "Running in bound mode"
 
     # get current uid
     HOST_UID=`id -u`
