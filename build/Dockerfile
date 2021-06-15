@@ -123,6 +123,10 @@ RUN apt-get install -qy ruby ruby-dev build-essential\
 RUN curl https://sh.rustup.rs -sSf | env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo sh -s -- --default-toolchain stable --profile default --no-modify-path -y
 
 
+### Carton (Perl) install
+RUN apt-get install -y carton
+
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
@@ -131,7 +135,7 @@ RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/download
 ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
-RUN echo "© 2017-2020 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+RUN echo "© 2017-2021 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 
 ### Final entrypoint setup
