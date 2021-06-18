@@ -124,7 +124,7 @@ RUN curl https://sh.rustup.rs -sSf | env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME
 
 
 ### Carton (Perl) install
-RUN apt-get install -y carton
+RUN apt-get -y install gcc-x86-64-linux-gnu gcc make carton
 
 
 ### Setup initial meterian client (it will be updated if required)
