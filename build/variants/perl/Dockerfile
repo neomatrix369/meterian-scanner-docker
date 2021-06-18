@@ -9,7 +9,7 @@ RUN  apt-get update \
 
 
 ### Carton (Perl) install
-RUN apt-get -y install carton
+RUN apt-get -y install gcc-x86-64-linux-gnu gcc make carton
 
 
 ### Setup initial meterian client (it will be updated if required)
