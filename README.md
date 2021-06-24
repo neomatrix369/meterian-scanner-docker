@@ -46,6 +46,8 @@ Alternatively you could set the environment variable `METERIAN_WORKDIR` to speci
     export METERIAN_WORKDIR=/project-folder
     meterian-docker
 ```
+A special version of the script, not using interactive mode, is available for CI/CD use, see [`meterian-docker-ci`](scripts/meterian-docker-ci).
+
 
 ### Examples of an output after running the docker container on a project
 
