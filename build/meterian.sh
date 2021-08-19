@@ -58,7 +58,11 @@ updateClient() {
 	fi
 }
 
+<<<<<<< HEAD
 INDEPENDENT_METERIAN_CLI_OPTIONS='--version\|--help\|--detect'
+=======
+INDEPENDENT_METERIAN_CLI_OPTIONS='(--version|--help|--detect|--oss)'
+>>>>>>> 6fb8218... Now allowing OSS scans to happen even if token env var is unset
 VERSION_FLAG_REGEXP='--version'
 
 # dump docker packaged version unless '--version' requested
@@ -86,6 +90,9 @@ fi
 cd /workspace || true
 if [[ -n "${METERIAN_API_TOKEN:-}" || $(regexMatch "${METERIAN_CLI_ARGS:-}" $INDEPENDENT_METERIAN_CLI_OPTIONS) -gt 0 ]];
 then
+	if [[ ${METERIAN_CLI_ARGS} =~ '--oss' ]];then
+		CLIENT_VM_PARAMS="${CLIENT_VM_PARAMS} -Dcli.oss.enabled=true"
+	fi
 	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS:-} --interactive=false
 fi
 # storing exit code
