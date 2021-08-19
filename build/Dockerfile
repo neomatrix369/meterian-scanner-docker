@@ -37,7 +37,7 @@ COPY ./alpine/util/* /usr/local/bin/
 
 
 # General setup
-RUN min-apk-add binutils curl coreutils
+RUN min-apk-add binutils curl coreutils && echo ciao
 
 
 # JAVA install
@@ -72,7 +72,7 @@ RUN min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/
 
 
 # Ruby install
-ARG RUBY_VERSION=2.7.3-r0
+ARG RUBY_VERSION=2.7.4-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 
