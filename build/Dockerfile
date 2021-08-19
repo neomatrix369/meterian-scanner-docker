@@ -37,7 +37,7 @@ COPY ./alpine/util/* /usr/local/bin/
 
 
 # General setup
-RUN min-apk-add binutils curl coreutils && echo ciao
+RUN min-apk-add binutils curl coreutils
 
 
 # JAVA install
@@ -94,7 +94,7 @@ RUN min-apk-add go
 
 
 # NodeJS (npm) install
-RUN min-apk-add npm=12.22.1-r0
+RUN min-apk-add npm=12.22.4-r0
 
 
 # SCALA install
