@@ -49,7 +49,7 @@ updateClient() {
 	fi
 }
 
-INDEPENDENT_METERIAN_CLI_OPTIONS='(--version|--help|--detect)'
+INDEPENDENT_METERIAN_CLI_OPTIONS='(--version|--help|--detect|--oss)'
 VERSION_FLAG_REGEXP='--version'
 
 # dump docker packaged version unless '--version' requested
@@ -77,7 +77,10 @@ fi
 cd /workspace || true
 if [[ -n "${METERIAN_API_TOKEN:-}" || ${METERIAN_CLI_ARGS} =~ $INDEPENDENT_METERIAN_CLI_OPTIONS ]];
 then
-	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS} --interactive=false
+	if [[ ${METERIAN_CLI_ARGS} =~ '--oss' ]];then
+		CLIENT_VM_PARAMS="${CLIENT_VM_PARAMS} -Dcli.oss.enabled=true"
+	fi
+	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS/--oss/""} --interactive=false
 fi
 # storing exit code
 client_exit_code=$?
