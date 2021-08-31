@@ -63,7 +63,8 @@ RUN apt-get update \
 
   
 ## Python install
-RUN apt-get install -qy python-pip \
+RUN apt-get update \
+  && apt-get install -qy python-pip \
   && pip -V \
   && pip install pipenv \
   && pipenv --version \
@@ -72,7 +73,8 @@ RUN apt-get install -qy python-pip \
   && apt install -qy python3-pip \
   && pip3 install jupyter \
   && pip3 install pipreqs \
-  && pip3 install pipenv
+  && pip3 install pipenv \
+  && apt-get install g++
 
 
 ### Node install
