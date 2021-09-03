@@ -37,7 +37,8 @@ COPY ./alpine/util/* /usr/local/bin/
 
 
 # General setup
-RUN min-apk-add binutils curl coreutils
+RUN apk update \
+ && min-apk-add apk-tools=2.10.8-r0 binutils curl=7.78.0-r0 coreutils
 
 
 # JAVA install
@@ -94,15 +95,15 @@ RUN min-apk-add go
 
 
 # NodeJS (npm) install
-RUN min-apk-add npm=12.22.4-r0
+RUN min-apk-add npm
 
 
 # SCALA install
 ENV PATH=${PATH}:/usr/local/sbt/bin
 COPY --from=binariesStash /binaries/scala/ /usr/share/scala/
 COPY --from=binariesStash /binaries/sbt/ /usr/local/sbt/
-# installing min version supported of bash only for scala and sbt that require it
-RUN min-apk-add bash=5.0.0-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
+# installing min version possible (patch bash here; for no we are doing this at the end so we don't waste time building) of bash only for scala and sbt that require it
+RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala
 
 
@@ -140,7 +141,9 @@ RUN echo "### Install specific version of zeromq from source" \
  && rm -rf /usr/bin/gprof \
  && rm -rf /usr/bin/*gcj \
  && min-apk-add python3 py3-pip python3-dev python2 libffi-dev \
- && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter
+ && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools wheel \
+ && min-apk-add g++ zlib-dev openblas-dev \
+ && min-pip3-install --ignore-installed scipy
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
@@ -156,6 +159,12 @@ ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
 RUN echo "© 2017-2021 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+
+# Vuln patches
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
+ && apk update \
+ && min-apk-add -u libbsd=0.11.3-r0 \
+ && min-apk-add -u libx11=1.7.2-r0
 
 
 ### Final entrypoint setup

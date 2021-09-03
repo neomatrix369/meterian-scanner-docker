@@ -11,7 +11,7 @@ RUN min-apk-add openjdk11
 
 
 # NodeJS (npm) install
-RUN min-apk-add npm=12.22.4-r0
+RUN min-apk-add npm
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
