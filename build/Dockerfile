@@ -140,9 +140,12 @@ RUN echo "### Install specific version of zeromq from source" \
  && rm -rf /usr/bin/gcov* \
  && rm -rf /usr/bin/gprof \
  && rm -rf /usr/bin/*gcj \
- && min-apk-add python3 py3-pip python3-dev python2 libffi-dev \
+ && min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev \
  && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools wheel \
- && min-apk-add g++ zlib-dev openblas-dev \
+ && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
+ && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+ && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk -O /tmp/glibc-2.34-r0.apk \
+ && min-apk-add /tmp/glibc-2.34-r0.apk \
  && min-pip3-install --ignore-installed scipy
 
 
