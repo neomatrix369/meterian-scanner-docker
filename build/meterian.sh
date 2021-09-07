@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Adjusting PATH so that all needed tools are found
 echo 'export PATH=${ORIGINAL_PATH}' >> ~/.bashrc
