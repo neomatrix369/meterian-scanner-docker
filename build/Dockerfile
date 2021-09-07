@@ -116,7 +116,7 @@ RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp 
 ## Swift install
 RUN apt-get install -qy ruby ruby-dev build-essential\
   && ruby -v \
-  && gem install cocoapods \
+  && gem install cocoapods -v 1.10.2 \
   && gem which cocoapods | grep -oh cocoapods-[0-9\.]* \
   && apt-get remove -qy build-essential \
   && apt -qy autoremove

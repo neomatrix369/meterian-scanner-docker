@@ -11,7 +11,7 @@ RUN  apt-get update \
 ## Swift install
 RUN apt-get install -qy ruby ruby-dev build-essential\
   && ruby -v \
-  && gem install cocoapods \
+  && gem install cocoapods -v 1.10.2 \
   && gem which cocoapods | grep -oh cocoapods-[0-9\.]* \
   && apt-get remove -qy build-essential \
   && apt -qy autoremove
