@@ -71,6 +71,7 @@ To resolve this while still using the `meterian-docker` script simply comment th
 
 If for any reason you experience issues scanning Python projects please consider using our Python-specific image `meterian/cli:latest-python`.
 The main image is based on Alpine Linux which doesn't use the GNU version of the standard C library (glibc) required by C programs such as Python, so depending on the depth of your project's libc requirements you will often run into issues.
+
 When using the convenience script simply pass the `--scan-python` flag to use the dedicated Python image.
 
 ### Examples of an output after running the docker container on a project
