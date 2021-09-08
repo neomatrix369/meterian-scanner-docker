@@ -78,8 +78,9 @@ RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 
 # Swift (Cocoapods) install
+# Specifically installing due to issue https://github.com/CocoaPods/CocoaPods/issues/10930 affecting v1.11.0
 RUN min-apk-add git \
- && min-gem-install cocoapods
+ && min-gem-install cocoapods -v 1.10.2
 
 
 # PHP (Composer) install

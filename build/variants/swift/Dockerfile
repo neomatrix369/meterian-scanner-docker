@@ -17,7 +17,7 @@ RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 # Swift (Cocoapods) install
 RUN min-apk-add git \
- && min-gem-install cocoapods
+ && min-gem-install cocoapods -v 1.10.2
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
