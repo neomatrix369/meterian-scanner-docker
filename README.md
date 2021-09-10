@@ -48,6 +48,13 @@ Alternatively you could set the environment variable `METERIAN_WORKDIR` to speci
 ```
 A special version of the script, not using interactive mode, is available for CI/CD use, see [`meterian-docker-ci`](scripts/meterian-docker-ci).
 
+##### Script option
+| Option | Description |
+|------|-------------|
+| --unbound | Avoids binding the standard library cache folders into the docker container |
+| --image:<image tag of choice> | Allows to use a [specific tag](https://hub.docker.com/r/meterian/cli/tags)  of the `meterian/cli` image (default tag is: latest)<br>For instance using `--image:latest-python` will instruct the script to use the `latest-python` tag |
+
+
 ##### Known issues
 In some occasions using the convenience script to scan Swift projects results in the following failure
 ```bash
@@ -72,7 +79,7 @@ To resolve this while still using the `meterian-docker` script simply comment th
 If for any reason you experience issues scanning Python projects please consider using our Python-specific image `meterian/cli:latest-python`.
 The main image is based on Alpine Linux which doesn't use the GNU version of the standard C library (glibc) required by C programs such as Python, so depending on the depth of your project's libc requirements you will often run into issues.
 
-When using the convenience script simply pass the `--scan-python` flag to use the dedicated Python image.
+When using the convenience script simply pass the `--image:latest-python` flag to use the dedicated Python image.
 
 ### Examples of an output after running the docker container on a project
 

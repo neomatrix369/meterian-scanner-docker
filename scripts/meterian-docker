@@ -6,12 +6,15 @@ set -o pipefail
 # Set this constant with the tag name corresponding to the image version you wish to use for the scan
 # (for a list of tags visit: https://hub.docker.com/r/meterian/cli/tags)
 VERSION="latest"
-# when flag --scan-python is provided use dedicated Python image
-if [[ "$*" =~ "--scan-python" ]];
-then
-    VERSION="latest-python"
-    echo "Using dedicated python Image"
-fi
+for arg in $*
+do
+    flagAndTag="$(expr "$arg" : '\(--image:.*\)')" || true
+    maybeTag="$(echo "$flagAndTag" | cut -d: -f2)"
+    if [[ "$maybeTag" != "" ]]; then
+        VERSION="$maybeTag"
+        echo "Requested usage of image 'meterian/cli:$VERSION'"
+    fi
+done
 
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=${METERIAN_WORKDIR:-$(pwd)}
