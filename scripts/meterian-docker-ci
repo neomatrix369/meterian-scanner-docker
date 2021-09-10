@@ -6,6 +6,16 @@ set -o pipefail
 # Set this constant with the tag name corresponding to the image version you wish to use for the scan
 # (for a list of tags visit: https://hub.docker.com/r/meterian/cli/tags)
 VERSION="latest"
+for arg in $*
+do
+    flagAndTag="$(expr "$arg" : '\(--image:.*\)')" || true
+    maybeTag="$(echo "$flagAndTag" | cut -d: -f2)"
+    if [[ "$maybeTag" != "" ]]; then
+        VERSION="$maybeTag"
+        echo "Requested usage of image 'meterian/cli:$VERSION'"
+    fi
+done
+
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=${METERIAN_WORKDIR:-$(pwd)}
 echo "Current work directory: ${WORKDIR}"
@@ -66,7 +76,7 @@ else
     cache_dir=$(gem environment gemdir 2>/dev/null)
     if [ $? -eq 0 ];
     then
-        VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/var/lib/gems/2.5.0/cache" )
+        VOLUME_BINDS=( "${VOLUME_BINDS[@]}" "${cache_dir}::/usr/lib/ruby/gems/2.7.0/cache/" )
     fi
 
     cache_dir=$(npm root -g 2>/dev/null)
@@ -86,7 +96,7 @@ else
         fi
     done
 
-    # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated the least often
+    # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated only when a newer version is detected
     docker_run_data="${docker_run_data} --mount type=bind,source=/tmp,target=/tmp "
     docker_run_data="${docker_run_data} --volume '${HOME}/.netrc':/home/meterian/.netrc"
 
