@@ -38,7 +38,7 @@ COPY ./alpine/util/* /usr/local/bin/
 
 # General setup
 RUN apk update \
- && min-apk-add apk-tools=2.10.8-r0 binutils curl=7.78.0-r0 coreutils
+ && min-apk-add apk-tools>2.10.7-r0 binutils curl>7.77.0-r0 coreutils
 
 
 # JAVA install

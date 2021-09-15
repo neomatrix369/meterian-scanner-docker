@@ -38,7 +38,7 @@ ENV PATH=${PATH}:/usr/local/sbt/bin
 COPY --from=binariesStash /binaries/scala/ /usr/share/scala/
 COPY --from=binariesStash /binaries/sbt/ /usr/local/sbt/
 # installing min version supported of bash only for scala and sbt that require it
-RUN min-apk-add bash=5.0.0-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
+RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala 
 
 
