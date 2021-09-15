@@ -103,7 +103,7 @@ RUN min-apk-add npm
 ENV PATH=${PATH}:/usr/local/sbt/bin
 COPY --from=binariesStash /binaries/scala/ /usr/share/scala/
 COPY --from=binariesStash /binaries/sbt/ /usr/local/sbt/
-# installing min version possible (patch bash here; for no we are doing this at the end so we don't waste time building) of bash only for scala and sbt that require it
+# installing min version possible of bash only for scala and sbt that require it
 RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala
 
