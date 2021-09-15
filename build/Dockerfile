@@ -38,7 +38,7 @@ COPY ./alpine/util/* /usr/local/bin/
 
 # General setup
 RUN apk update \
- && min-apk-add apk-tools=2.10.8-r0 binutils curl=7.78.0-r0 coreutils
+ && min-apk-add apk-tools>2.10.7-r0 binutils curl>7.77.0-r0 coreutils
 
 
 # JAVA install
@@ -103,7 +103,7 @@ RUN min-apk-add npm
 ENV PATH=${PATH}:/usr/local/sbt/bin
 COPY --from=binariesStash /binaries/scala/ /usr/share/scala/
 COPY --from=binariesStash /binaries/sbt/ /usr/local/sbt/
-# installing min version possible (patch bash here; for no we are doing this at the end so we don't waste time building) of bash only for scala and sbt that require it
+# installing min version possible of bash only for scala and sbt that require it
 RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala
 
@@ -126,6 +126,10 @@ RUN chmod 777 /opt/rust/ -R \
 RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev \
  && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
  && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools
+
+
+# Conan install
+RUN pip3 install conan
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19

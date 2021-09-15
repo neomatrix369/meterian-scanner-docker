@@ -58,8 +58,8 @@ updateClient() {
 	fi
 }
 
-INDEPENDENT_METERIAN_CLI_OPTIONS='(--version|--help|--detect|--oss)'
-VERSION_FLAG_REGEXP='--version'
+INDEPENDENT_METERIAN_CLI_OPTIONS='.*--version.*\|.*--help.*\|.*--detect.*\|.*--oss.*'
+VERSION_FLAG_REGEXP='.*--version.*'
 
 # dump docker packaged version unless '--version' requested
 if [[ $(regexMatch "${METERIAN_CLI_ARGS}" $VERSION_FLAG_REGEXP) -eq 0 ]]; then
@@ -86,7 +86,7 @@ fi
 cd /workspace || true
 if [[ -n "${METERIAN_API_TOKEN:-}" || $(regexMatch "${METERIAN_CLI_ARGS:-}" $INDEPENDENT_METERIAN_CLI_OPTIONS) -gt 0 ]];
 then
-	if [[ $(regexMatch "${METERIAN_CLI_ARGS}" '--oss') -eq 0 ]];then
+	if [[ $(regexMatch "${METERIAN_CLI_ARGS}" '.*--oss.*') -gt 0 ]];then
 		CLIENT_VM_PARAMS="${CLIENT_VM_PARAMS} -Dcli.oss.enabled=true"
 	fi
 	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS:-} --interactive=false

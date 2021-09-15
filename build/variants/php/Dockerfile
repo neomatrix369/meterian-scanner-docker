@@ -19,7 +19,8 @@ RUN min-apk-add php7 php-json php-phar php-iconv php-openssl --repository=http:/
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
-RUN min-apk-add shadow
+RUN min-apk-add shadow \
+ && min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main
 
 
 # Meterian client Download
