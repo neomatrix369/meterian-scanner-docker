@@ -128,6 +128,10 @@ RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zerom
  && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools
 
 
+# Conan install
+RUN pip3 install conan
+
+
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
