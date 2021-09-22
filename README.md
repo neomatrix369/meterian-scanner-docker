@@ -48,11 +48,17 @@ Alternatively you could set the environment variable `METERIAN_WORKDIR` to speci
 ```
 A special version of the script, not using interactive mode, is available for CI/CD use, see [`meterian-docker-ci`](scripts/meterian-docker-ci).
 
-##### Script option
+##### Script options
 | Option | Description |
-|------|-------------|
+|--------|-------------|
 | --unbound | Avoids binding the standard library cache folders into the docker container |
-| --image:<image tag of choice> | Allows to use a [specific tag](https://hub.docker.com/r/meterian/cli/tags)  of the `meterian/cli` image (default tag is: latest)<br>For instance using `--image:latest-python` will instruct the script to use the `latest-python` tag |
+| --image:<image tag of choice> | Allows to use a [specific tag](https://hub.docker.com/r/meterian/cli/tags) of the `meterian/cli` image (default tag is: latest)<br>For instance using `--image:latest-python` will instruct the script to use the `latest-python` tag |
+
+##### Script environment variables
+| environment variables | Description |
+|-----------------------|-------------|
+| METERIAN_WORKDIR | Allows to set the project folder to use for the scan directly in and environment variable. When unset the current folder will be considered as the project folder |
+| CLIENT_AUTO_UPDATE | Allows to enable or disable the auto-update of the Meterian client prior to executing a scan.<br>`export CLIENT_AUTO_UPDATE=true`<br>`export CLIENT_AUTO_UPDATE=false`<br>When unset the auto-update operation is enabled by default |
 
 
 ##### Known issues
