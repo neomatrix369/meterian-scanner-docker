@@ -9,6 +9,7 @@ source ~/.bashrc
 
 
 CLIENT_ENV=${CLIENT_ENV:-"www"}
+CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE:-"true"}
 
 # uses expr; if something is matched it returns the length of it otherwise 0
 regexMatch() {
@@ -46,6 +47,10 @@ getLastModifiedDateTimeForFileInSeconds() {
 }
 
 updateClient() {
+	if [[ "${CLIENT_AUTO_UPDATE}" == "false" && "${CLIENT_ENV}" != "qa" ]]; then
+		return
+	fi
+
 	METERIAN_JAR_PATH=$1
 	CLIENT_TARGET_URL=$2
 
