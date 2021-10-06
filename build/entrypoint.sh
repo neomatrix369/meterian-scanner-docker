@@ -3,6 +3,9 @@
 set -e
 set -o pipefail
 
+# rust-specifics
+chmod -R 777 /opt/rust/
+
 # prepare the script file
 cp /root/meterian.sh /tmp/meterian.sh
 cp /root/version.txt /tmp/version.txt
