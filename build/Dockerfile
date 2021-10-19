@@ -113,11 +113,10 @@ ENV PATH=${PATH}:/opt/rust/cargo/bin \
     RUSTUP_HOME=/opt/rust/rustup
 COPY --from=rustBin /usr/local/cargo/ /opt/rust/cargo
 COPY --from=rustBin /usr/local/rustup/toolchains/1.53.0-x86_64-unknown-linux-musl/bin/cargo /opt/rust/rustup/toolchains/1.53.0-x86_64-unknown-linux-musl/bin/cargo
-# install the standard toolchain for the current arch in minimal profile (as of now this installs cargo, rust-std & rustc) and remove all components but cargo
+# install the standard toolchain for the current arch in minimal profile (as of now this installs cargo, rust-std & rustc) and remove rust-std
 RUN rustup set profile minimal \
  && rustup toolchain install stable || true \
- && set -ex; components="$(rustup component list --toolchain stable | grep installed | cut -d' ' -f1)" \
- && for component in $components; do [[ "$(echo "$component" | grep -o cargo)" == "" ]] && rustup component remove $component; done 
+ && rustup component remove rust-std
 
 
 # Python install
