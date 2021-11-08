@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 # rust-specifics
-chmod -R 777 /opt/rust/
+chmod -R 777 /opt/rust/ >> /dev/null 2>&1 || true
 
 # prepare the script file
 cp /root/meterian.sh /tmp/meterian.sh
