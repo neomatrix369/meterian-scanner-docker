@@ -46,6 +46,16 @@ getLastModifiedDateTimeForFileInSeconds() {
 	echo $WHEN
 }
 
+isClientJarCorrupted() {
+	METERIAN_JAR="$1"
+	java -jar ${METERIAN_JAR} --version >> /dev/null 2>&1
+	if [[ "$?" != "0" ]];then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
 updateClient() {
 	if [[ "${CLIENT_AUTO_UPDATE}" == "false" && "${CLIENT_ENV}" != "qa" ]]; then
 		return
@@ -56,7 +66,7 @@ updateClient() {
 
 	LOCAL_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS="$(getLastModifiedDateTimeForFileInSeconds $METERIAN_JAR_PATH)"
 	REMOTE_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS="$(date -d "$(curl -s -L -I "${CLIENT_TARGET_URL}" | grep Last-Modified: | cut -d" " -f2-)" +%s)"
-	if [[ ${REMOTE_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS} -gt ${LOCAL_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS} ]];
+	if [[ "$(isClientJarCorrupted "$METERIAN_JAR_PATH")" == "true" || ${REMOTE_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS} -gt ${LOCAL_CLIENT_LAST_MODIFIED_DATE_IN_SECONDS} ]];
 	then
 		echo Updating the client$(test -n "${CLIENT_CANARY_FLAG}" && echo " canary" || true)...
 		curl -s -o "${METERIAN_JAR_PATH}" "${CLIENT_TARGET_URL}"  >/dev/null
