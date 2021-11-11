@@ -4,7 +4,7 @@ COPY ./alpine/util/* /usr/local/bin/
 
 # General setup
 RUN apk update \
- && min-apk-add binutils curl coreutils
+ && min-apk-add binutils curl coreutils git
 
 
 # JAVA install
