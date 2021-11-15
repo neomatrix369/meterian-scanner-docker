@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner Docker](https://img.shields.io/docker/pulls/meterian/cli.svg)](https://hub.docker.com/r/meterian/cli)
 
-Scan for vulnerabilities in your project using the Meterian Scanner Docker container.
+Scan for vulnerabilities in your project using the Meterian Scanner as a docker container (aka "dockerized client")
 
 You can do this without having to install any dependencies needed for the Meterian Scanner client to run, and the scan happens in an isolated environment i.e. inside the Docker container.
 
