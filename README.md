@@ -1,4 +1,4 @@
-# Meterian Scanner containerized
+# Meterian Scanner containerized (aka "dockerized client")
 
 [![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner Docker](https://img.shields.io/docker/pulls/meterian/cli.svg)](https://hub.docker.com/r/meterian/cli)
 
@@ -8,7 +8,7 @@ You can do this without having to install any dependencies needed for the Meteri
 
 The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under the Docker organisation [meterian](https://hub.docker.com/u/meterian), and is called [meterian/cli](https://hub.docker.com/r/meterian/cli).
 
-## How to use the containered scanner 
+## How to use the dockerized client 
 
 - It is as simple as running the below command:
 ```bash
@@ -211,7 +211,7 @@ The exit code for the above executions are respectively `0` and `5`. These can b
 > The default values for these scores are 90 for security and 80 for stability
 
 
-## Additional option(s) to use with the Docker container
+## Additional option(s) to use with the dockerized scanner
 
 The dockerized client accepts all the `[Meterain CLI Options]`.
 
