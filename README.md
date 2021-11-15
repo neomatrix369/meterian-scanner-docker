@@ -1,4 +1,4 @@
-# Meterian Scanner Docker container
+# Meterian Scanner containerized
 
 [![CircleCI](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master.svg?style=svg)](https://circleci.com/gh/MeterianHQ/meterian-scanner-docker/tree/master) | [![Meterian Scanner Docker](https://img.shields.io/docker/pulls/meterian/cli.svg)](https://hub.docker.com/r/meterian/cli)
 
@@ -8,7 +8,7 @@ You can do this without having to install any dependencies needed for the Meteri
 
 The Meterian Scanner docker container is available on [Docker Hub](http://hub.docker.com) under the Docker organisation [meterian](https://hub.docker.com/u/meterian), and is called [meterian/cli](https://hub.docker.com/r/meterian/cli).
 
-## How to use the docker container
+## How to use the containered scanner 
 
 - It is as simple as running the below command:
 ```bash
