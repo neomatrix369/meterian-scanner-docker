@@ -5,7 +5,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ### General setup
 RUN  apt-get update \
-  && apt-get -y install apt-transport-https apt-utils curl git openssh
+  && apt-get -y install apt-transport-https apt-utils curl git
 
 
 ## Python install
