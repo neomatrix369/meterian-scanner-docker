@@ -38,7 +38,8 @@ COPY ./alpine/util/* /usr/local/bin/
 
 # General setup
 RUN apk update \
- && min-apk-add apk-tools>2.10.7-r0 binutils curl>7.77.0-r0 coreutils
+ && min-apk-add apk-tools>2.10.7-r0 binutils curl>7.77.0-r0 coreutils git openssh \
+ && apk upgrade musl
 
 
 # JAVA install
@@ -79,7 +80,7 @@ RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 # Swift (Cocoapods) install
 # Specifically installing due to issue https://github.com/CocoaPods/CocoaPods/issues/10930 affecting v1.11.0
-RUN min-apk-add git \
+RUN min-apk-add \
  && min-gem-install cocoapods -v 1.10.2
 
 
