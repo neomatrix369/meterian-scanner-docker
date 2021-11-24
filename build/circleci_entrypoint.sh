@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 METERIAN_HOME="/home/meterian/"
 mkdir -p ${METERIAN_HOME}
