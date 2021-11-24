@@ -87,6 +87,9 @@ The main image is based on Alpine Linux which doesn't use the GNU version of the
 
 When using the convenience script simply pass the `--image:latest-python` flag to use the dedicated Python image.
 
+### The CircleCI entrypoint script
+Aid scans that require SSH to download non-public dependencies from a CircleCI workflow with the `circleci_entrypoint.sh` script. An example can be found on [here](https://docs.meterian.io/ci-server-integrations/circle-ci#docker-executor).
+    
 ### Examples of an output after running the docker container on a project
 
 #### Successful execution:
