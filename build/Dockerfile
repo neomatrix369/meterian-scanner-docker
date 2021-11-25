@@ -93,7 +93,7 @@ RUN min-apk-add php7 php-json php-phar php-iconv php-openssl --repository=http:/
 
 # GO install
 ENV GOROOT /usr/lib/go
-RUN min-apk-add go
+RUN min-apk-add go --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 
 # NodeJS (npm) install
