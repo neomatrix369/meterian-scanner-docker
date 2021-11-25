@@ -74,7 +74,7 @@ RUN min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/
 
 
 # Ruby install
-ARG RUBY_VERSION=2.7.4-r0
+ARG RUBY_VERSION=2.7.5-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 
