@@ -14,7 +14,7 @@ RUN min-apk-add openjdk11
 
 # GO install
 ENV GOROOT /usr/lib/go
-RUN min-apk-add go
+RUN min-apk-add go --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
