@@ -11,6 +11,8 @@ else
     METERIAN_REPO_NAME="meterian/cli-canary"
 fi
 
+VARIANT_SKIP=${VARIANT_SKIP:-}
+
 isValidVariant() {
     variant=$1 && shift
     variants=($@)
@@ -35,9 +37,13 @@ buildVariantImage() {
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}-${VARIANT}.${BUILD}
 
-    echo "~~~~~~ Building the docker container for the Meterian Scanner client"
-    docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
-                 -f variants/${VARIANT}/Dockerfile .
+    if [[ "$(echo $VARIANT_SKIP | grep -o $VARIANT)" == "" ]]; then
+        echo "~~~~~~ Building the docker container for the Meterian Scanner client"
+        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
+                    -f variants/${VARIANT}/Dockerfile .
+    else
+        echo "Skipping build for ${DOCKER_FULL_IMAGE_NAME} due to variant skip rule"
+    fi
 }
 
 buildFullImage() {
