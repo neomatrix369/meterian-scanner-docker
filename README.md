@@ -89,7 +89,14 @@ When using the convenience script simply pass the `--image:latest-python` flag t
 
 ### The CircleCI entrypoint script
 Aid scans that require SSH to download non-public dependencies from a CircleCI workflow with the `circleci_entrypoint.sh` script. An example can be found on [here](https://docs.meterian.io/ci-server-integrations/circle-ci#docker-executor).
-    
+
+### Troubleshooting
+Newly installed Docker instances may fail to run images at first, please esure you can run Docker as non-root user by running the following command
+```bash
+    sudo setfacl --modify user:<user name or ID>:rw /var/run/docker.sock
+```
+
+
 ### Examples of an output after running the docker container on a project
 
 #### Successful execution:
