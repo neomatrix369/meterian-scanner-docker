@@ -44,6 +44,19 @@ RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala 
 
 
+# Ant specifics
+ENV ANT_HOME=/usr/share/ant
+ENV PATH=${PATH}:${ANT_HOME}/bin
+ARG ANT_VERSION=1.10.12
+ARG IVY_VERSION=2.5.0
+RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.org//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
+ && mkdir -p /usr/share/ant \
+ && tar xzf /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz -C /usr/share/ant --strip-components=1 \
+ && wget -q -O ${ANT_HOME}/lib/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/${IVY_VERSION}/ivy-${IVY_VERSION}.jar \
+ && ln -s /usr/share/ant/bin/ant /usr/bin/ant \
+ && ant -version; echo
+
+
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
