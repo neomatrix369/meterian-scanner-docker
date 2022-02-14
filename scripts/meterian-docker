@@ -38,6 +38,8 @@ then
               --env CLIENT_ENV=${CLIENT_ENV} \
               --env CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE} \
               --volume "${HOME}/.netrc":"/home/meterian/.netrc" \
+              --volume "${HOME}/.gitconfig":"/home/meterian/.gitconfig:ro" \
+              --volume "${HOME}/.ssh/":"/home/meterian/.ssh:ro" \
               ${DOCKER_FULL_IMAGE_NAME} $*
 
     # please do not add any command after "docker run" as we need to preserve
@@ -93,6 +95,8 @@ else
     # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated only when a newer version is detected
     docker_run_data="${docker_run_data} --mount type=bind,source=/tmp,target=/tmp "
     docker_run_data="${docker_run_data} --volume '${HOME}/.netrc':/home/meterian/.netrc"
+    docker_run_data="${docker_run_data} --volume '${HOME}/.gitconfig':/home/meterian/.gitconfig:ro"
+    docker_run_data="${docker_run_data} --volume '${HOME}/.ssh/':/home/meterian/.ssh:ro"
 
     docker_run_data="${docker_run_data} --env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
     docker_run_data="${docker_run_data} --env GOPRIVATE='${GOPRIVATE}' "
