@@ -27,6 +27,22 @@ then
     echo "Using canary version of Docker and Meterian clients"
 fi
 
+# checking existence of following files on the host machine prior to binding
+dotnetrc_docker_bind=""
+if [[ -f "${HOME}/.netrc" ]]; then
+    dotnetrc_docker_bind="--volume ${HOME}/.netrc:/home/meterian/.netrc:ro"
+fi
+
+gitconfig_docker_bind=""
+if [[ -f "${HOME}/.gitconfig" ]]; then
+    gitconfig_docker_bind="--volume ${HOME}/.gitconfig:/home/meterian/.gitconfig:ro"
+fi
+
+dotssh_docker_bind=""
+if [[ -d "${HOME}/.ssh" ]]; then
+    dotssh_docker_bind="--volume ${HOME}/.ssh:/home/meterian/.ssh:ro"
+fi
+
 if [[ "$*" =~ "--unbound" ]];
 then
     docker run -it --rm \
@@ -37,9 +53,9 @@ then
               --env GOPRIVATE=${GOPRIVATE} \
               --env CLIENT_ENV=${CLIENT_ENV} \
               --env CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE} \
-              --volume "${HOME}/.netrc":"/home/meterian/.netrc" \
-              --volume "${HOME}/.gitconfig":"/home/meterian/.gitconfig:ro" \
-              --volume "${HOME}/.ssh/":"/home/meterian/.ssh:ro" \
+              ${dotnetrc_docker_bind:-} \
+              ${gitconfig_docker_bind:-} \
+              ${dotssh_docker_bind:-} \
               ${DOCKER_FULL_IMAGE_NAME} $*
 
     # please do not add any command after "docker run" as we need to preserve
@@ -94,9 +110,9 @@ else
 
     # mapping /tmp so that the most recent version of the meterian client is retained on the host machine causing it to be updated only when a newer version is detected
     docker_run_data="${docker_run_data} --mount type=bind,source=/tmp,target=/tmp "
-    docker_run_data="${docker_run_data} --volume '${HOME}/.netrc':/home/meterian/.netrc"
-    docker_run_data="${docker_run_data} --volume '${HOME}/.gitconfig':/home/meterian/.gitconfig:ro"
-    docker_run_data="${docker_run_data} --volume '${HOME}/.ssh/':/home/meterian/.ssh:ro"
+    docker_run_data="${docker_run_data} ${dotnetrc_docker_bind:-}"
+    docker_run_data="${docker_run_data} ${gitconfig_docker_bind:-}"
+    docker_run_data="${docker_run_data} ${dotssh_docker_bind:-}"
 
     docker_run_data="${docker_run_data} --env HOST_UID='${HOST_UID}' --env HOST_GID='${HOST_GID}' "
     docker_run_data="${docker_run_data} --env GOPRIVATE='${GOPRIVATE}' "
