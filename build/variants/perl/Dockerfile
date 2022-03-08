@@ -1,10 +1,3 @@
-# Helper images 'import' for bin copy/installation
-FROM melopt/alpine-perl-devel:latest as perlBin
-
-
-
-
-# Final image build steps
 FROM alpine:3.12
 COPY ./alpine/util/* /usr/local/bin/
 
@@ -20,20 +13,24 @@ RUN min-apk-add openjdk11
 
 
 # PERL (plus carton) install
-ENV PERL5LIB=/app/lib:/app/local/lib/perl5:/deps/local/lib/perl5:/stack/local/lib/perl5
-COPY --from=perlBin /usr/lib/perl5/ /usr/lib/perl5/
-COPY --from=perlBin /usr/bin/perl /usr/bin/perl
-COPY --from=perlBin /usr/local/bin/carton /usr/local/bin/carton
-COPY --from=perlBin /usr/share/perl5/ /usr/share/perl5/
-COPY --from=perlBin /usr/local/share/perl5/ /usr/local/share/perl5/
-COPY --from=perlBin /usr/local/share/man/ /usr/local/share/man/
-COPY --from=perlBin /usr/local/lib/perl5/ /usr/local/lib/perl5/
-COPY --from=perlBin /usr/local/bin/cpanm /usr/local/bin/cpanm
-COPY --from=perlBin /usr/bin/cpan /usr/bin/cpan
-COPY --from=perlBin /usr/bin/perl5.26.3 /usr/bin/perl5.26.3
-# later versions of make don't work with carton for some reason
-RUN min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.9/main
-
+ARG MOD_PERL2_SHA="890dca0950847e32180485cabbeffbf236af2c92c7df957a233c210022b5172957eddb1db3e9281b87cd438d2fa404a05ae99c7eda098267c68d5e9262b400b0"
+RUN min-apk-add perl-dev wget build-base zlib-dev libressl-dev expat-dev libxml2-dev perl-test-harness-utils \
+ # later versions of make don't work with carton for some reason
+ && min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.9/main \
+ && min-apk-add ncurses-dev readline-dev perl-net-ssleay openssl gd-dev libjpeg-turbo-dev apache2-dev mariadb-client \
+ # mod_perl2 module installation (https://perl.apache.org/download/)
+ && wget -q -O /tmp/mod_perl-2.0.12.tar.gz https://dlcdn.apache.org/perl/mod_perl-2.0.12.tar.gz \
+ && echo "${MOD_PERL2_SHA}  /tmp/mod_perl-2.0.12.tar.gz" | sha512sum -c - \
+ && tar -xvzf /tmp/mod_perl-2.0.12.tar.gz -C /tmp > /dev/null 2>&1 \
+ && PREV_DIR=$(pwd); cd /tmp/mod_perl-2.0.12 \
+ && perl Makefile.PL > /dev/null 2>&1 \
+ && make > /dev/null 2>&1 \
+ && make install > /dev/null 2>&1 \
+ && cd $PREV_DIR; rm -rf /tmp/mod_perl-2.0.12.tar.gz /tmp/mod_perl-2.0.12 \
+ # carton and cpanm installations
+ && curl -L https://cpanmin.us | perl - App::cpanminus \
+ && cpanm -n -q Carton App::cpm \
+ && rm -rf ~/.cpanm
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow \
