@@ -69,7 +69,7 @@ RUN min-apk-add libstdc++ libintl \
 
 # PERL (plus carton) install
 ARG MOD_PERL2_SHA="890dca0950847e32180485cabbeffbf236af2c92c7df957a233c210022b5172957eddb1db3e9281b87cd438d2fa404a05ae99c7eda098267c68d5e9262b400b0"
-RUN min-apk-add perl-dev wget zlib-dev expat-dev libxml2-dev perl-test-harness-utils \
+RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-test-harness-utils \
  # later versions of make don't work with carton for some reason
  && min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.9/main \
  && min-apk-add ncurses-dev readline-dev perl-net-ssleay openssl gd-dev libjpeg-turbo-dev apache2-dev mariadb-client \
