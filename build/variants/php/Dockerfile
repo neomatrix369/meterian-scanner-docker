@@ -13,7 +13,7 @@ RUN min-apk-add openjdk11
 
 
 # PHP (Composer) install
-RUN min-apk-add php7 php-json php-phar php-iconv php-openssl --repository=http://dl-cdn.alpinelinux.org/alpine/v3.12/main \
+RUN min-apk-add php7 php-phar drupal7 \
  && curl -sS https://getcomposer.org/installer -o composer-setup.php \
  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
  && rm composer-setup.php
