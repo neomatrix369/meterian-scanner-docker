@@ -145,6 +145,12 @@ RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zerom
 RUN pip3 install conan
 
 
+# R and renv install
+RUN min-apk-add R R-dev \
+ && R --slave -e "install.packages('renv', repos='http://cran.r-project.org')" \
+ && R --slave -e "packageVersion('renv')"
+
+
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
@@ -157,7 +163,7 @@ RUN wget -q -O /tmp/meterian-cli-www.jar https://www.meterian.com/downloads/mete
 ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
-RUN echo "© 2017-2021 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 # Vuln patches
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
