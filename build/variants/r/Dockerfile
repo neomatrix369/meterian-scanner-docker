@@ -9,8 +9,8 @@ RUN  apt-get update \
 
 
 ## R and renv install
-RUN apt install -qy gnupg2 \
- && echo -ne "# R repository\ndeb http://cloud.r-project.org/bin/linux/debian buster-cran35//\n" >>  /etc/apt/sources.list \
+RUN apt install -qy gnupg2 libcurl4-openssl-dev libssl-dev \
+ && echo -ne "# R repository\ndeb http://cloud.r-project.org/bin/linux/debian buster-cran35/\n" >>  /etc/apt/sources.list \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' \
  && apt update && apt install -qy r-base \
  && R --slave -e "install.packages('renv', repos='http://cran.r-project.org')" \
