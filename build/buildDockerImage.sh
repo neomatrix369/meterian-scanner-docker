@@ -29,6 +29,21 @@ isValidVariant() {
     echo ${result}
 }
 
+shouldSkipVariant() {
+    variant="$1"
+
+    skip_variant="false"
+    for variant_to_skip in $VARIANT_SKIP
+    do
+        if [[ "$variant_to_skip" == "$variant" ]];then
+            skip_variant="true"
+            break
+        fi
+    done
+
+    echo "$skip_variant"
+}
+
 buildVariantImage() {
     VARIANT=$1
     VERSION="$(cat variants/${VARIANT}/version.txt)"
@@ -37,8 +52,10 @@ buildVariantImage() {
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}-${VARIANT}.${BUILD}
 
-    if [[ "$(echo $VARIANT_SKIP | grep -o $VARIANT)" == "" ]]; then
-        echo "~~~~~~ Building the docker container for the Meterian Scanner client"
+    skip_variant="$(shouldSkipVariant $VARIANT)"
+
+    if [[ "$skip_variant" == "false" ]]; then
+        echo "~~~~~~ Building the docker image for the Meterian Scanner client - '$VARIANT variant'"
         docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
                     -f variants/${VARIANT}/Dockerfile .
     else
@@ -53,7 +70,7 @@ buildFullImage() {
     BUILD=${CIRCLE_BUILD_NUM:-000}
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
 
-    echo "~~~~~~ Building the docker container for the Meterian Scanner client"
+    echo "~~~~~~ Building the full docker image for the Meterian Scanner client"
     docker build -t ${DOCKER_FULL_IMAGE_NAME}-tmp -t ${DOCKER_IMAGE_NAME}:latest-tmp --build-arg VERSION=${VERSION_WITH_BUILD} .
 
     DOCKER_BIN="$(which docker)"
@@ -93,7 +110,11 @@ if [[ "$*" =~ "--build-all" ]];
 then
     echo Building all...
 
-    buildFullImage
+    # build full image unless we want it to be skipped
+    if [[ -z "$(echo "$VARIANT_SKIP" | grep -o full)" ]]; then
+        buildFullImage
+    fi
+
     for variant in ${VARIANTS[@]}; do
         buildVariantImage "${variant}"
     done
