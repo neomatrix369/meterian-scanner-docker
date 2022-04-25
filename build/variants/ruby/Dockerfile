@@ -13,7 +13,7 @@ RUN min-apk-add openjdk11
 
 
 # Ruby install
-ARG RUBY_VERSION=2.7.5-r0
+ARG RUBY_VERSION=2.7.6-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 
