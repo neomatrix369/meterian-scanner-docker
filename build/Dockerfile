@@ -89,7 +89,7 @@ RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-tes
 
 
 # Ruby install
-ARG RUBY_VERSION=2.7.5-r0
+ARG RUBY_VERSION=2.7.6-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
 
 
