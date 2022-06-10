@@ -9,6 +9,7 @@ source ~/.bashrc
 
 
 CLIENT_ENV=${CLIENT_ENV:-"www"}
+CLIENT_PROTO=${CLIENT_PROTO:-"https"}
 CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE:-"true"}
 
 # uses expr; if something is matched it returns the length of it otherwise 0
@@ -90,11 +91,19 @@ if [[ -n "${CLIENT_CANARY_FLAG}" ]];
 then
 	METERIAN_JAR=/tmp/meterian-cli-canary.jar
 	# update cli-canary if necessary
-	updateClient "${METERIAN_JAR}" "https://${CLIENT_ENV}.meterian.io/downloads/meterian-cli-canary.jar"
+	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.meterian.io/downloads/meterian-cli-canary.jar"
 	
 else
 	# update the client if necessary
-	updateClient "${METERIAN_JAR}" "https://${CLIENT_ENV}.meterian.com/downloads/meterian-cli.jar"
+	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.meterian.com/downloads/meterian-cli.jar"
+fi
+
+if [[ ! -f ${METERIAN_JAR} ]]; then
+	if [[ "${CLIENT_AUTO_UPDATE}" == "false" ]]; then
+		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $CLIENT_ENV client"
+	else
+		echo "Unexpected error: client update failed"
+	fi
 fi
 
 # launching the client - note the different launch if version requested to preserve the "--version" base functionality
