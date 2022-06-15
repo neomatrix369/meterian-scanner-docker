@@ -25,7 +25,7 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
 		echo
-		echo " Please create a token from your account at https://meterian.com/account/#tokens "
+		echo " Please create a token from your account at https://www.meterian.io/dashboard/#tokens "
 		echo " and populate the variable with the value of the token "
 		echo
 		echo " For example: "
@@ -74,7 +74,7 @@ updateClient() {
 	fi
 }
 
-INDEPENDENT_METERIAN_CLI_OPTIONS='.*--version.*\|.*--help.*\|.*--detect.*\|.*--oss.*'
+INDEPENDENT_METERIAN_CLI_OPTIONS='.*--version.*\|.*--help.*\|.*--detect.*\|.*--oss.*\|.*--no-analysis.*'
 VERSION_FLAG_REGEXP='.*--version.*'
 
 # dump docker packaged version unless '--version' requested
