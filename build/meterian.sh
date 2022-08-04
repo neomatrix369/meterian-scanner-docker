@@ -85,25 +85,28 @@ if [[ $(regexMatch "${METERIAN_CLI_ARGS}" $VERSION_FLAG_REGEXP) -eq 0 ]]; then
 fi
 
 # meterian jar location
-METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
+METERIAN_JAR=""
+METERIAN_JAR_URL=""
 
-# download canary client if flag is set
+# select canary client if flag is set
 if [[ -n "${CLIENT_CANARY_FLAG}" ]];
 then
-	METERIAN_JAR=/tmp/meterian-cli-canary.jar
-	# update cli-canary if necessary
-	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
+	METERIAN_JAR=/tmp/meterian-cli-${CLIENT_ENV}-canary.jar
+	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
 	
 else
-	# update the client if necessary
-	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
+        METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
+	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
 fi
+
+# update the client if necessary
+updateClient "${METERIAN_JAR}" "${METERIAN_JAR_URL}"
 
 if [[ ! -f ${METERIAN_JAR} ]]; then
 	if [[ "${CLIENT_AUTO_UPDATE}" == "false" ]]; then
 		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $CLIENT_ENV client"
 	else
-		echo "Unexpected error: client update failed"
+		echo "Unexpected error: client update failed - url: ${METERIAN_JAR_URL}"
 	fi
 fi
 
