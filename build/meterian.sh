@@ -10,6 +10,7 @@ source ~/.bashrc
 
 CLIENT_ENV=${CLIENT_ENV:-"www"}
 CLIENT_PROTO=${CLIENT_PROTO:-"https"}
+CLIENT_DOMAIN=${CLIENT_DOMAIN:-"meterian.io"}
 CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE:-"true"}
 
 # uses expr; if something is matched it returns the length of it otherwise 0
@@ -25,7 +26,7 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
 		echo
-		echo " Please create a token from your account at https://www.meterian.io/dashboard/#tokens "
+		echo " Please create a token from your account at ${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/dashboard/#tokens "
 		echo " and populate the variable with the value of the token "
 		echo
 		echo " For example: "
@@ -84,25 +85,28 @@ if [[ $(regexMatch "${METERIAN_CLI_ARGS}" $VERSION_FLAG_REGEXP) -eq 0 ]]; then
 fi
 
 # meterian jar location
-METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
+METERIAN_JAR=""
+METERIAN_JAR_URL=""
 
-# download canary client if flag is set
+# select canary client if flag is set
 if [[ -n "${CLIENT_CANARY_FLAG}" ]];
 then
-	METERIAN_JAR=/tmp/meterian-cli-canary.jar
-	# update cli-canary if necessary
-	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.meterian.io/downloads/meterian-cli-canary.jar"
-	
+	METERIAN_JAR=/tmp/meterian-cli-${CLIENT_ENV}-canary.jar
+	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
+
 else
-	# update the client if necessary
-	updateClient "${METERIAN_JAR}" "${CLIENT_PROTO}://${CLIENT_ENV}.meterian.com/downloads/meterian-cli.jar"
+        METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
+	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
 fi
+
+# update the client if necessary
+updateClient "${METERIAN_JAR}" "${METERIAN_JAR_URL}"
 
 if [[ ! -f ${METERIAN_JAR} ]]; then
 	if [[ "${CLIENT_AUTO_UPDATE}" == "false" ]]; then
 		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $CLIENT_ENV client"
 	else
-		echo "Unexpected error: client update failed"
+		echo "Unexpected error: client update failed - url: ${METERIAN_JAR_URL}"
 	fi
 fi
 
