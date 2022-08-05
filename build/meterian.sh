@@ -26,7 +26,7 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
 		echo
-		echo " Please create a token from your account at https://www.${CLIENT_DOMAIN}/dashboard/#tokens "
+		echo " Please create a token from your account at ${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/dashboard/#tokens "
 		echo " and populate the variable with the value of the token "
 		echo
 		echo " For example: "
@@ -93,7 +93,7 @@ if [[ -n "${CLIENT_CANARY_FLAG}" ]];
 then
 	METERIAN_JAR=/tmp/meterian-cli-${CLIENT_ENV}-canary.jar
 	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
-	
+
 else
         METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
 	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
