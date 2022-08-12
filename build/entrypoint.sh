@@ -1,7 +1,11 @@
 #!/bin/bash
 
+if [[ "$*" =~ --debug ]]; then
+    set -x
+fi
 set -e
 set -o pipefail
+
 
 # rust-specifics
 chmod -R 777 /opt/rust/ >> /dev/null 2>&1 || true
@@ -47,7 +51,11 @@ chmod 777 /tmp/meterian-cli-www.jar 2>/dev/null || true
 chown meterian:meterian /home/meterian 2>/dev/null || true
 
 # launch meterian client with the newly created user
-su meterian -c -m /tmp/meterian.sh 2>/dev/null
+if [[ "$*" =~ --debug ]];then
+    su meterian -c -m /tmp/meterian.sh
+else
+    su meterian -c -m /tmp/meterian.sh  2>/dev/null
+fi
 
 # please do not add any command here as we need to preserve the exit status
 # of the meterian client

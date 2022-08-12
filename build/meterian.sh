@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$METERIAN_CLI_ARGS" =~ --debug ]]; then
+    set -x
+fi
+
 # Adjusting PATH so that all needed tools are found
 echo 'export PATH=${ORIGINAL_PATH}' >> ~/.bashrc
 

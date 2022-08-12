@@ -136,7 +136,7 @@ RUN rustup set profile minimal \
 
 
 # Python install
-RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev \
+RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev libxslt-dev libxml2-dev \
  && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
  && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools
 
