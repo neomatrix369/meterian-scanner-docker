@@ -10,9 +10,6 @@ set -o pipefail
 # rust-specifics
 chmod -R 777 /opt/rust/ >> /dev/null 2>&1 || true
 
-# prepare the script file
-cp /root/meterian.sh /tmp/meterian.sh
-cp /root/version.txt /tmp/version.txt
 export METERIAN_CLI_ARGS=$*
 export ORIGINAL_PATH=$PATH
 
@@ -44,6 +41,9 @@ then
     mkdir /home/meterian
 fi
 
+# prep resources in /home/meterian
+install -m 775 -o meterian -g meterian /root/meterian.sh /root/version.txt /home/meterian/
+
 # granting permissions to manipulate client jar 
 chmod 777 /tmp/meterian-cli-www.jar 2>/dev/null || true
 
@@ -51,10 +51,11 @@ chmod 777 /tmp/meterian-cli-www.jar 2>/dev/null || true
 chown meterian:meterian /home/meterian 2>/dev/null || true
 
 # launch meterian client with the newly created user
+meterian_script=/home/meterian/meterian.sh
 if [[ "$*" =~ --debug ]];then
-    su meterian -c -m /tmp/meterian.sh
+    su meterian -c -m $meterian_script
 else
-    su meterian -c -m /tmp/meterian.sh  2>/dev/null
+    su meterian -c -m $meterian_script  2>/dev/null
 fi
 
 # please do not add any command here as we need to preserve the exit status
