@@ -84,7 +84,7 @@ VERSION_FLAG_REGEXP='.*--version.*'
 
 # dump docker packaged version unless '--version' requested
 if [[ $(regexMatch "${METERIAN_CLI_ARGS}" $VERSION_FLAG_REGEXP) -eq 0 ]]; then
-	cat /tmp/version.txt
+	cat ~/version.txt
 	exitWithErrorMessageWhenApiTokenIsUnset
 fi
 
@@ -99,7 +99,7 @@ then
 	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
 
 else
-        METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
+	METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
 	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
 fi
 
@@ -128,7 +128,7 @@ client_exit_code=$?
 
 # dump docker packaged version, right after the client version if the --version option was specified
 if [[ $(regexMatch "${METERIAN_CLI_ARGS}" $VERSION_FLAG_REGEXP) -gt 0 ]];then
-    cat /tmp/version.txt        # 0 exit code but it's okay
+    cat ~/version.txt        # 0 exit code but it's okay
 fi
 
 exit "$client_exit_code"
