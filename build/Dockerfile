@@ -112,7 +112,8 @@ RUN min-apk-add go --repository=http://dl-cdn.alpinelinux.org/alpine/edge/commun
 
 
 # NodeJS (npm) install
-RUN min-apk-add npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
+RUN min-apk-add yarn \
+ && min-apk-add npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
 
 
 # SCALA install
@@ -169,7 +170,7 @@ RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/ve
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
  && apk update \
  && min-apk-add -u libbsd=0.11.3-r0 \
- && min-apk-add -u libx11=1.7.2-r0
+ && min-apk-add -u libx11=1.7.3.1-r0
 
 
 ### Final entrypoint setup
