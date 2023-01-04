@@ -83,7 +83,6 @@ else
 
     VOLUME_BINDS=(
         "$HOME/.cache::$CONTAINER_HOME_DIR/.cache"
-        "$HOME/.local::$CONTAINER_HOME_DIR/.local"
     # maven specific mappings
         "$HOME/.m2::$CONTAINER_HOME_DIR/.m2"
     # dotnet specific mappings
