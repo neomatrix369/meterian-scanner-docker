@@ -19,6 +19,11 @@ do
     fi
 done
 
+if [[ "$*" =~ --process-notebooks ]]; then
+    echo "Python notebooks scan detected, the dedicated image 'meterian/cli:latest-python' will be employed"
+    VERSION="latest-python"
+fi
+
 DOCKER_FULL_IMAGE_NAME="meterian/cli:${VERSION}"
 WORKDIR=${METERIAN_WORKDIR:-$(pwd)}
 echo "Current work directory: ${WORKDIR}"
