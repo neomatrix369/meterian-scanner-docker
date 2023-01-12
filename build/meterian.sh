@@ -110,7 +110,8 @@ if [[ ! -f ${METERIAN_JAR} ]]; then
 	if [[ "${CLIENT_AUTO_UPDATE}" == "false" ]]; then
 		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $CLIENT_ENV client"
 	else
-		echo "Unexpected error: client update failed - url: ${METERIAN_JAR_URL}"
+		echo "Unexpected error: client update failed via url: ${METERIAN_JAR_URL}"
+		echo "Please ensure connections to ${METERIAN_JAR_URL} are permitted from the Docker container"
 	fi
 fi
 
