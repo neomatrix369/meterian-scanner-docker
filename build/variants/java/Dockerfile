@@ -57,6 +57,14 @@ RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.or
  && ant -version; echo
 
 
+# Clojure specifics
+RUN min-apk-add rlwrap=0.45.2-r1 leiningen=2.9.8-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.16/community \
+ && curl -o /tmp/posix-install-1.11.1.1208.sh https://download.clojure.org/install/posix-install-1.11.1.1208.sh \
+ && chmod +x /tmp/posix-install-1.11.1.1208.sh \
+ && /tmp/posix-install-1.11.1.1208.sh \
+ && rm /tmp/posix-install-1.11.1.1208.sh
+
+
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
