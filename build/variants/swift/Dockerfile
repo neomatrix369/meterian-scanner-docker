@@ -7,7 +7,10 @@ RUN apt update \
 RUN apt install -y openjdk-11-jdk
 
 # install ruby
-RUN apt install -y ruby2.7 ruby-bundler
+RUN apt install -y ruby2.7 ruby2.7-dev ruby-bundler libffi-dev g++ make
+
+# install cocoapods
+RUN gem install cocoapods -v 1.10.2
 
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
