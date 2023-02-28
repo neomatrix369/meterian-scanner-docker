@@ -1,43 +1,29 @@
-FROM alpine:3.12
-COPY ./alpine/util/* /usr/local/bin/
+FROM swift:5.7.3-focal
 
+RUN apt update \
+ && apt install -y curl
 
-# General setup
-RUN apk update \
- && min-apk-add binutils curl coreutils git openssh \
- && apk upgrade musl
+# install java
+RUN apt install -y openjdk-11-jdk
 
+# install ruby
+RUN apt install -y ruby2.7 ruby2.7-dev ruby-bundler libffi-dev g++ make
 
-# JAVA install
-RUN min-apk-add openjdk11
+# install cocoapods
+RUN gem install cocoapods -v 1.10.2
 
+### Setup initial meterian client (it will be updated if required)
+RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 
-# Ruby install
-ARG RUBY_VERSION=2.7.6-r0
-RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
-
-
-# Swift (Cocoapods) install
-RUN min-apk-add git \
- && min-gem-install cocoapods -v 1.10.2
-
-
-# Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
-RUN min-apk-add shadow \
- && min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main
-
-# Meterian client Download
-RUN wget -q -O /tmp/meterian-cli-www.jar https://www.meterian.com/downloads/meterian-cli.jar
-
-
-### Setup dockerized version stamp
+### Setup dockerize version stamp
 ARG VERSION
 RUN test -n "${VERSION}"
-RUN echo "" >> /root/version.txt
-RUN echo "© 2017-2021 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
-
+RUN  echo "© 2017-2021 Meterian Ltd - dockerized version ${VERSION}" > /root/version.txt
 
 ### Final entrypoint setup
 WORKDIR /root
 COPY ./*.sh ./
 ENTRYPOINT ["/root/entrypoint.sh"]
+
+### Removing vulnerable components, also they are not used for the purpose of this image
+RUN apt-get remove -qy mercurial && apt autoremove -qy --purge
