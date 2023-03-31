@@ -11,8 +11,8 @@ curl -sS https://raw.githubusercontent.com/MeterianHQ/meterian-github-action/$VE
 curl -sS https://raw.githubusercontent.com/MeterianHQ/meterian-github-action/$VERSION/meterian.sh -o /root/meterian.sh
 
 currDir=$(pwd)
-UID="$(stat -c '%u' "${currDir}")"
-GID="$(stat -c '%g' "${currDir}")"
-chown -R $UID:$GID .
+THE_UID="$(stat -c '%u' "${currDir}")"
+THE_GID="$(stat -c '%g' "${currDir}")"
+chown -R $THE_UID:$THE_GID .
 
 /root/entrypoint.sh
