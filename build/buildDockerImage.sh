@@ -80,7 +80,7 @@ buildFullImage() {
 
     echo "~~~~~~ Building the full docker image for the Meterian Scanner client"
     if [[ "${CIRCLE_CI_BRANCH:-}" != "OFFLINE" ]]; then
-        docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+        docker buildx build --platform amd64,arm64 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
                     --build-arg VERSION=${VERSION_WITH_BUILD} --push .
     else
         for arch in amd64 arm64  ; do 
