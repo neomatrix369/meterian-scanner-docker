@@ -56,8 +56,8 @@ buildVariantImage() {
 
     if [[ "$skip_variant" == "false" ]]; then
         echo "~~~~~~ Building the docker image for the Meterian Scanner client - '$VARIANT variant'"
-        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
-                    -f variants/${VARIANT}/Dockerfile .
+        docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+                    --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile --push .
     else
         echo "Skipping build for ${DOCKER_FULL_IMAGE_NAME} due to variant skip rule"
     fi
@@ -71,14 +71,8 @@ buildFullImage() {
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
 
     echo "~~~~~~ Building the full docker image for the Meterian Scanner client"
-    docker build -t ${DOCKER_FULL_IMAGE_NAME}-tmp -t ${DOCKER_IMAGE_NAME}:latest-tmp --build-arg VERSION=${VERSION_WITH_BUILD} .
-
-    DOCKER_BIN="$(which docker)"
-    echo "~~~~~~ Squashing ${DOCKER_FULL_IMAGE_NAME} & ${DOCKER_IMAGE_NAME}:latest"
-    docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock \
-                    -v "${DOCKER_BIN}":"${DOCKER_BIN}" \
-                    meterian/docker-squash:latest -t ${DOCKER_FULL_IMAGE_NAME} ${DOCKER_FULL_IMAGE_NAME}-tmp
-    docker tag ${DOCKER_FULL_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest
+    docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+                --build-arg VERSION=${VERSION_WITH_BUILD} --push .
 }
 
 getVariants() {
@@ -96,6 +90,18 @@ getVariants() {
     echo "${variants[@]}"
 }
 
+isImageVersionOnDockerHub() {
+    version=$1
+    
+    res=1
+    if [[ $(curl -o /dev/null -s -w "%{http_code}\n" "https://hub.docker.com/v2/repositories/${METERIAN_REPO_NAME}/tags/${version}") -eq 200 ]];
+    then
+        res=0
+    fi
+    
+    echo "${res}"
+}
+
 VARIANTS=$(getVariants)
 # # test checking VARIANTS 
 #echo "${VARIANTS[@]}"
@@ -106,17 +112,29 @@ then
     exit
 fi
 
+docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
+
 if [[ "$*" =~ "--build-all" ]];
 then
     echo Building all...
 
-    # build full image unless we want it to be skipped
+    # build new full image unless we want it to be skipped
     if [[ -z "$(echo "$VARIANT_SKIP" | grep -o full)" ]]; then
-        buildFullImage
+        image_tag="$(cat ../version.txt)"
+        if [[ ! "$(isImageVersionOnDockerHub ${image_tag})" -eq 0 ]];then
+            buildFullImage
+        else
+            echo "Tag version ${image_tag} found on DockerHub, build will be skipped"
+        fi
     fi
 
     for variant in ${VARIANTS[@]}; do
-        buildVariantImage "${variant}"
+        image_tag="$(cat variants/${variant}/version.txt)-${variant}"
+        if [[ ! "$(isImageVersionOnDockerHub ${image_tag})" -eq 0 ]];then
+            buildVariantImage "${variant}"
+        else
+            echo "Tag version ${image_tag} found on DockerHub, build will be skipped"
+        fi
     done
 else
     echo "Specific variant build requested: ${1}"
