@@ -56,8 +56,16 @@ buildVariantImage() {
 
     if [[ "$skip_variant" == "false" ]]; then
         echo "~~~~~~ Building the docker image for the Meterian Scanner client - '$VARIANT variant'"
-        docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
-                    --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile --push .
+
+        if [[ "${CIRCLE_CI_BRANCH:-}" != "OFFLINE" ]]; then
+            docker buildx build --platform amd64,arm64 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+                        --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile --push .
+        else
+            for arch in amd64 arm64  ; do 
+                docker buildx build --platform $arch --output type=docker -t ${DOCKER_FULL_IMAGE_NAME}-${arch} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT}-${arch} \
+                    --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile .
+            done
+        fi
     else
         echo "Skipping build for ${DOCKER_FULL_IMAGE_NAME} due to variant skip rule"
     fi
@@ -71,8 +79,15 @@ buildFullImage() {
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
 
     echo "~~~~~~ Building the full docker image for the Meterian Scanner client"
-    docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
-                --build-arg VERSION=${VERSION_WITH_BUILD} --push .
+    if [[ "${CIRCLE_CI_BRANCH:-}" != "OFFLINE" ]]; then
+        docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+                    --build-arg VERSION=${VERSION_WITH_BUILD} --push .
+    else
+        for arch in amd64 arm64  ; do 
+            docker buildx build --platform $arch --output type=docker -t ${DOCKER_FULL_IMAGE_NAME}-${arch} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT}-${arch} \
+                --build-arg VERSION=${VERSION_WITH_BUILD} .
+        done
+    fi
 }
 
 getVariants() {
@@ -112,7 +127,9 @@ then
     exit
 fi
 
-docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
+if [[ "${CIRCLE_CI_BRANCH:-}" != "OFFLINE" ]];then
+    docker login --username=${DOCKER_USER_NAME} --password=${DOCKER_PASSWORD:-}
+fi
 
 if [[ "$*" =~ "--build-all" ]];
 then
