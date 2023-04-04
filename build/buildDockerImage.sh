@@ -56,8 +56,13 @@ buildVariantImage() {
 
     if [[ "$skip_variant" == "false" ]]; then
         echo "~~~~~~ Building the docker image for the Meterian Scanner client - '$VARIANT variant'"
-        docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
-                    -f variants/${VARIANT}/Dockerfile .
+        if [[ "$(echo "$variant" | grep -o arm64)" == "arm64" ]]; then
+            docker buildx build --platform arm64 --output type=docker -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+                --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile .            
+        else
+            docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
+                        -f variants/${VARIANT}/Dockerfile .
+        fi
     else
         echo "Skipping build for ${DOCKER_FULL_IMAGE_NAME} due to variant skip rule"
     fi
