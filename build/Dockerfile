@@ -67,7 +67,7 @@ RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.or
 # DOTNET install
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT="1"
 COPY --from=binariesStash /binaries/dotnet/ /usr/lib/dotnet
-RUN min-apk-add libstdc++ libintl \
+RUN min-apk-add libstdc++ libintl exiftool \
  && ln -s /usr/lib/dotnet/dotnet /usr/bin/dotnet \
  && source /etc/profile
 

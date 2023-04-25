@@ -34,7 +34,7 @@ RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.1
 # DOTNET install
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT="1"
 COPY --from=binariesStash /binaries/dotnet/ /usr/lib/dotnet
-RUN min-apk-add libstdc++ libintl \
+RUN min-apk-add libstdc++ libintl exiftool \
  && ln -s /usr/lib/dotnet/dotnet /usr/bin/dotnet \
  && source /etc/profile
 
