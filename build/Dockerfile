@@ -43,8 +43,8 @@ RUN apk update \
 # JAVA install
 ARG MAVEN_VERSION=3.6.3-r0
 ARG GRADLE_VERSION=6.7.1-r0
-RUN min-apk-add openjdk11 maven=${MAVEN_VERSION} \
- && min-apk-add gradle=${GRADLE_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.13/community
+RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community \
+ && min-apk-add maven=${MAVEN_VERSION} gradle=${GRADLE_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.13/community
 
 # Ant specifics
 ENV ANT_HOME=/usr/share/ant
@@ -137,9 +137,12 @@ RUN rustup set profile minimal \
 
 
 # Python install
-RUN min-apk-add python3 py3-pip python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev libxslt-dev libxml2-dev \
+RUN min-apk-add python3 python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev libxslt-dev libxml2-dev \
  && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
- && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter setuptools
+ && curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
+ && python3 /tmp/get-pip.py \
+ && rm /tmp/get-pip.py \
+ && min-pip3-install --ignore-installed setuptools distlib pipenv pipreqs jupyter
 
 
 # Conan install
