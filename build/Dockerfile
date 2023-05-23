@@ -146,7 +146,7 @@ RUN min-apk-add python3 python3-dev python2 libffi-dev python2-dev zeromq-dev gd
 
 
 # Conan install
-RUN pip3 install conan
+RUN pip3 install conan==1.60.0
 
 
 # R and renv install
