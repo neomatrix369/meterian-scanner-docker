@@ -4,7 +4,7 @@ RUN apt update \
  && apt install -y curl
 
 # install java
-RUN apt install -y openjdk-11-jdk
+RUN apt install -y openjdk-17-jdk
 
 # install ruby
 RUN apt install -y ruby2.7 ruby2.7-dev ruby-bundler libffi-dev g++ make
