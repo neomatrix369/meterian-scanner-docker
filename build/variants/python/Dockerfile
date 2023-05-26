@@ -1,4 +1,4 @@
-FROM openjdk:11.0.12-slim-buster
+FROM openjdk:17.0.2-slim-buster
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

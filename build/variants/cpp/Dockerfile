@@ -9,15 +9,18 @@ RUN apk update \
 
 
 # JAVA install
-RUN min-apk-add openjdk11
+RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community
 
 
 # Python install
-RUN min-apk-add libstdc++ python3 py3-pip python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev \
- && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev
+RUN min-apk-add libstdc++ python3 python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev \
+ && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
+ && curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
+ && python3 /tmp/get-pip.py \
+ && rm /tmp/get-pip.py
 
 # Conan install
-RUN pip3 install conan
+RUN pip3 install conan==1.60.0
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow \

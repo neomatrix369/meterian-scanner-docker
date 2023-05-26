@@ -9,7 +9,7 @@ RUN apk update \
 
 
 # JAVA install
-RUN min-apk-add openjdk11
+RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community
 
 
 # GO install
