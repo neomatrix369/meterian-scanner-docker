@@ -20,7 +20,7 @@ RUN apt install -qy build-essential zlib1g-dev libncurses5-dev libgdbm-dev libns
   && apt-get install -qy python3-pip \
   && pip3 install --upgrade pip \
   && echo -ne "\n$(pip3 --version)\n" \
-  && pip3 install jupyter pipreqs pipenv \
+  && pip3 install jupyter pipreqs pipenv==2022.12.19 \
   && apt-get install -qy python-pip \
   && echo -ne "\n$(pip --version)\n" \
   && rm -rf /tmp/Python-3.8.2
