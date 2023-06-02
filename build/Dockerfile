@@ -1,7 +1,7 @@
 # Helper images 'import' for bin copy/installation
 FROM rust:1.53.0-alpine3.12 as rustBin
 
-FROM alpine:3.12 as binariesStash
+FROM alpine:3.17.2 as binariesStash
 
 ARG DOTNET_VERSION=3.1.410
 ARG DOTNET_DOWNLOAD_SHA="d844e044d7dfbca0b69913c3d5a5dde0f46ddf4a43c1e8c2a474dc65c3089521d0e946507ede4654efc4281314360c66f5c477ee90e1e80f30115e7a5aa1b586"
@@ -30,7 +30,7 @@ RUN tar xzf sbt-${SBT_VERSION}.tgz -C sbt --strip-components=1
 
 
 # Final image build steps
-FROM alpine:3.12
+FROM alpine:3.17.2
 COPY ./alpine/util/* /usr/local/bin/
 
 
@@ -41,7 +41,7 @@ RUN apk update \
 
 
 # JAVA install
-ARG MAVEN_VERSION=3.6.3-r0
+ARG MAVEN_VERSION=3.8.6-r0
 ARG GRADLE_VERSION=8.0.2
 ENV PATH=${PATH}:/opt/gradle/gradle-${GRADLE_VERSION}/bin/
 RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community \
@@ -54,7 +54,7 @@ RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.1
 ENV ANT_HOME=/usr/share/ant
 ENV PATH=${PATH}:${ANT_HOME}/bin
 ARG ANT_VERSION=1.10.12
-ARG IVY_VERSION=2.5.0
+ARG IVY_VERSION=2.5.1
 RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.org//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && mkdir -p /usr/share/ant \
  && tar xzf /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz -C /usr/share/ant --strip-components=1 \
@@ -74,10 +74,10 @@ RUN min-apk-add libstdc++ libintl exiftool \
 
 # PERL (plus carton) install
 ARG MOD_PERL2_SHA="890dca0950847e32180485cabbeffbf236af2c92c7df957a233c210022b5172957eddb1db3e9281b87cd438d2fa404a05ae99c7eda098267c68d5e9262b400b0"
-RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-test-harness-utils \
+RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-test-harness-utils=3.42-r1 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.12/main \
  # later versions of make don't work with carton for some reason
  && min-apk-add make=4.2.1-r2 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.9/main \
- && min-apk-add ncurses-dev readline-dev perl-net-ssleay openssl gd-dev libjpeg-turbo-dev apache2-dev mariadb-client \
+ && min-apk-add ncurses-dev readline-dev perl-net-ssleay openssl gd-dev libjpeg-turbo-dev apr-util-dev=1.6.1-r6 openldap-dev=2.4.58-r0 apache2-dev=2.4.53-r0 mariadb-client --repository=http://dl-cdn.alpinelinux.org/alpine/v3.12/main \
  # mod_perl2 module installation (https://perl.apache.org/download/)
  && wget -q -O /tmp/mod_perl-2.0.12.tar.gz https://dlcdn.apache.org/perl/mod_perl-2.0.12.tar.gz \
  && echo "${MOD_PERL2_SHA}  /tmp/mod_perl-2.0.12.tar.gz" | sha512sum -c - \
@@ -94,18 +94,17 @@ RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-tes
 
 
 # Ruby install
-ARG RUBY_VERSION=2.7.6-r0
-RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION}
+ARG RUBY_VERSION=3.1.4-r0
+RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.17/main
 
 
 # Swift (Cocoapods) install
-# Specifically installing due to issue https://github.com/CocoaPods/CocoaPods/issues/10930 affecting v1.11.0
 RUN min-apk-add \
- && min-gem-install cocoapods -v 1.10.2
+ && min-gem-install cocoapods -v 1.12.1
 
 
 # PHP (Composer) install
-RUN min-apk-add php7 php-phar drupal7 \
+RUN min-apk-add php81 php81-phar drupal7 \
  && curl -sS https://getcomposer.org/installer -o composer-setup.php \
  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
  && rm composer-setup.php
@@ -113,7 +112,7 @@ RUN min-apk-add php7 php-phar drupal7 \
 
 # GO install
 ENV GOROOT /usr/lib/go
-RUN min-apk-add go --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN min-apk-add go
 
 
 # NodeJS (npm) install
@@ -125,8 +124,7 @@ RUN min-apk-add yarn \
 ENV PATH=${PATH}:/usr/local/sbt/bin
 COPY --from=binariesStash /binaries/scala/ /usr/share/scala/
 COPY --from=binariesStash /binaries/sbt/ /usr/local/sbt/
-# installing min version possible of bash only for scala and sbt that require it
-RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
+RUN min-apk-add bash --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main \
  && ln -s /usr/share/scala/bin/scala /usr/bin/scala
 
 
@@ -142,12 +140,14 @@ RUN rustup set profile minimal \
 
 
 # Python install
-RUN min-apk-add python3 python3-dev python2 libffi-dev python2-dev zeromq-dev gdal-dev libxslt-dev libxml2-dev \
- && min-apk-add g++ zlib-dev openblas-dev cmake openssl-libs-static openssl-dev \
+ARG REPOS="--repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main"
+RUN min-apk-add python2=2.7.18-r4 python2-dev=2.7.18-r4 python3=3.8.10-r0 python3=3.9.16-r0 python3-dev=3.9.16-r0 zeromq-dev=4.3.4-r0 gdal-dev=3.4.3-r0 libxslt-dev=1.1.35-r0 ${REPOS} \
+ && min-apk-add g++ openblas-dev=0.3.18-r1 cmake openssl-libs-static openssl-dev ${REPOS} \
  && curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
  && python3 /tmp/get-pip.py \
  && rm /tmp/get-pip.py \
- && min-pip3-install --ignore-installed setuptools distlib pipenv pipreqs jupyter
+ && min-apk-add linux-headers \
+ && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter
 
 
 # Conan install
@@ -184,12 +184,6 @@ ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
 RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
-
-# Vuln patches
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
- && apk update \
- && min-apk-add -u libbsd=0.11.3-r0 \
- && min-apk-add -u libx11=1.7.3.1-r0
 
 
 ### Final entrypoint setup
