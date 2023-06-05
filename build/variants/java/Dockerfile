@@ -1,8 +1,8 @@
 # Helper images 'import' for bin copy/installation
 FROM alpine:3.12 as binariesStash
 
-ARG SCALA_VERSION=2.13.6
-ARG SBT_VERSION=1.5.3
+ARG SCALA_VERSION=2.13.10
+ARG SBT_VERSION=1.9.0
 
 WORKDIR /binaries/
 
