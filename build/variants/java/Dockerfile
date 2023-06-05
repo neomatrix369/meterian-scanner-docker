@@ -51,7 +51,7 @@ RUN min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine
 ENV ANT_HOME=/usr/share/ant
 ENV PATH=${PATH}:${ANT_HOME}/bin
 ARG ANT_VERSION=1.10.12
-ARG IVY_VERSION=2.5.0
+ARG IVY_VERSION=2.5.1
 RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.org//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && mkdir -p /usr/share/ant \
  && tar xzf /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz -C /usr/share/ant --strip-components=1 \
@@ -60,6 +60,8 @@ RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.or
  && rm /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && ant -version; echo
 
+# ivy patch for gradle
+RUN cp ${ANT_HOME}/lib/ivy.jar /opt/gradle/gradle-${GRADLE_VERSION}/lib/plugins/ivy-2.3.0.jar
 
 # Clojure specifics
 RUN min-apk-add rlwrap=0.45.2-r1 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.16/community \

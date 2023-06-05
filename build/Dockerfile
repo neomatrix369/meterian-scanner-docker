@@ -63,6 +63,9 @@ RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.or
  && rm /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && ant -version; echo
 
+# ivy patch for gradle
+RUN cp ${ANT_HOME}/lib/ivy.jar /opt/gradle/gradle-${GRADLE_VERSION}/lib/plugins/ivy-2.3.0.jar
+
 
 # DOTNET install
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT="1"
