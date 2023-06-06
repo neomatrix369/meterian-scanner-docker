@@ -188,6 +188,11 @@ RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
 RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
+# Vuln patches
+RUN apk del apache2-dev
+RUN apk del apr-util-dev
+RUN apk del openldap-dev
+
 
 ### Final entrypoint setup
 WORKDIR /root
