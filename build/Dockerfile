@@ -120,7 +120,7 @@ RUN min-apk-add go
 
 # NodeJS (npm) install
 RUN min-apk-add yarn \
- && min-apk-add npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
+ && min-apk-add npm=8.10.0-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.16/community
 
 
 # SCALA install
@@ -187,6 +187,11 @@ ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
 RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+
+# Vuln patches
+RUN apk del apache2-dev
+RUN apk del apr-util-dev
+RUN apk del openldap-dev
 
 
 ### Final entrypoint setup
