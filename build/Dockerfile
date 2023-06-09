@@ -144,7 +144,7 @@ RUN rustup set profile minimal \
 
 # Python install
 ARG REPOS="--repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main"
-RUN min-apk-add python2=2.7.18-r4 python2-dev=2.7.18-r4 python3=3.8.10-r0 python3=3.9.16-r0 python3-dev=3.9.16-r0 zeromq-dev=4.3.4-r0 gdal-dev=3.4.3-r0 libxslt-dev=1.1.35-r0 ${REPOS} \
+RUN min-apk-add python2=2.7.18-r4 python2-dev=2.7.18-r4 "python3<3.10.0" "python3-dev<3.10.0" zeromq-dev=4.3.4-r0 gdal-dev=3.4.3-r0 libxslt-dev=1.1.35-r0 ${REPOS} \
  && min-apk-add g++ openblas-dev=0.3.18-r1 cmake openssl-libs-static openssl-dev ${REPOS} \
  && curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
  && python3 /tmp/get-pip.py \
