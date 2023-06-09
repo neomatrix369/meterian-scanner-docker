@@ -1,14 +1,14 @@
 # Helper images 'import' for bin copy/installation
 FROM alpine:3.12 as binariesStash
 
-ARG DOTNET_VERSION=3.1.410
-ARG DOTNET_DOWNLOAD_SHA="d844e044d7dfbca0b69913c3d5a5dde0f46ddf4a43c1e8c2a474dc65c3089521d0e946507ede4654efc4281314360c66f5c477ee90e1e80f30115e7a5aa1b586"
+ARG DOTNET_VERSION=3.1.426
+ARG DOTNET_DOWNLOAD_SHA="2854eaeb79b29fce1ae31f2253adb2d8f199b7d5a988fc8c90130afe3df6668893d87c14a86932254bdbaec64a553d7b996bbd6868ba7858e3a2cb28c5e9576d"
 
 WORKDIR /binaries/
 
 # DOTNET bin
 RUN mkdir -p dotnet \
- && wget -q "https://download.visualstudio.microsoft.com/download/pr/7212036d-2481-4cb3-87d3-b559a21f0c34/1953e788344059b0c279879b2ba559e7/dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz"
+ && wget -q "https://download.visualstudio.microsoft.com/download/pr/f8834fef-d2ab-4cf6-abc3-d8d79cfcde11/0ee05ef4af5fe324ce2977021bf9f340/dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz"
 ## Here it's important to keep two spaces between the sha and the download to match sha512sum output
 RUN echo "${DOTNET_DOWNLOAD_SHA}  /binaries/dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz" | sha512sum -c -
 RUN tar -xzf dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz -C dotnet
