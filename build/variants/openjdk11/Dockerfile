@@ -47,8 +47,6 @@ RUN min-apk-add openjdk11 maven=${MAVEN_VERSION} \
  && min-apk-add gradle=${GRADLE_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.13/community
 
 # Ant specifics
-COPY ./ivy/ivy-2.5.1.jar /usr/share/ant/lib/ivy.jar
-
 ENV ANT_HOME=/usr/share/ant
 ENV PATH=${PATH}:${ANT_HOME}/bin
 ARG ANT_VERSION=1.10.12
@@ -56,6 +54,7 @@ ARG IVY_VERSION=2.5.0
 RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.org//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && mkdir -p /usr/share/ant \
  && tar xzf /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz -C /usr/share/ant --strip-components=1 \
+ && wget -q -O ${ANT_HOME}/lib/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/${IVY_VERSION}/ivy-${IVY_VERSION}.jar \
  && ln -s /usr/share/ant/bin/ant /usr/bin/ant \
  && ant -version; echo
 
