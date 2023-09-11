@@ -11,10 +11,14 @@ echo 'export PATH=${ORIGINAL_PATH}' >> ~/.bashrc
 echo 'export RUSTUP_HOME=/opt/rust/rustup' >> ~/.bashrc
 source ~/.bashrc
 
+# Ensuring legacy env are still supported
+METERIAN_ENV=${METERIAN_ENV:-$CLIENT_ENV}
+METERIAN_PROTO=${METERIAN_PROTO:-$CLIENT_PROTO}
+METERIAN_DOMAIN=${METERIAN_DOMAIN:-$CLIENT_DOMAIN}
 
-CLIENT_ENV=${CLIENT_ENV:-"www"}
-CLIENT_PROTO=${CLIENT_PROTO:-"https"}
-CLIENT_DOMAIN=${CLIENT_DOMAIN:-"meterian.io"}
+METERIAN_ENV=${METERIAN_ENV:-"www"}
+METERIAN_PROTO=${METERIAN_PROTO:-"https"}
+METERIAN_DOMAIN=${METERIAN_DOMAIN:-"meterian.io"}
 CLIENT_AUTO_UPDATE=${CLIENT_AUTO_UPDATE:-"true"}
 
 # uses expr; if something is matched it returns the length of it otherwise 0
@@ -30,7 +34,7 @@ exitWithErrorMessageWhenApiTokenIsUnset() {
 		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		echo " The METERIAN_API_TOKEN environment variable must be defined with an API token   "
 		echo
-		echo " Please create a token from your account at ${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/dashboard/#tokens "
+		echo " Please create a token from your account at ${METERIAN_PROTO}://${METERIAN_ENV}.${METERIAN_DOMAIN}/dashboard/#tokens "
 		echo " and populate the variable with the value of the token "
 		echo
 		echo " For example: "
@@ -63,7 +67,7 @@ isClientJarCorrupted() {
 }
 
 updateClient() {
-	if [[ "${CLIENT_AUTO_UPDATE}" == "false" && "${CLIENT_ENV}" != "qa" ]]; then
+	if [[ "${CLIENT_AUTO_UPDATE}" == "false" && "${METERIAN_ENV}" != "qa" ]]; then
 		return
 	fi
 
@@ -95,12 +99,12 @@ METERIAN_JAR_URL=""
 # select canary client if flag is set
 if [[ -n "${CLIENT_CANARY_FLAG}" ]];
 then
-	METERIAN_JAR=/tmp/meterian-cli-${CLIENT_ENV}-canary.jar
-	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli-canary.jar"
+	METERIAN_JAR=/tmp/meterian-cli-${METERIAN_ENV}-canary.jar
+	METERIAN_JAR_URL="${METERIAN_PROTO}://${METERIAN_ENV}.${METERIAN_DOMAIN}/downloads/meterian-cli-canary.jar"
 
 else
-	METERIAN_JAR="/tmp/meterian-cli-${CLIENT_ENV}.jar"
-	METERIAN_JAR_URL="${CLIENT_PROTO}://${CLIENT_ENV}.${CLIENT_DOMAIN}/downloads/meterian-cli.jar"
+	METERIAN_JAR="/tmp/meterian-cli-${METERIAN_ENV}.jar"
+	METERIAN_JAR_URL="${METERIAN_PROTO}://${METERIAN_ENV}.${METERIAN_DOMAIN}/downloads/meterian-cli.jar"
 fi
 
 # update the client if necessary
@@ -108,7 +112,7 @@ updateClient "${METERIAN_JAR}" "${METERIAN_JAR_URL}"
 
 if [[ ! -f ${METERIAN_JAR} ]]; then
 	if [[ "${CLIENT_AUTO_UPDATE}" == "false" ]]; then
-		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $CLIENT_ENV client"
+		echo "Error: CLIENT_AUTO_UPDATE must be enabled to download the $METERIAN_ENV client"
 	else
 		echo "Unexpected error: client update failed via url: ${METERIAN_JAR_URL}"
 		echo "Please ensure connections to ${METERIAN_JAR_URL} are permitted from the Docker container"

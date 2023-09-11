@@ -121,6 +121,10 @@ then
     fi
 
     for variant in ${VARIANTS[@]}; do
+        if [[ "$variant" == "openjdk11" ]]; then
+            echo "Build of variant openjdk11 is temporarily skipped from option build-all"
+            continue
+        fi
         buildVariantImage "${variant}"
     done
 else
