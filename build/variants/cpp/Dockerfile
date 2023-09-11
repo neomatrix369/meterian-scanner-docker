@@ -20,7 +20,7 @@ RUN min-apk-add libstdc++ python3 python3-dev python2 libffi-dev python2-dev zer
  && rm /tmp/get-pip.py
 
 # Conan install
-RUN pip3 install conan==1.60.0
+RUN pip3 install conan==1.60.2
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow \

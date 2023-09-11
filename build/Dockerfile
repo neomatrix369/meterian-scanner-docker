@@ -155,7 +155,7 @@ RUN min-apk-add python2=2.7.18-r4 python2-dev=2.7.18-r4 "python3<3.10.0" "python
 
 
 # Conan install
-RUN pip3 install conan==1.60.0
+RUN pip3 install conan==1.60.2
 
 
 # R and renv install
