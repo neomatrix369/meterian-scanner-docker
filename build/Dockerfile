@@ -51,8 +51,6 @@ RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.1
 
 
 # Ant specifics
-COPY ./ivy/ivy-2.5.1.jar /usr/share/ant/lib/ivy.jar
-
 ENV ANT_HOME=/usr/share/ant
 ENV PATH=${PATH}:${ANT_HOME}/bin
 ARG ANT_VERSION=1.10.14
