@@ -11,7 +11,7 @@ COPY ./variants/gha/meterian_github_action.sh /usr/bin/meterian_github_action.sh
 ### Setup dockerized version stamp
 ARG VERSION
 RUN test -n "${VERSION}"
-RUN echo "" >> /root/version.txt
+RUN echo "" > /root/version.txt
 RUN echo "© 2017-2023 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 ENTRYPOINT ["/root/entrypoint.sh"]
