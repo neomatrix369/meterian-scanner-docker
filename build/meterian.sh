@@ -126,7 +126,7 @@ then
 	if [[ $(regexMatch "${METERIAN_CLI_ARGS}" '.*--oss.*') -gt 0 ]];then
 		CLIENT_VM_PARAMS="${CLIENT_VM_PARAMS} -Dcli.oss.enabled=true"
 	fi
-	java $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS:-} --interactive=false
+	java -Ddockerized.workspace=/workspace $(echo "${CLIENT_VM_PARAMS}") -jar ${METERIAN_JAR} ${METERIAN_CLI_ARGS:-} --interactive=false
 fi
 # storing exit code
 client_exit_code=$?
