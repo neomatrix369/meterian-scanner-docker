@@ -10,7 +10,9 @@ RUN apt install -y openjdk-17-jdk
 RUN apt install -y ruby2.7 ruby2.7-dev ruby-bundler libffi-dev g++ make
 
 # install cocoapods
-RUN gem install cocoapods -v 1.10.2
+RUN gem install activesupport -v 7.0.5 \
+ && gem install cocoapods -v 1.10.2 \
+ && pod --allow-root --version
 
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar

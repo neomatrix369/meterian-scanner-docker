@@ -103,7 +103,9 @@ RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION} --
 
 # Swift (Cocoapods) install
 RUN min-apk-add linux-headers \
- && min-gem-install cocoapods -v 1.12.1
+ && min-gem-install activesupport -v 7.0.5 \
+ && min-gem-install cocoapods -v 1.12.1 \
+ && pod --allow-root --version
 
 
 # PHP (Composer) install
