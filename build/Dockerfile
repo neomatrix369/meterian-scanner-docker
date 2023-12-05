@@ -130,6 +130,7 @@ RUN tar -xzf /tmp/node-v20.10.0-linux-x64-musl.tar.gz --directory /opt/nodejs --
 RUN rm /tmp/node-v20.10.0-linux-x64-musl.tar.gz
 RUN ln -s /opt/nodejs/bin/node /usr/local/bin/node
 RUN ln -s /opt/nodejs/bin/npm /usr/local/bin/npm
+RUN npm install -g npm@10.2.4
 RUN min-apk-add yarn
 
 
