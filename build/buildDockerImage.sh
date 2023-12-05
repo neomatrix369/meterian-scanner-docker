@@ -11,6 +11,12 @@ else
     METERIAN_REPO_NAME="meterian/cli-canary"
 fi
 
+BUILD_NO_CACHE=""
+if [[ "$*" =~ "--no-cache" ]];
+then
+    BUILD_NO_CACHE="--no-cache"
+fi
+
 VARIANT_SKIP=${VARIANT_SKIP:-}
 
 isValidVariant() {
@@ -57,10 +63,10 @@ buildVariantImage() {
     if [[ "$skip_variant" == "false" ]]; then
         echo "~~~~~~ Building the docker image for the Meterian Scanner client - '$VARIANT variant'"
         if [[ "$(echo "$variant" | grep -o arm64)" == "arm64" ]]; then
-            docker buildx build --platform arm64 --output type=docker -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
+            docker buildx build ${BUILD_NO_CACHE:-} --platform arm64 --output type=docker -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} \
                 --build-arg VERSION=${VERSION_WITH_BUILD} -f variants/${VARIANT}/Dockerfile .            
         else
-            docker build -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
+            docker build ${BUILD_NO_CACHE:-} -t ${DOCKER_FULL_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:latest-${VARIANT} --build-arg VERSION=${VERSION_WITH_BUILD} \
                         -f variants/${VARIANT}/Dockerfile .
         fi
     else
@@ -76,7 +82,7 @@ buildFullImage() {
     VERSION_WITH_BUILD=${VERSION}.${BUILD}
 
     echo "~~~~~~ Building the full docker image for the Meterian Scanner client"
-    docker build -t ${DOCKER_FULL_IMAGE_NAME}-tmp -t ${DOCKER_IMAGE_NAME}:latest-tmp --build-arg VERSION=${VERSION_WITH_BUILD} .
+    docker build ${BUILD_NO_CACHE:-} -t ${DOCKER_FULL_IMAGE_NAME}-tmp -t ${DOCKER_IMAGE_NAME}:latest-tmp --build-arg VERSION=${VERSION_WITH_BUILD} .
 
     DOCKER_BIN="$(which docker)"
     echo "~~~~~~ Squashing ${DOCKER_FULL_IMAGE_NAME} & ${DOCKER_IMAGE_NAME}:latest"

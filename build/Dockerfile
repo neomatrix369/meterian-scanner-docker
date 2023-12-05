@@ -122,7 +122,7 @@ RUN min-apk-add go
 
 # NodeJS (npm) install
 RUN min-apk-add yarn \
- && min-apk-add npm=10.2.4-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+ &&  min-apk-add "nodejs>20.5.0" npm=10.2.4-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
 
 # SCALA install
