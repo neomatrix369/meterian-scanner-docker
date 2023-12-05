@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.17.2
 COPY ./alpine/util/* /usr/local/bin/
 
 
@@ -11,15 +11,16 @@ RUN apk update \
 # JAVA install
 RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community
 
+RUN echo pause
 
 # NodeJS (npm) install
 RUN min-apk-add yarn \
- &&  min-apk-add npm=10.2.4-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+ &&  min-apk-add "nodejs>20.5.0" npm=10.2.4-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow \
- && min-apk-add bash=5.0.17-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main
+ && min-apk-add bash
 
 
 # Meterian client Download

@@ -121,8 +121,17 @@ RUN min-apk-add go
 
 
 # NodeJS (npm) install
-RUN min-apk-add yarn \
- && min-apk-add npm=10.2.4-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+ARG NODE_PACKAGE_URL=https://unofficial-builds.nodejs.org/download/release/v20.10.0/node-v20.10.0-linux-x64-musl.tar.gz
+
+RUN min-apk-add libstdc++
+RUN wget -O /tmp/node-v20.10.0-linux-x64-musl.tar.gz ${NODE_PACKAGE_URL}
+RUN mkdir -p /opt/nodejs
+RUN tar -xzf /tmp/node-v20.10.0-linux-x64-musl.tar.gz --directory /opt/nodejs --strip-components=1
+RUN rm /tmp/node-v20.10.0-linux-x64-musl.tar.gz
+RUN ln -s /opt/nodejs/bin/node /usr/local/bin/node
+RUN ln -s /opt/nodejs/bin/npm /usr/local/bin/npm
+RUN npm install -g npm@10.2.4
+RUN min-apk-add yarn
 
 
 # SCALA install
