@@ -111,7 +111,7 @@ VARIANTS=$(getVariants)
 # # test checking VARIANTS 
 #echo "${VARIANTS[@]}"
 
-if [[ "$#" -eq 0 ]];
+if [[ "$#" -eq 0 || "$*" =~ "full" ]];
 then
     buildFullImage
     exit
