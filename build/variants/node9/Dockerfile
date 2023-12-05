@@ -14,7 +14,7 @@ RUN min-apk-add openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.1
 
 # NodeJS (npm) install
 RUN min-apk-add yarn \
- && min-apk-add npm=9.1.2-r0
+ && min-apk-add npm=9.1.2-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.17/community
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
