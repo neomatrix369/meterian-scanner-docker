@@ -49,7 +49,7 @@ RUN min-apk-add openjdk11 maven=${MAVEN_VERSION} \
 # Ant specifics
 ENV ANT_HOME=/usr/share/ant
 ENV PATH=${PATH}:${ANT_HOME}/bin
-ARG ANT_VERSION=1.10.12
+ARG ANT_VERSION=1.10.14
 ARG IVY_VERSION=2.5.0
 RUN wget -q -O /tmp/apache-ant-${ANT_VERSION}-bin.tar.gz https://dlcdn.apache.org//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
  && mkdir -p /usr/share/ant \
