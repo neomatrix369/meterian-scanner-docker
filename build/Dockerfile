@@ -3,20 +3,10 @@ FROM rust:1.53.0-alpine3.12 as rustBin
 
 FROM alpine:3.17.2 as binariesStash
 
-ARG DOTNET_VERSION=3.1.426
-ARG DOTNET_DOWNLOAD_SHA="2854eaeb79b29fce1ae31f2253adb2d8f199b7d5a988fc8c90130afe3df6668893d87c14a86932254bdbaec64a553d7b996bbd6868ba7858e3a2cb28c5e9576d"
-
 ARG SCALA_VERSION=2.13.10
 ARG SBT_VERSION=1.9.0
 
 WORKDIR /binaries/
-
-# DOTNET bin
-RUN mkdir -p dotnet \
- && wget -q "https://download.visualstudio.microsoft.com/download/pr/f8834fef-d2ab-4cf6-abc3-d8d79cfcde11/0ee05ef4af5fe324ce2977021bf9f340/dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz"
-## Here it's important to keep two spaces between the sha and the download to match sha512sum output
-RUN echo "${DOTNET_DOWNLOAD_SHA}  /binaries/dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz" | sha512sum -c -
-RUN tar -xzf dotnet-sdk-${DOTNET_VERSION}-linux-musl-x64.tar.gz -C dotnet
 
 # SCALA bin
 RUN mkdir -p scala sbt \
@@ -69,10 +59,12 @@ RUN cp ${ANT_HOME}/lib/ivy.jar /opt/gradle/gradle-${GRADLE_VERSION}/lib/plugins/
 
 # DOTNET install
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT="1"
-COPY --from=binariesStash /binaries/dotnet/ /usr/lib/dotnet
-RUN min-apk-add libstdc++ libintl exiftool \
+RUN min-apk-add bash icu-dev gcc libstdc++ libintl exiftool \
+ && wget -q -O /tmp/dotnet-install.sh https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh \
+ && chmod +x /tmp/dotnet-install.sh \
+ && mkdir -p /usr/lib/dotnet/; /tmp/dotnet-install.sh --install-dir /usr/lib/dotnet/ --version 6.0.417 \
  && ln -s /usr/lib/dotnet/dotnet /usr/bin/dotnet \
- && source /etc/profile
+ && rm /tmp/dotnet-install.sh
 
 
 # PERL (plus carton) install
