@@ -10,6 +10,9 @@ set -o pipefail
 # rust-specifics
 chmod -R 777 /opt/rust/ >> /dev/null 2>&1 || true
 
+# flutter/dart specifics
+chmod -R 777 /opt/flutter/ >> /dev/null 2>&1 || true
+
 export METERIAN_CLI_ARGS=$*
 export ORIGINAL_PATH=$PATH
 

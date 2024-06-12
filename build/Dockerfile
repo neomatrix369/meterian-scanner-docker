@@ -90,7 +90,7 @@ RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-tes
 
 
 # Ruby install
-ARG RUBY_VERSION=3.1.4-r0
+ARG RUBY_VERSION=3.1.5-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.17/main
 
 
@@ -176,6 +176,16 @@ RUN min-apk-add rlwrap=0.45.2-r1 --repository=http://dl-cdn.alpinelinux.org/alpi
  && chmod +x /tmp/posix-install-1.11.1.1208.sh \
  && /tmp/posix-install-1.11.1.1208.sh \
  && rm /tmp/posix-install-1.11.1.1208.sh
+
+
+# Flutter/Dart install
+# /home/nana/Downloads/flutter_linux_3.22.2-stable.tar.xz
+ARG FLUTTER_VERSION=3.22.2
+RUN apk add gcompat
+RUN git config --global --add safe.directory /usr/lib/flutter
+RUN wget -q -O /tmp/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz \
+ && tar -xf /tmp/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C /opt/ \
+ && /opt/flutter/bin/flutter doctor -v
 
 
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
