@@ -178,16 +178,6 @@ RUN min-apk-add rlwrap=0.45.2-r1 --repository=http://dl-cdn.alpinelinux.org/alpi
  && rm /tmp/posix-install-1.11.1.1208.sh
 
 
-# Flutter/Dart install
-# /home/nana/Downloads/flutter_linux_3.22.2-stable.tar.xz
-ARG FLUTTER_VERSION=3.22.2
-RUN apk add gcompat
-RUN git config --global --add safe.directory /usr/lib/flutter
-RUN wget -q -O /tmp/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz \
- && tar -xf /tmp/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C /opt/ \
- && /opt/flutter/bin/flutter doctor -v
-
-
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
@@ -200,7 +190,7 @@ RUN wget -q -O /tmp/meterian-cli-www.jar https://www.meterian.com/downloads/mete
 ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
-RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+RUN echo "© 2017-2024 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 # Vuln patches
 RUN apk del apache2-dev

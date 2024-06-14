@@ -10,9 +10,6 @@ set -o pipefail
 # rust-specifics
 chmod -R 777 /opt/rust/ >> /dev/null 2>&1 || true
 
-# flutter/dart specifics
-chmod -R 777 /opt/flutter/ >> /dev/null 2>&1 || true
-
 export METERIAN_CLI_ARGS=$*
 export ORIGINAL_PATH=$PATH
 
@@ -52,6 +49,15 @@ chmod 777 /tmp/meterian-cli-www.jar 2>/dev/null || true
 
 #changing home dir group and ownership
 chown meterian:meterian /home/meterian 2>/dev/null || true
+
+# flutter/dart specific prep
+if [[ -d "/home/meterian/bin/flutter" ]];then
+    chown meterian:meterian /workspace/.dart_tool/ 2>/dev/null || true
+    rm -r /workspace/.dart_tool/* 2>/dev/null || true
+
+    chown meterian:meterian /home/meterian 2>/dev/null || true
+    chown -R meterian:meterian /home/meterian/bin/flutter/ 2>/dev/null || true 
+fi
 
 # launch meterian client with the newly created user
 meterian_script=/home/meterian/meterian.sh
