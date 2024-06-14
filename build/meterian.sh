@@ -11,6 +11,17 @@ echo 'export PATH=${ORIGINAL_PATH}' >> ~/.bashrc
 echo 'export RUSTUP_HOME=/opt/rust/rustup' >> ~/.bashrc
 source ~/.bashrc
 
+# Flutter/Dart specific configuration
+if [[ -d "/home/meterian/bin/flutter" ]];then
+	echo 'export PATH=${PATH}:/home/meterian/bin/flutter/bin/' >> ~/.bashrc
+	source ~/.bashrc
+
+	flutter doctor >> /dev/null 2>&1 || true
+	rm -Rf /home/meterian/.pub-cache
+fi
+
+
+
 # Ensuring legacy env are still supported
 METERIAN_ENV=${METERIAN_ENV:-$CLIENT_ENV}
 METERIAN_PROTO=${METERIAN_PROTO:-$CLIENT_PROTO}

@@ -90,7 +90,7 @@ RUN min-apk-add perl-dev wget build-base zlib-dev expat-dev libxml2-dev perl-tes
 
 
 # Ruby install
-ARG RUBY_VERSION=3.1.4-r0
+ARG RUBY_VERSION=3.1.5-r0
 RUN min-apk-add build-base ruby-dev=${RUBY_VERSION} ruby-full=${RUBY_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/v3.17/main
 
 
@@ -190,7 +190,7 @@ RUN wget -q -O /tmp/meterian-cli-www.jar https://www.meterian.com/downloads/mete
 ARG VERSION
 RUN test -n "${VERSION}"
 RUN echo "" >> /root/version.txt
-RUN echo "© 2017-2022 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
+RUN echo "© 2017-2024 Meterian Ltd - dockerized version ${VERSION}" >> /root/version.txt
 
 # Vuln patches
 RUN apk del apache2-dev
