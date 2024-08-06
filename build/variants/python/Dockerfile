@@ -28,6 +28,14 @@ RUN apt install -qy build-essential zlib1g-dev libncurses5-dev libgdbm-dev libns
   && rm -rf /tmp/Python-3.8.2
 
 
+# Python poetry specifics
+RUN python3 -m venv /usr/lib/pythonEnvs/forPoetry \
+ && /usr/lib/pythonEnvs/forPoetry/bin/pip install -U pip setuptools \
+ && /usr/lib/pythonEnvs/forPoetry/bin/pip install -U pip poetry \
+ && ln -s /usr/lib/pythonEnvs/forPoetry/bin/poetry /usr/bin/poetry \
+ && poetry --version
+ 
+
 ### Setup initial meterian client (it will be updated if required)
 RUN curl -o /tmp/meterian-cli-www.jar -O -J -L https://www.meterian.com/downloads/meterian-cli.jar
 

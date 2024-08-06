@@ -178,6 +178,14 @@ RUN min-apk-add rlwrap=0.45.2-r1 --repository=http://dl-cdn.alpinelinux.org/alpi
  && rm /tmp/posix-install-1.11.1.1208.sh
 
 
+# Python poetry specifics
+RUN python3 -m venv /usr/lib/pythonEnvs/forPoetry \
+ && /usr/lib/pythonEnvs/forPoetry/bin/pip install -U pip setuptools \
+ && /usr/lib/pythonEnvs/forPoetry/bin/pip install -U pip poetry \
+ && ln -s /usr/lib/pythonEnvs/forPoetry/bin/poetry /usr/bin/poetry \
+ && poetry --version
+
+
 # Adding shadow to allow the meterian user creation with uid/gid matching host see https://github.com/MeterianHQ/meterian-scanner-docker/issues/19
 RUN min-apk-add shadow
 
