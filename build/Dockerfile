@@ -147,13 +147,16 @@ RUN rustup set profile minimal \
 
 
 # Python install
-ARG REPOS="--repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main"
-RUN min-apk-add python2=2.7.18-r4 python2-dev=2.7.18-r4 "python3<3.10.0" "python3-dev<3.10.0" zeromq-dev=4.3.4-r0 gdal-dev=3.4.3-r0 libxslt-dev=1.1.35-r0 ${REPOS} \
- && min-apk-add g++ openblas-dev=0.3.18-r1 cmake openssl-libs-static openssl-dev ${REPOS} \
- && curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
- && python3 /tmp/get-pip.py \
- && rm /tmp/get-pip.py \
- && min-apk-add linux-headers \
+ARG REPOS="--repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main --repository=http://dl-cdn.alpinelinux.org/alpine/v3.20/main"
+RUN min-apk-add "musl=1.2.5-r0" "python3>3.12.0" "python3-dev>3.12.0" zeromq-dev=4.3.4-r0 gdal-dev=3.4.3-r0 libxslt-dev=1.1.35-r0 ${REPOS}
+RUN min-apk-add g++ openblas-dev=0.3.18-r1 cmake openssl-libs-static openssl-dev ${REPOS}
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
+ && python3 /tmp/get-pip.py --break-system-packages \
+ && rm /tmp/get-pip.py
+COPY ./python-specific/pip/pip.conf /etc/
+
+RUN min-apk-add linux-headers \
  && min-pip3-install --ignore-installed distlib pipenv pipreqs jupyter
 
 
