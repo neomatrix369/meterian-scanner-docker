@@ -161,7 +161,7 @@ RUN min-apk-add linux-headers \
 
 
 # Conan install
-RUN pip3 install conan==1.60.2
+RUN pip3 install conan==1.65.0
 
 
 # R and renv install
