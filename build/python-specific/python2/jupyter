@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+if [[ "$*" =~ --version ]];then
+    echo Selected Jupyter core packages...
+    list=$(ls -l /usr/bin/ | grep -oP "jupyter-.*")
+
+    while IFS= read -r line; do
+        echo "$line : "$($line --version)""
+    done <<< "$list"
+
+else
+    /usr/bin/jupyter-cli $*
+fi
